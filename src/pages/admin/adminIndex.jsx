@@ -3,7 +3,8 @@ import React from 'react'
 import { Route, BrowserRouter, Routes} from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
-import Setting from './pages/Setting'
+import Settings from './pages/Settings'
+
 
 function adminIndex() {
     return (
@@ -11,8 +12,8 @@ function adminIndex() {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' extrac element={<Home />}></Route>
-                    <Route path='/about' extrac element={<About />}></Route>
-                    <Route path='/setting' extrac element={<Setting />}></Route>
+                    <Route path='/about' extrac element={<About/>}></Route>
+                    <Route path='/settings' extrac element={<Settings/>}></Route>
                 </Routes>
             </BrowserRouter>
         </div>

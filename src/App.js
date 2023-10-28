@@ -2,7 +2,8 @@ import React from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Home from './pages/admin/pages/Home'
 import About from './pages/admin/pages/About'
-import Setting from './pages/admin/pages/Setting'
+import Settings from './pages/admin/pages/Settings'
+
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           
               <Route path='/' extrac element={<Home />}></Route>
               <Route path='/about' extrac element={<About />}></Route>
-              <Route path='/setting' extrac element={<Setting />}></Route>
+              <Route path='/settings' extrac element={<Settings />}></Route>
             
           </Routes>
         </BrowserRouter>
