@@ -101,7 +101,7 @@ export default function SideNav() {
 
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton>
+          <IconButton >
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
