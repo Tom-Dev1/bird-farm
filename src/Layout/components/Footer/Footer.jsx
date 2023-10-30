@@ -1,52 +1,62 @@
-import React, { useState } from 'react';
-import classNames from 'classnames/bind';
-import styles from './Footer.module.scss';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-const cx = classNames.bind(styles);
+import "../Footer/FooterStyles.css";
 
-function Footer() {
-    const [isSubscribed, setIsSubscribed] = useState(false);
-
-    const [email, setEmail] = useState('');
-    const handleChange = (e) => {
-        setEmail(e.target.value);
-        console.log(e.target.value);
-    };
-    const handleSubscribe = (e) => {
-        e.preventDefault();
-        setIsSubscribed(true);
-    };
-
+const Footer = () => {
     return (
-        <div className={cx('newsletter-section')}>
-            <div className={cx('newsletter-content')}>
-                <span className={cx('small-text')}>Newsletter</span>
-                <span className={cx('big-text')}>Sign up for latest updates and offers</span>
-                <div className={cx('form')}>
-                    <input type="text" placeholder="Email Address" />
-                    <button>Subscribe</button>
+        <div className="footer">
+            <div className="top">
+                <div>
+                    <h1>Bird Farm</h1>
+                 
+                    <p>Choose your favorite Bird</p>
                 </div>
-                <span className={cx('text')}>Will be used in accordance with our Privacy Policy</span>
-                <span className={cx('social-icons')}>
-                    <div className={cx('icon')}>
-                        <LinkedInIcon fontSize="large" />
-                    </div>
-                    <div className={cx('icon')}>
-                        <FacebookIcon fontSize="large" />
-                    </div>
-                    <div className={cx('icon')}>
-                        <TwitterIcon fontSize="large" />
-                    </div>
-                    <div className={cx('icon')}>
-                        <InstagramIcon fontSize="large" />
-                    </div>
-                </span>
+                <div>
+                    <a href="/">
+                        <i className="fa-brands fa-facebook-square"></i>
+                    </a>
+                    <a href="/">
+                        <i className="fa-brands fa-instagram-square"></i>
+                    </a>
+                    <a href="/">
+                        <i className="fa-brands fa-behance-square"></i>
+                    </a>
+                    <a href="/">
+                        <i className="fa-brands fa-twitter-square"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div className="bottom">
+                <div>
+                    <h4>Project</h4>
+                    <a href="/">Changelog</a>
+                    <a href="/">Status</a>
+                    <a href="/">License</a>
+                    <a href="/">All Version</a>
+                </div>
+                <div>
+                    <h4>Community</h4>
+                    <a href="/">GitHub</a>
+                    <a href="/">Issues</a>
+                    <a href="/">Project</a>
+                    <a href="/">Twitter</a>
+                </div>
+                <div>
+                    <h4>Help</h4>
+                    <a href="/">Support</a>
+                    <a href="/">Troubleshooting</a>
+                    <a href="/">Contact US</a>
+                    <a href="/">Twitter</a>
+                </div>
+                <div>
+                    <h4>Others</h4>
+                    <a href="/">Terms of Service</a>
+                    <a href="/">Privacy Policy</a>
+                    <a href="/">License</a>
+                   
+                </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default Footer;
