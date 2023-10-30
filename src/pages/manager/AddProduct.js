@@ -8,7 +8,7 @@ import './addProduct.css'
 
 function AddProduct() {
 	const navigate = useNavigate();
-	const baseUrl = 'https://6535e093c620ba9358ecba91.mockapi.io/lab7_1';
+	const baseUrl = 'https://653ea1a29e8bd3be29df9516.mockapi.io/products';
 
 	const validationSchema = yup.object().shape({
 		name: yup.string().max(30, 'Name must be at most 30 characters').required('User Name is required'),
@@ -162,7 +162,7 @@ function AddProduct() {
 							helperText={formik.errors.bird_father_id}
 						/>
 					</div>
-					<div className="form-group">
+					{/* <div className="form-group">
 						<TextField
 							fullWidth
 							id="filled-basic"
@@ -176,7 +176,7 @@ function AddProduct() {
 							helperText={formik.errors.dayOfBirth}
 						/>
 					</div>
-					<div className="form-group">
+					{/* <div className="form-group">
 						<TextField
 							fullWidth
 							type="file"
@@ -188,7 +188,7 @@ function AddProduct() {
 							name="productImg"
 							required
 						/>
-					</div>
+					</div> */} 
 					<div className="form-group">
 						<div className="save-btn">
 							<Button variant="contained" color="success" type="submit" disabled={!formik.isValid}>
