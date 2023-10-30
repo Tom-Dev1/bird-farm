@@ -2,6 +2,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { DefaultLayout } from './Layout/DefaultLayout';
 import { publicRoutes } from './routes/index';
 import { Fragment } from 'react';
+import ManagerScreen from './manager/ManagerScreen';
+import AddProduct from './manager/AddProduct'; // Import the NewProduct component
 
 function App() {
     window.scrollTo(0, 0);
@@ -32,6 +34,25 @@ function App() {
                             />
                         );
                     })}
+
+                    {/* Route for ManagerScreen */}
+                    <Route
+                        path="/manager"
+                        element={
+                            <DefaultLayout>
+                                <ManagerScreen />
+                            </DefaultLayout>
+                        }
+                    />
+                    {/* Route for add product */}
+                    <Route
+                        path="/new-product"
+                        element={
+                            <DefaultLayout>
+                                <AddProduct />
+                            </DefaultLayout>
+                        }
+                    />
                 </Routes>
             </div>
         </Router>
