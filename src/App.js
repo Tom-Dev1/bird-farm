@@ -4,7 +4,7 @@ import { publicRoutes } from './routes/index';
 import { Fragment } from 'react';
 import ManagerScreen from './manager/ManagerScreen';
 import AddProduct from './manager/AddProduct'; // Import the NewProduct component
-
+import EditProduct from './manager/EditProduct';
 function App() {
     window.scrollTo(0, 0);
 
@@ -53,7 +53,16 @@ function App() {
                             </DefaultLayout>
                         }
                     />
+                    <Route
+                        path="/manager/edit/:id"
+                        element={
+                            <DefaultLayout>
+                                <EditProduct />
+                            </DefaultLayout>
+                        }
+                    />
                 </Routes>
+                
             </div>
         </Router>
     );

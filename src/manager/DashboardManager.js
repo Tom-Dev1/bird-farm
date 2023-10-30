@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-//import './Dashboard.scss';
+//import './dashboard.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { useConfirm } from 'material-ui-confirm';
 import { toast } from 'react-toastify';
@@ -28,13 +28,13 @@ function Dashboard() {
 
 	const navigate = useNavigate();
 
-	const EditFunction = (id) => {
-		navigate('/dashboard/edit/' + id);
+	const EditFunction = (category_id) => {
+		navigate('/manager/edit/' + category_id);
 	};
-	const RemoveFunction = (id) => {
-		if (window.confirm(`Xóa: ${id}`)) {
+	const RemoveFunction = (category_id) => {
+		if (window.confirm(`Xóa: ${category_id}`)) {
 			const baseUrl = `https://653ea1a29e8bd3be29df9516.mockapi.io/products`;
-			fetch(baseUrl + '/' + id, {
+			fetch(baseUrl + '/' + category_id, {
 				method: 'DELETE',
 				headers: {
 					'content-type': 'application/json',
@@ -42,8 +42,8 @@ function Dashboard() {
 			})
 				.then((res) => {
 					if (res.status === 200) {
-						toast.success(`Xóa ID: ${id} thành công!`);
-						setStaff((prevStaff) => prevStaff.filter((staff) => staff.id !== id));
+						toast.success(`Xóa ID: ${category_id} thành công!`);
+						setStaff((prevStaff) => prevStaff.filter((staff) => staff.category_id !== category_id));
 					} else {
 						throw new Error('Xóa không thành công.');
 					}
@@ -77,8 +77,8 @@ function Dashboard() {
 						</TableHead>
 						<TableBody>
 							{staff.map((staff) => (
-								<TableRow key={staff.id}>
-									<TableCell align="center">{staff.id}</TableCell>
+								<TableRow key={staff.category_id}>
+									<TableCell align="center">{staff.category_id}</TableCell>
 
 									<TableCell component="th" scope="row" align="center">
 										<img style={{ width: '100px', height: '100px' }} src={staff.img} alt="" />
@@ -92,7 +92,7 @@ function Dashboard() {
 											color="success"
 											className="edit-btn"
 											onClick={() => {
-												EditFunction(staff.id);
+												EditFunction(staff.category_id);
 											}}
 										>
 											<EditIcon />
@@ -102,7 +102,7 @@ function Dashboard() {
 											color="error"
 											className="delete-btn"
 											onClick={() => {
-												RemoveFunction(staff.id);
+												RemoveFunction(staff.category_id);
 											}}
 										>
 											<DeleteIcon />
