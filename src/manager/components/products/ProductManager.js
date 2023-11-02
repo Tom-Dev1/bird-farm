@@ -9,12 +9,14 @@ import Paper from '@mui/material/Paper';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-//import './dashboard.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { useConfirm } from 'material-ui-confirm';
 import { toast } from 'react-toastify';
+import SidebarManager from '../SidebarManager';
+import '../../StyleManager/ProductManager.css';
 
-function Dashboard() {
+
+function ProductManager() {
 	const [staff, setStaff] = useState([]);
 	const baseUrl = `https://653ea1a29e8bd3be29df9516.mockapi.io/products`;
 	const confirm = useConfirm();
@@ -57,35 +59,36 @@ function Dashboard() {
 		}
 	};
 	return (
-		<div>
+		<div className='main'>
+		<SidebarManager className="sidebar"/>
 			{(
 				<TableContainer component={Paper} className="dashboard-container">
-					<h2 style={{ textAlign: 'center', color: 'blue', fontSize: '40px', marginTop:'20px' }}>Sản Phẩm</h2>
+					<h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', marginTop: '20px' }}>Sản Phẩm</h2>
 					<Link to="/manager/new-product" className="add-btn">
 						<Button variant="contained">Create</Button>
 					</Link>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table" className="staff-table">
 						<TableHead>
 							<TableRow>
-								<TableCell style={{ fontSize:'20px' }} align="center">ID</TableCell>
-								<TableCell style={{ fontSize:'20px' }} align="center">Avatar</TableCell>
-								<TableCell style={{ fontSize:'20px' }} align="center">Tên</TableCell>
-								<TableCell style={{ fontSize:'20px' }} align="center">Giá</TableCell>
-								<TableCell style={{ fontSize:'20px' }} align="center">Loại</TableCell>
-								<TableCell style={{ fontSize:'20px' }} align="center">Action</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">ID</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">Avatar</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">Tên</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">Giá</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">Loại</TableCell>
+								<TableCell style={{ fontSize: '20px' }} align="center">Action</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{staff.map((staff) => (
 								<TableRow key={staff.category_id}>
-									<TableCell style={{ fontSize:'15px' }}align="center">{staff.category_id}</TableCell>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.category_id}</TableCell>
 
 									<TableCell component="th" scope="row" align="center">
 										<img style={{ width: '150px', height: '150px' }} src={staff.img} alt="" />
 									</TableCell>
-									<TableCell style={{ fontSize:'15px' }} align="center">{staff.name}</TableCell>
-									<TableCell style={{ fontSize:'15px' }} align="center">{staff.price}</TableCell>
-									<TableCell style={{ fontSize:'15px' }} align="center">{staff.sex}</TableCell>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.name}</TableCell>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.price}</TableCell>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.sex}</TableCell>
 									<TableCell align="center">
 										<Button
 											variant="outlined"
@@ -95,7 +98,7 @@ function Dashboard() {
 												EditFunction(staff.category_id);
 											}}
 										>
-											<EditIcon />
+											<EditIcon sx={{ fontSize: 20 }} />
 										</Button>
 										<Button
 											variant="outlined"
@@ -105,7 +108,7 @@ function Dashboard() {
 												RemoveFunction(staff.category_id);
 											}}
 										>
-											<DeleteIcon />
+											<DeleteIcon sx={{ fontSize: 20 }} />
 										</Button>
 									</TableCell>
 								</TableRow>
@@ -113,9 +116,9 @@ function Dashboard() {
 						</TableBody>
 					</Table>
 				</TableContainer>
-			) }
+			)}
 		</div>
 	);
 }
 
-export default Dashboard;
+export default ProductManager;

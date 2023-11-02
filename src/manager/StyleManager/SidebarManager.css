@@ -1,0 +1,48 @@
+*{
+  margin:0;
+  padding:0;
+  text-decoration: none;
+}
+.container{
+  display: flex;
+}
+main{
+  width: 100%;
+  padding: 20px;
+}
+.sidebar{
+  background: #0A2647;
+  color: #2C74B3;
+  height: 100vh;
+  width: 200px;
+  align-items: center;
+  padding: 20px 15px;
+  transition: all 0.5s;
+}
+.logo{
+  font-size: 30px;
+}
+.bars{
+  display: flex;
+  font-size: 30px;
+  margin-left: 25px;
+}
+.link{
+  display: flex;
+  color: #2C74B3;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover{
+  background: #205295;
+  color: white;
+  transition: all 0.5s;
+}
+.active{
+  background: #205295;
+  color: black;
+}
+.icon, .link_text{
+  font-size: 18px;
+}

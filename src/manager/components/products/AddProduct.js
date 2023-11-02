@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import './addProduct.css';
+import '../../StyleManager/addProduct.css';
 import 'react-toastify/dist/ReactToastify.css';
-import SidebarManager from './SidebarManager';
+import SidebarManager from '../SidebarManager';
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -28,27 +28,33 @@ function AddProduct() {
   const formik = useFormik({
     initialValues: {
       category_id: '',
-      name: '',
+      image:'',
       price: '',
+      name: '',
       sex: '',
       description: '',
       bird_mother_id: '',
       bird_father_id: '',
-      is_egg: '',
+      typeProduct: '',
       dayOfBirth: '',
+      birdCategory:'',
+      id:'',
     },
     validationSchema,
     onSubmit: (values) => {
       const product = {
         category_id: values.category_id,
+        image: values.image,
+        price: values.price,
         name: values.name,
-        price: parseFloat(values.price), // Parse price to float
         sex: values.sex,
         description: values.description,
         bird_mother_id: values.bird_mother_id,
         bird_father_id: values.bird_father_id,
-        is_egg: values.is_egg,
+        typeProduct: values.typeProduct,
         dayOfBirth: values.dayOfBirth,
+        birdCategory: values.birdCategory,
+        id: values.id,
       };
       fetch(baseUrl, {
         method: 'POST',
@@ -60,7 +66,7 @@ function AddProduct() {
         .then((res) => {
           if (res.ok) {
             toast.success('Thêm sản phẩm thành công!');
-            navigate('/manager');
+            navigate('/manager/products');
           } else {
             toast.error('Lỗi khi thêm sản phẩm');
           }
@@ -74,7 +80,7 @@ function AddProduct() {
 
   return (
     <div className='main'>
-        <SidebarManager></SidebarManager>
+    <SidebarManager/>
     <form className="add-container" onSubmit={formik.handleSubmit}>
       <div className="add-form">
         <div className="form-title">
@@ -165,7 +171,7 @@ function AddProduct() {
             >
               Lưu
             </Button>
-            <Link to="/manager">
+            <Link to="/manager/products">
               <Button
                 variant="contained"
                 color="error"
@@ -178,6 +184,7 @@ function AddProduct() {
         </div>
       </div>
     </form>
+    
     </div>
   );
 }

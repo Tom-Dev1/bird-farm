@@ -2,10 +2,14 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { DefaultLayout } from './Layout/DefaultLayout';
 import { publicRoutes } from './routes/index';
 import { Fragment } from 'react';
-import ManagerScreen from './manager/ManagerScreen';
-import AddProduct from './manager/AddProduct'; // Import the NewProduct component
-import EditProduct from './manager/EditProduct';
 import { ToastContainer } from 'react-toastify';
+import ManagerScreen from './manager/components/ManagerScreen';
+import ProductManager from './manager/components/products/ProductManager';
+import AddProduct from './manager/components/products/AddProduct';
+import EditProduct from './manager/components/products/EditProduct';
+import AddCategory from './manager/components/categories/AddCategory';
+import AccountManager from './manager/components/account/AccountManager';
+import CategoryManager from './manager/components/categories/CategoryManager';
 
 function App() {
     window.scrollTo(0, 0);
@@ -38,54 +42,29 @@ function App() {
                     })}
 
                     {/* Route for ManagerScreen */}
-                    <Route
-                        path="/manager"
-                        element={
-                            <DefaultLayout>
-                                <ManagerScreen />
-                            </DefaultLayout>
-                        }
-                    />
-                    <Route
-                        path="/manager/products"
-                        element={
-                            <DefaultLayout>
-                                <ManagerScreen />
-                            </DefaultLayout>
-                        }
-                    />
-                    {/* Route for add product */}
-                    <Route
-                        path="manager/new-product"
-                        element={
-                            <DefaultLayout>
-                                <AddProduct />
-                            </DefaultLayout>
-                        }
-                    />
-                    <Route
-                        path="/manager/edit/:id"
-                        element={
-                            <DefaultLayout>
-                                <EditProduct />
-                            </DefaultLayout>
-                        }
-                    />
+                    <Route path="/manager" element={<ManagerScreen />}/>
+                    <Route path="/manager/products" element={<ProductManager />} />
+                    <Route path="/manager/new-product" element={<AddProduct />} />
+                    <Route path="/manager/edit" element={<EditProduct />} />
+                    <Route path="/manager/account" element={<AccountManager />} />
+                    <Route path="/manager/categories" element={<CategoryManager />} />
+                    <Route path="/manager/new-categories" element={<AddCategory />} />
+                    
                 </Routes>
                 <ToastContainer
-				position="top-right"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-			/> 
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </div>
         </Router>
-        
+
     );
 }
 
