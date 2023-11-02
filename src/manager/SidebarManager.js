@@ -9,19 +9,19 @@ const Sidebar = () => {
                 <nav>
                     <ul className="menu-aside">
                         <li className="menu-item">
-                            <NavLink to="/manager" activeClassName="active" className="menu-link" exact>
+                            <NavLink to="/manager/dashboard" activeClassName="active" className="menu-link" exact>
                                 <i className="icon fas fa-home"></i>
                                 <span className="text">Thống Kê</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">
-                            <NavLink to="/products" activeClassName="active" className="menu-link">
+                            <NavLink to="/manager/products" activeClassName="active" className="menu-link">
                                 <i className="icon fas fa-shopping-bag"></i>
                                 <span className="text">Sản Phẩm</span>
                             </NavLink>
                         </li>
                         <li className="menu-item">
-                            <NavLink to="/new-product" activeClassName="active" className="menu-link">
+                            <NavLink to="/manager/new-product" activeClassName="active" className="menu-link">
                                 <i className="icon fas fa-cart-plus"></i>
                                 <span className="text">Thêm Sản Phẩm</span>
                             </NavLink>

@@ -60,32 +60,32 @@ function Dashboard() {
 		<div>
 			{(
 				<TableContainer component={Paper} className="dashboard-container">
-					<h2 style={{ textAlign: 'center', color: 'red', fontSize: '50px' }}>Sản Phẩm</h2>
-					<Link to="/new-product" className="add-btn">
+					<h2 style={{ textAlign: 'center', color: 'blue', fontSize: '40px', marginTop:'20px' }}>Sản Phẩm</h2>
+					<Link to="/manager/new-product" className="add-btn">
 						<Button variant="contained">Create</Button>
 					</Link>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table" className="staff-table">
 						<TableHead>
 							<TableRow>
-								<TableCell align="center">ID</TableCell>
-								<TableCell align="center">Avatar</TableCell>
-								<TableCell align="center">Tên</TableCell>
-								<TableCell align="center">Giá</TableCell>
-								<TableCell align="center">Loại</TableCell>
-								<TableCell align="center">Action</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">ID</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">Avatar</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">Tên</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">Giá</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">Loại</TableCell>
+								<TableCell style={{ fontSize:'20px' }} align="center">Action</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{staff.map((staff) => (
 								<TableRow key={staff.category_id}>
-									<TableCell align="center">{staff.category_id}</TableCell>
+									<TableCell style={{ fontSize:'15px' }}align="center">{staff.category_id}</TableCell>
 
 									<TableCell component="th" scope="row" align="center">
-										<img style={{ width: '100px', height: '100px' }} src={staff.img} alt="" />
+										<img style={{ width: '150px', height: '150px' }} src={staff.img} alt="" />
 									</TableCell>
-									<TableCell align="center">{staff.name}</TableCell>
-									<TableCell align="center">{staff.price}</TableCell>
-									<TableCell align="center">{staff.sex}</TableCell>
+									<TableCell style={{ fontSize:'15px' }} align="center">{staff.name}</TableCell>
+									<TableCell style={{ fontSize:'15px' }} align="center">{staff.price}</TableCell>
+									<TableCell style={{ fontSize:'15px' }} align="center">{staff.sex}</TableCell>
 									<TableCell align="center">
 										<Button
 											variant="outlined"

@@ -46,9 +46,17 @@ function App() {
                             </DefaultLayout>
                         }
                     />
+                    <Route
+                        path="/manager/products"
+                        element={
+                            <DefaultLayout>
+                                <ManagerScreen />
+                            </DefaultLayout>
+                        }
+                    />
                     {/* Route for add product */}
                     <Route
-                        path="/new-product"
+                        path="manager/new-product"
                         element={
                             <DefaultLayout>
                                 <AddProduct />

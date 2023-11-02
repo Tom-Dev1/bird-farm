@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import './addProduct.css';
 import 'react-toastify/dist/ReactToastify.css';
-
+import SidebarManager from './SidebarManager';
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -21,18 +21,17 @@ function AddProduct() {
       .min(1, 'Giá phải lớn hơn hoặc bằng 1')
       .required('Giá là bắt buộc'),
     sex: yup.string().required('Giới tính là bắt buộc'),
-    info: yup.string().required('Thông tin là bắt buộc'),
+    description: yup.string().required('Thông tin là bắt buộc'),
     dayOfBirth: yup.string().required('Ngày sinh là bắt buộc'),
   });
 
   const formik = useFormik({
     initialValues: {
-      id: '',
       category_id: '',
       name: '',
       price: '',
       sex: '',
-      info: '',
+      description: '',
       bird_mother_id: '',
       bird_father_id: '',
       is_egg: '',
@@ -41,12 +40,11 @@ function AddProduct() {
     validationSchema,
     onSubmit: (values) => {
       const product = {
-        id: values.id,
         category_id: values.category_id,
         name: values.name,
         price: parseFloat(values.price), // Parse price to float
         sex: values.sex,
-        info: values.info,
+        description: values.description,
         bird_mother_id: values.bird_mother_id,
         bird_father_id: values.bird_father_id,
         is_egg: values.is_egg,
@@ -75,6 +73,8 @@ function AddProduct() {
   });
 
   return (
+    <div className='main'>
+        <SidebarManager></SidebarManager>
     <form className="add-container" onSubmit={formik.handleSubmit}>
       <div className="add-form">
         <div className="form-title">
@@ -118,12 +118,12 @@ function AddProduct() {
               row
             >
               <FormControlLabel
-                value="male"
+                value="true"
                 control={<Radio color="primary" />}
                 label="Male"
               />
               <FormControlLabel
-                value="female"
+                value="false"
                 control={<Radio color="primary" />}
                 label="Female"
               />
@@ -132,14 +132,14 @@ function AddProduct() {
           <div className="form-group">
             <TextField
               fullWidth
-              id="info"
+              id="description"
               label="Thông tin"
               variant="filled"
-              value={formik.values.info}
+              value={formik.values.description}
               onChange={formik.handleChange}
-              name="info"
-              error={formik.touched.info && Boolean(formik.errors.info)}
-              helperText={formik.touched.info && formik.errors.info}
+              name="description"
+              error={formik.touched.description && Boolean(formik.errors.description)}
+              helperText={formik.touched.description && formik.errors.description}
             />
           </div>
           <div className="form-group">
@@ -178,6 +178,7 @@ function AddProduct() {
         </div>
       </div>
     </form>
+    </div>
   );
 }
 
