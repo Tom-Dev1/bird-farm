@@ -16,6 +16,7 @@ const publicRoutes = [
     { path: routesConfig.contact, component: Contact },
     { path: routesConfig.login, component: Login, layout: null },
     { path: routesConfig.product, component: Product },
+    { path: routesConfig.product, component: Product },
 ];
 
 const privateRoutes = [

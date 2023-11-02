@@ -9,13 +9,13 @@ const cx = classnames.bind(styles);
 function HeaderFooter({ children }) {
     return (
         <div>
-            {/* <div className={cx('wrapper')}>
-                <Header />
+             <div className={cx('wrapper')}>
+                {/* <Header /> */}
                 <main>
                     <div className={cx('container')}>{children}</div>
                 </main>
-                <Footer />
-            </div> */}
+                {/* <Footer /> */}
+            </div> 
         </div>
     );
 }

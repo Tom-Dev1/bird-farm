@@ -5,6 +5,8 @@ import { Fragment } from 'react';
 import ManagerScreen from './manager/ManagerScreen';
 import AddProduct from './manager/AddProduct'; // Import the NewProduct component
 import EditProduct from './manager/EditProduct';
+import { ToastContainer } from 'react-toastify';
+
 function App() {
     window.scrollTo(0, 0);
 
@@ -62,9 +64,20 @@ function App() {
                         }
                     />
                 </Routes>
-                
+                <ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/> 
             </div>
         </Router>
+        
     );
 }
 
