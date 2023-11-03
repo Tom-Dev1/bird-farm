@@ -1,4 +1,8 @@
+
+import '../Footer/FooterStyles.css';
+
 import "../Footer/FooterStyles.css";
+
 
 const Footer = () => {
     return (
@@ -6,7 +10,9 @@ const Footer = () => {
             <div className="top">
                 <div>
                     <h1>Bird Farm</h1>
+
                  
+
                     <p>Choose your favorite Bird</p>
                 </div>
                 <div>
@@ -52,6 +58,12 @@ const Footer = () => {
                     <a href="/">Terms of Service</a>
                     <a href="/">Privacy Policy</a>
                     <a href="/">License</a>
+                </div>
+            </div>
+        </div>
+    );
+};
+
                    
                 </div>
             </div>

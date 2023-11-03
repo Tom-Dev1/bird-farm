@@ -6,8 +6,6 @@ import ManagerScreen from './manager/ManagerScreen';
 import AddProduct from './manager/AddProduct'; // Import the NewProduct component
 
 function App() {
-    window.scrollTo(0, 0);
-
     return (
         <Router>
             <div className="App">

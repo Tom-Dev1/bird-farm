@@ -4,9 +4,9 @@ import Navbar from '../../Layout/components/Navbar';
 
 function Home() {
     return (
-        <h1>
+        <>
             <Navbar />
-        </h1>
+        </>
     );
     // <div>
     //     <Header />

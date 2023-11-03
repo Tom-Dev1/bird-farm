@@ -21,7 +21,7 @@ function ImageOne() {
             <Parallax className={cx('image')} bgImage={image2} strength={200}>
                 <div className={cx('content')}>
                     <div className={cx('text-content')}>BIRD DIVERISITY</div>
-                    <Link to="/product " className={cx('link-content')}>
+                    <Link to="/products " className={cx('link-content')}>
                         <span>BIRD SHOP → </span>
                     </Link>
                 </div>
@@ -29,7 +29,7 @@ function ImageOne() {
             <Parallax className={cx('image')} bgImage={image3} strength={200}>
                 <div className={cx('content')}>
                     <div className={cx('text-content')}>BIRD DIVERISITY</div>
-                    <Link to="/product" className={cx('link-content')}>
+                    <Link to="/products" className={cx('link-content')}>
                         <span>BIRD SHOP → </span>
                     </Link>
                 </div>
@@ -37,7 +37,7 @@ function ImageOne() {
             <Parallax className={cx('image')} bgImage={image1} strength={200}>
                 <div className={cx('content')}>
                     <div className={cx('text-content')}>BIRD DIVERISITY</div>
-                    <Link to="/product" className={cx('link-content')}>
+                    <Link to="/products" className={cx('link-content')}>
                         <span>BIRD SHOP → </span>
                     </Link>
                 </div>

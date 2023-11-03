@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../Header/Header.module.scss';
 // import styles1 from '../../AboutLayout/AboutLayout.modules.scss';
 import classNames from 'classnames/bind';
@@ -11,10 +11,9 @@ import config from '../../../config/';
 import Login from './Login';
 const cx = classNames.bind(styles);
 
-function Header({ customProp }) {
-    // const header = customProp === 'about' ? styles1.AboutLayout : styles.header;
+function Header() {
     return (
-        <header className={cx('header')}>
+        <div className={cx('header')}>
             <div className={cx('header-inner')}>
                 <div className={cx('inner-left')}>
                     <a href={routes.home} className={cx('header-brand')}>
@@ -37,7 +36,7 @@ function Header({ customProp }) {
                     <Login />
                 </div>
             </div>
-        </header>
+        </div>
     );
 }
 

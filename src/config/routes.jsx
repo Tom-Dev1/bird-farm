@@ -3,8 +3,8 @@ const routes = {
     about: '/about',
     contact: '/contact',
     login: '/login',
-    product: '/product',
-    category: '/category/:id',
+    products: '/products',
+    product: '/products/:id',
 };
 
 export default routes;
