@@ -9,6 +9,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Menu from './Menu';
 import config from '../../../config/';
 import Login from './Login';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Header() {
@@ -30,10 +31,10 @@ function Header() {
                 </div>
 
                 <div className={cx('inner-right')}>
-                    <span>
+                    {/* <span>
                         <ShoppingCartIcon fontSize="large" />
-                    </span>
-                    <Login />
+                    </span> */}
+                    <Link to="/login">Login</Link>
                 </div>
             </div>
         </div>

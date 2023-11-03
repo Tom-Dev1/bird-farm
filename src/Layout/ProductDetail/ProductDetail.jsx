@@ -35,16 +35,14 @@ export default function ProductDetail() {
                         <img src={product?.image} alt="" />
                     </div>
                     <div className={cx('right')}>
+                        <span>ProductName:</span>
                         <span>{product?.name}</span>
+                        Price:
                         <span> {product?.price}</span>
+                        Decription
                         <span>{product?.description}</span>
                     </div>
-                    {/* <div className={cx('cart-button')}>
-                        <div className={cx('quantity-buttons')}>
-                            <span>-</span>
-                            <span>5</span>
-                            <span>+</span>
-                        </div>
+                    <div className={cx('cart-button')}>
                         <button className={cx('add-to-cart-button')}>
                             <AddShoppingCartIcon fontSize={'large'} />
                             ADD TO CART
@@ -65,13 +63,13 @@ export default function ProductDetail() {
                                 <TwitterIcon />
                             </span>
                         </span>
-                    </div> */}
+                    </div>
                 </div>
             </div>
             {/* <h2>{product.name}</h2>
             <p>{product.description}</p>
             <img src={product.image} alt={product.name} />
-            <p>Price: {product.price}</p> */}
+            <p>Price: {product.price}</p>
             {/* Các thông tin khác về sản phẩm */}
         </div>
     );
