@@ -1,37 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Typography } from '@mui/material';
-
-export default function ProductDetails() {
-    const { productId } = useParams();
+import styles from '../ProductDetail/ProductDetail.module.scss';
+import classNames from 'classnames/bind';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import TwitterIcon from '@mui/icons-material/Twitter';
+const cx = classNames.bind(styles);
+export default function ProductDetail() {
+    const { id } = useParams();
     const [product, setProduct] = useState(null);
-    const baseUrl = `https://653ea1a29e8bd3be29df9516.mockapi.io/products/${productId}`;
-    console.log(baseUrl);
+    console.log(id);
     useEffect(() => {
-        // console.log('productId:', productId);
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(baseUrl);
-                setProduct(response.data);
+                const response = await axios.get(
+                    `https://birdsellingapi.azurewebsites.net/api/Product/GetProductByID/${id}`,
+                );
+                setProduct(response.data.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
             }
         };
 
         fetchProduct();
-    }, [baseUrl]);
-
-    if (!product) {
-        return <Typography>Loading...</Typography>;
-    }
+    }, [id]);
 
     return (
-        <div>
-            <Typography variant="h4">{product.name}</Typography>
-            <Typography>{product.description}</Typography>
-            <Typography variant="h6">Price: {product.price}</Typography>
-            {/* Rest of the product details */}
+        <div className={cx('single-product-main-contain')}>
+            <div className={cx('layout')}>
+                <div className={cx('single-product-page')}>
+                    <div className={cx('left')}>
+                        <img src={product?.image} alt="" />
+                    </div>
+                    <div className={cx('right')}>
+                        <span>{product?.name}</span>
+                        <span> {product?.price}</span>
+                        <span>{product?.description}</span>
+                    </div>
+                    {/* <div className={cx('cart-button')}>
+                        <div className={cx('quantity-buttons')}>
+                            <span>-</span>
+                            <span>5</span>
+                            <span>+</span>
+                        </div>
+                        <button className={cx('add-to-cart-button')}>
+                            <AddShoppingCartIcon fontSize={'large'} />
+                            ADD TO CART
+                        </button>
+                    </div>
+
+                    <span className={cx('divider')}></span>
+                    <div className={cx('info-item')}>
+                        <span className={cx('text-bold')}>
+                            Category:
+                            <span>Bird</span>
+                        </span>
+                        <span className={cx('text-bold')}>
+                            Share:
+                            <span className={cx('social-icons')}>
+                                <FacebookIcon />
+                                <InstagramIcon />
+                                <TwitterIcon />
+                            </span>
+                        </span>
+                    </div> */}
+                </div>
+            </div>
+            {/* <h2>{product.name}</h2>
+            <p>{product.description}</p>
+            <img src={product.image} alt={product.name} />
+            <p>Price: {product.price}</p> */}
+            {/* Các thông tin khác về sản phẩm */}
         </div>
     );
 }

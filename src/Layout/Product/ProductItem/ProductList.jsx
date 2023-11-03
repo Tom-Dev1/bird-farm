@@ -8,13 +8,13 @@ export default function ProductList() {
     const [productsPerPage, setProductsPerPage] = useState(9);
     const [products, setProducts] = useState([]);
 
-    const baseUrl = 'https://653ea1a29e8bd3be29df9516.mockapi.io/products';
+    const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/Product/GetProduct';
 
     useEffect(() => {
         const fetchAPI = async () => {
             try {
                 const response = await axios.get(baseUrl);
-                setProducts(response.data);
+                setProducts(response.data.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -39,17 +39,24 @@ export default function ProductList() {
         <>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {currentProducts.map((product) => (
-                    <Grid item xs={12} sm={6} md={4} key={product.category_id}>
+                    <Grid item xs={12} sm={6} md={4} key={product.id}>
                         <Card sx={{ maxWidth: 345 }}>
-                            <Link to={`/products/${product.category_id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/products/${product.id}`} style={{ textDecoration: 'none' }}>
                                 <CardActionArea>
-                                    <CardMedia component="img" height="140" image={product.image} alt={product.name} />
+                                    <CardMedia
+                                        component="img"
+                                        height="300px"
+                                        // width="100%"
+                                        image={product.image}
+                                        alt={product.name}
+                                        style={{ height: '100%', objectFit: 'contain' }}
+                                    />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
                                             {product.name}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {product.description}
+                                            {product.price}$
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
