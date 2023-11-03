@@ -2,7 +2,6 @@ import styles from './Carousel.module.scss';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
-
 function Carousel() {
     const images = {
         bird1: require('../../../asset/images/bird-4-removebg-preview.png'),

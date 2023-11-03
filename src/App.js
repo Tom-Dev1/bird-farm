@@ -4,8 +4,6 @@ import { publicRoutes } from './routes/index';
 import { Fragment } from 'react';
 
 function App() {
-    window.scrollTo(0, 0);
-
     return (
         <Router>
             <div className="App">

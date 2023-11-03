@@ -9,7 +9,8 @@
     position: relative;
     background-image: linear-gradient(to right, #505151, #0a8f4d);
     @include md {
-        height: calc(100vh - 80px);
+        // height: calc(100vh - 80px);
+        height: 100vh;
     }
     .content {
         height: 100%;
