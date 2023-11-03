@@ -1,4 +1,8 @@
+
 import '../Footer/FooterStyles.css';
+
+import "../Footer/FooterStyles.css";
+
 
 const Footer = () => {
     return (
@@ -6,6 +10,9 @@ const Footer = () => {
             <div className="top">
                 <div>
                     <h1>Bird Farm</h1>
+
+                 
+
                     <p>Choose your favorite Bird</p>
                 </div>
                 <div>
@@ -56,5 +63,12 @@ const Footer = () => {
         </div>
     );
 };
+
+                   
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export default Footer;
