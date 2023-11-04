@@ -1,0 +1,9 @@
+@import '../../layout/GlobalStyles/mixin.scss';
+.layout {
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+    @include md {
+        max-width: 1200px;
+        margin: 0 auto 50px;
+    }
+}

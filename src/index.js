@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+<<<<<<< HEAD
+import GlobalStyles from './layout/GlobalStyles';
+=======
 import GlobalStyles from './components/GlobalStyles';
+>>>>>>> main
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
