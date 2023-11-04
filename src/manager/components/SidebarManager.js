@@ -46,7 +46,7 @@ const SidebarManager = ({ children }) => {
         },
     ]
     return (
-        <div className="container">
+        <div className="container_sidebar">
             <div style={{ width: isOpen ? "200px" : "80px" }} className="sidebar">
                 <div className="top-section">
                     <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">Xin Chào, Manager</h1>

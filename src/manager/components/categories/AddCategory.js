@@ -9,7 +9,7 @@ import SidebarManager from '../SidebarManager';
 
 function AddCategory() {
   const navigate = useNavigate();
-  const baseUrl = 'https://653ea1a29e8bd3be29df9516.mockapi.io/categories'; // Thay đổi URL API của bạn
+  const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory/CreateBirdCategory'; // Thay đổi URL API của bạn
 
   const validationSchema = yup.object().shape({
     category_name: yup.string().required('Tên danh mục là bắt buộc'),

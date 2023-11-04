@@ -18,25 +18,27 @@ import '../../StyleManager/ProductManager.css';
 
 function ProductManager() {
 	const [staff, setStaff] = useState([]);
-	const baseUrl = `https://653ea1a29e8bd3be29df9516.mockapi.io/products`;
+	const baseUrl = `https://birdsellingapi.azurewebsites.net/api/Product/GetProduct/`;
 	const confirm = useConfirm();
-
+	console.log(staff);
 	useEffect(() => {
 		fetch(baseUrl)
 			.then((response) => response.json())
-			.then((data) => setStaff(data))
+			.then((data) => setStaff(data.data))
 			.catch((error) => console.log(error.message));
+			console.log(setStaff);
+
 	}, []);
 
 	const navigate = useNavigate();
 
-	const EditFunction = (category_id) => {
-		navigate('/manager/edit/' + category_id);
+	const EditFunction = (id) => {
+		navigate('/manager/edit/' + id);
 	};
-	const RemoveFunction = (category_id) => {
-		if (window.confirm(`Xóa: ${category_id}`)) {
-			const baseUrl = `https://653ea1a29e8bd3be29df9516.mockapi.io/products`;
-			fetch(baseUrl + '/' + category_id, {
+	const RemoveFunction = (id) => {
+		if (window.confirm(`Xóa: ${id}`)) {
+			const baseUrl = `https://birdsellingapi.azurewebsites.net/api/Product/DeleteProduct/`;
+			fetch(baseUrl + '/' + id, {
 				method: 'DELETE',
 				headers: {
 					'content-type': 'application/json',
@@ -44,8 +46,8 @@ function ProductManager() {
 			})
 				.then((res) => {
 					if (res.status === 200) {
-						toast.success(`Xóa ID: ${category_id} thành công!`);
-						setStaff((prevStaff) => prevStaff.filter((staff) => staff.category_id !== category_id));
+						toast.success(`Xóa ID: ${id} thành công!`);
+						setStaff((prevStaff) => prevStaff.filter((staff) => staff.id !== id));
 					} else {
 						throw new Error('Xóa không thành công.');
 					}
@@ -79,15 +81,15 @@ function ProductManager() {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{staff.map((staff) => (
-								<TableRow key={staff.category_id}>
-									<TableCell style={{ fontSize: '15px' }} align="center">{staff.category_id}</TableCell>
+							{staff?.map((staff) => (
+								<TableRow key={staff.id}>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.id}</TableCell>
 
 									<TableCell component="th" scope="row" align="center">
-										<img style={{ width: '150px', height: '150px' }} src={staff.img} alt="" />
+										<img style={{ width: '150px', height: '150px' }} src={staff.image} alt="" />
 									</TableCell>
 									<TableCell style={{ fontSize: '15px' }} align="center">{staff.name}</TableCell>
-									<TableCell style={{ fontSize: '15px' }} align="center">{staff.price}</TableCell>
+									<TableCell style={{ fontSize: '15px' }} align="center">{staff.price},000đ</TableCell>
 									<TableCell style={{ fontSize: '15px' }} align="center">{staff.sex}</TableCell>
 									<TableCell align="center">
 										<Button
@@ -95,7 +97,7 @@ function ProductManager() {
 											color="success"
 											className="edit-btn"
 											onClick={() => {
-												EditFunction(staff.category_id);
+												EditFunction(staff.id);
 											}}
 										>
 											<EditIcon sx={{ fontSize: 20 }} />
@@ -105,7 +107,7 @@ function ProductManager() {
 											color="error"
 											className="delete-btn"
 											onClick={() => {
-												RemoveFunction(staff.category_id);
+												RemoveFunction(staff.id);
 											}}
 										>
 											<DeleteIcon sx={{ fontSize: 20 }} />
