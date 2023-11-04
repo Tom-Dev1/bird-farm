@@ -25,30 +25,37 @@ function CategoryManager() {
   }, []);
 
   const navigateToCategory = (id) => {
-    navigate(`/manager/category/${id}`);
+    navigate(`/manager/edit-category/${id}`);
   };
 
   const handleDeleteCategory = (id) => {
-    fetch(`https://birdsellingapi.azurewebsites.net/api/BirdCategory/DeleteBirdCategory?id=`+ id, {
+    const categoryToDelete = categories.find((category) => category.id === id);
+
+    if (window.confirm(`Xóa danh mục: ${categoryToDelete?.category_name}`)) {    
+    fetch(`https://birdsellingapi.azurewebsites.net/api/BirdCategory/DeleteBirdCategory?id=` + id, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    .then((response) => {
-      if (response.status === 200) {
-        setCategories(categories.filter((category) => category.id !== id));
-        toast.success('Danh mục đã được xóa thành công.');
-      } else if (response.status === 404) {
-        toast.error('Danh mục không tồn tại.');
-      } else {
-        toast.error('Xóa danh mục không thành công.');
+      .then((response) => {
+        if (response.status === 200) {
+          setCategories(categories.filter((category) => category.id !== id));
+          toast.success('Danh mục đã được xóa thành công.');
+        } else if (response.status === 404) {
+          toast.error('Danh mục không tồn tại.');
+        } else {
+          toast.error('Xóa danh mục không thành công.');
+        }
+      })
+      .catch((error) => {
+        console.error('Lỗi khi xóa danh mục:', error);
+        toast.error('Xảy ra lỗi khi xóa danh mục.');
+      });}
+      else {
+        // Người dùng hủy bỏ, không làm gì cả
+        toast.warning('Hủy bỏ xóa');
       }
-    })
-    .catch((error) => {
-      console.error('Lỗi khi xóa danh mục:', error);
-      toast.error('Xảy ra lỗi khi xóa danh mục.');
-    });
   };
 
   return (
@@ -85,7 +92,7 @@ function CategoryManager() {
                   </Button>
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    color="error"
                     className="delete-btn"
                     onClick={() => handleDeleteCategory(category.id)}
                   >

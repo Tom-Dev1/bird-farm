@@ -112,6 +112,17 @@ function AddProduct() {
               />
             </div>
             <div className="form-group">
+						<TextField
+							fullWidth
+							id="filled-basic"
+							label="Avatar"
+							variant="filled"
+							value={formik.values.image}
+							onChange={formik.handleChange}
+							name="image"
+						/>
+					</div>
+            <div className="form-group">
               <TextField
                 fullWidth
                 id="price"

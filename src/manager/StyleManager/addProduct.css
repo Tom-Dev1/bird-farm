@@ -1,40 +1,60 @@
 /* addProduct.css */
 .main {
   display: flex;
+  background-color: #f4f4f4;
+  
 }
 .add-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   background-color: white;
-  width: 100%;
-}
-
-.add-form {
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
   padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Để căn giữa theo chiều ngang */
+  justify-content: center; /* Để căn giữa theo chiều dọc */
+  position: relative;
+  left: 35%;
+
 }
 
 .form-title {
   text-align: center;
-}
-
-.form-title h2 {
-  margin: 0;
-}
-
-.form-body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .form-group {
+  margin: 10px 0;
+}
+
+.error-text {
+  color: red;
+  font-size: 14px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.form-group select {
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group button {
+  margin: 10px 0;
 }
 
 .save-btn,
