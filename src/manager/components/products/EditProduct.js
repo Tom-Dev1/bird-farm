@@ -5,9 +5,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../../StyleManager/editProduct.css';
 import AppBarManager from '../AppBarManager';
 import SidebarManager from '../SidebarManager';
+import '../../StyleManager/editProduct.css';
 
 function EditProduct() {
   const { id } = useParams();
@@ -22,39 +22,37 @@ function EditProduct() {
       .min(1, 'Giá phải lớn hơn hoặc bằng 1')
       .required('Giá là bắt buộc'),
     sex: yup.string().required('Giới tính là bắt buộc'),
-    info: yup.string().required('Thông tin là bắt buộc'),
-    dayOfBirth: yup.string().required('Ngày sinh là bắt buộc'),
+    description: yup.string().required('Thông tin là bắt buộc'),
   });
 
   const formik = useFormik({
     initialValues: {
+      id: id, // Chuyển "id" từ useParams vào formik
       name: '',
       price: 0,
       sex: '',
-      info: '',
-      dayOfBirth: '',
+      description: '',
     },
     validationSchema,
     onSubmit: (values) => {
       const product = {
-        id: '',
+        id: values.id, // Sử dụng "id" từ formik
         name: values.name,
-        price: values.price, // Parse price to float
+        price: parseFloat(values.price), // Parse price to float
         sex: values.sex,
-        info: values.info,
-        dayOfBirth: values.dayOfBirth,
+        description: values.description,
       };
       fetch(`${baseUrl}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: values.id }),
+        body: JSON.stringify(product), // Gửi "product" thay vì "id"
       })
         .then((response) => {
           if (response.status === 200) {
             toast.success('Cập nhật sản phẩm thành công!');
-            navigate('/manager');
+            navigate('/manager/products');
           } else {
             toast.error('Lỗi khi cập nhật sản phẩm');
           }
@@ -70,21 +68,12 @@ function EditProduct() {
     fetch(`https://birdsellingapi.azurewebsites.net/api/Product/GetProductByID/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        formik.setValues({
-          id: data.id,
-          name: data.name,
-          price: data.price,
-          sex: data.sex,
-          info: data.info,
-          dayOfBirth: data.dayOfBirth,
-        });
-        toast.success('Lấy thông tin thành công');
+        formik.setValues(data.data); // Gán toàn bộ dữ liệu từ API vào formik
       })
       .catch((error) => console.log(error.message));
   }, [id]);
 
   const navigate = useNavigate();
-
 
   return (
     <>
@@ -141,21 +130,10 @@ function EditProduct() {
             <div className="form-group">
               <TextField
                 fullWidth
-                id="info"
+                id="description"
                 label="Thông tin"
                 variant="filled"
-                {...formik.getFieldProps('info')}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <TextField
-                fullWidth
-                id="dayOfBirth"
-                label="Ngày sinh"
-                variant="filled"
-                type="date"
-                {...formik.getFieldProps('dayOfBirth')}
+                {...formik.getFieldProps('description')}
                 required
               />
             </div>

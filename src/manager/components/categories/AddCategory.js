@@ -6,6 +6,8 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
+import AppBarManager from '../AppBarManager';
+
 
 function AddCategory() {
   const navigate = useNavigate();
@@ -48,8 +50,10 @@ function AddCategory() {
   });
 
   return (
+    <>
+    <SidebarManager/> 
+    <AppBarManager/>
     <div className='main'>
-      <SidebarManager/>
       <form className="add-container" onSubmit={formik.handleSubmit}>
         <div className="add-form">
           <div className="form-title">
@@ -92,6 +96,7 @@ function AddCategory() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 

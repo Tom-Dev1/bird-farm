@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Button, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
@@ -8,13 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
 
-import '../../StyleManager/editCategory.css';
-
 const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory';
 
 function EditCategory() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [categoryName, setCategoryName] = useState('');
 
   const validationSchema = yup.object().shape({
@@ -55,7 +54,10 @@ function EditCategory() {
     fetch(`${apiUrl}/GetSingleID?id=${id}`)
       .then((response) => response.json())
       .then((data) => {
-      setCategoryName(data.data.category_name);
+        setCategoryName(data.data.category_name);
+        formik.setValues({
+          category_name: data.data.category_name,
+        });
       })
       .catch((error) => console.log(error.message));
   }, [id]);
@@ -64,7 +66,7 @@ function EditCategory() {
     <>
       <SidebarManager />
       <AppBarManager />
-      <div className='main-edit-category'>
+      <div className="main-edit-category">
         <form className="add-container" onSubmit={formik.handleSubmit}>
           <div className="add-form">
             <div className="form-title">
@@ -80,7 +82,6 @@ function EditCategory() {
                   value={formik.values.category_name}
                   onChange={formik.handleChange}
                   name="category_name"
-                  {...formik.getFieldProps('category_name')}
                   error={formik.touched.category_name && Boolean(formik.errors.category_name)}
                   helperText={formik.touched.category_name && formik.errors.category_name}
                 />
@@ -111,6 +112,5 @@ function EditCategory() {
     </>
   );
 }
-
 
 export default EditCategory;
