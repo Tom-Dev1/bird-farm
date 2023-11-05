@@ -1,0 +1,63 @@
+.edit-container{
+  margin-top: 50px;
+  margin-left: 250px;
+}
+.edit-product-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Để căn giữa theo chiều ngang */
+    justify-content: center; /* Để căn giữa theo chiều dọc */
+    position: relative;
+    left: 35%;
+  
+  }
+  /* editProduct.css */
+.main {
+    display: flex;
+  }
+  
+  .edit-product-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .edit-form {
+    width: 100%;
+  }
+  
+  .form-title {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .form-group {
+    margin: 10px 0;
+    width: 100%;
+  }
+  
+  .update-btn {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .cancel-btn {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .edit-product-container label, .edit-product-container input, .edit-product-container textarea, .edit-product-container select {
+    font-size: 14px;
+  }
+  

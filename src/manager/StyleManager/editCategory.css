@@ -1,7 +1,10 @@
 .edit-category-container {
     display: flex;
   }
-  
+  .main-edit-category{
+    background-color: white;
+    margin-top: 15%;
+  }
   .edit-category-content {
     display: flex;
     justify-content: center;

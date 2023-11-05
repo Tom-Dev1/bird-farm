@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import '../../StyleManager/addProduct.css';
 import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
+import AppBarManager from '../AppBarManager';
 
 const categoriesApiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory/GetAll';
 const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/Product/CreateProduct';
@@ -90,8 +91,10 @@ function AddProduct() {
   });
 
   return (
+    <>
+    <AppBarManager/>
+    <SidebarManager />
     <div className="main">
-      <SidebarManager />
       <form className="add-container" onSubmit={formik.handleSubmit}>
         <div className="add-form">
           <div className="form-title">
@@ -231,6 +234,7 @@ function AddProduct() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import '../StyleManager/SidebarManager.css';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -8,11 +8,25 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ListIcon from '@mui/icons-material/List';
-import { useState } from "react";
 
 const SidebarManager = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => setIsOpen(!isOpen);
+    const [user, setUser] = useState({ name: 'TSQ' });
+    const toggle = () => {
+        setIsOpen(!isOpen);
+    };
+    // dịch các thành phần sang phải khi bấm sidebar 
+    // useEffect(() => {
+    //     const sidebar = document.querySelector('.sidebar');
+    //     const main = document.querySelector('.main');
+    //     if (isOpen) {
+    //         sidebar.style.width = "200px";
+    //         main.style.marginTop = "80px";
+    //     } else {
+    //         sidebar.style.width = "80px";
+    //         main.style.marginTop  = "80px";
+    //     }
+    // }, [isOpen]);
     const menuItem = [
         {
             path: "/",
@@ -44,12 +58,13 @@ const SidebarManager = ({ children }) => {
             name: "Orders",
             icon: <ShoppingCartIcon sx={{ fontSize: 25 }} />
         },
-    ]
+    ];
+
     return (
         <div className="container_sidebar">
             <div style={{ width: isOpen ? "200px" : "80px" }} className="sidebar">
                 <div className="top-section">
-                    <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">Xin Chào, Manager</h1>
+                    <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">Xin Chào, {user.name}</h1>
                     <div style={{ marginLeft: isOpen ? "130px" : "10px" }} className="bars">
                         <ListIcon onClick={toggle} sx={{ fontSize: 35 }} />
                     </div>
@@ -60,10 +75,9 @@ const SidebarManager = ({ children }) => {
                             <div className="icon">{item.icon}</div>
                             <div style={{ display: isOpen ? "block" : "none" }} className="link_text">{item.name}</div>
                         </NavLink>
-                    ))
-                }
+                    ))}
             </div>
-            <main>{children}</main>
+            <main className="main">{children}</main>
         </div>
     );
 };
