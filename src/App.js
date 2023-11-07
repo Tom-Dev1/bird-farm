@@ -1,31 +1,16 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-<<<<<<< HEAD
-import { DefaultLayout } from './layout/DefaultLayout';
-import { publicRoutes } from './routes/index';
-import { Fragment } from 'react';
-=======
-import { DefaultLayout } from './Layout/DefaultLayout';
-import { publicRoutes } from './routes/index';
-import { Fragment } from 'react';
-import ManagerScreen from './manager/ManagerScreen';
-import AddProduct from './manager/AddProduct'; // Import the NewProduct component
->>>>>>> main
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { publicRoutes } from './routes';
+import UserLayout from './layout/UserLayout';
+import './App.css';
 function App() {
     return (
-        <Router>
+        <BrowserRouter>
             <div className="App">
                 <Routes>
                     {publicRoutes.map((route, index) => {
-                        const Page = route.component;
-
-                        let Layout = DefaultLayout;
-
-                        if (route.layout) {
-                            Layout = route.layout;
-                        } else if (route.layout === null) {
-                            Layout = Fragment;
-                        }
+                        const Page = route.Component;
+                        const Layout = UserLayout;
                         return (
                             <Route
                                 key={index}
@@ -38,31 +23,9 @@ function App() {
                             />
                         );
                     })}
-<<<<<<< HEAD
-=======
-
-                    {/* Route for ManagerScreen */}
-                    <Route
-                        path="/manager"
-                        element={
-                            <DefaultLayout>
-                                <ManagerScreen />
-                            </DefaultLayout>
-                        }
-                    />
-                    {/* Route for add product */}
-                    <Route
-                        path="/new-product"
-                        element={
-                            <DefaultLayout>
-                                <AddProduct />
-                            </DefaultLayout>
-                        }
-                    />
->>>>>>> main
                 </Routes>
             </div>
-        </Router>
+        </BrowserRouter>
     );
 }
 
