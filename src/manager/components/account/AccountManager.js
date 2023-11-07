@@ -1,50 +1,53 @@
 import React, { useEffect, useState } from 'react';
 import SidebarManager from '../SidebarManager';
+import AppBarManager from '../AppBarManager';
+import '../../StyleManager/accountManager.css';
 
-const apiUrl = 'https://your-api-url/current-account';
+const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/User/GetSingleID?id=734c8842090440a28ebfb1a54313f5a4';
 
 function AccountManager() {
-  const [currentAccount, setCurrentAccount] = useState(null);
-
+  const [Account, setCurrentAccount] = useState(null);
   useEffect(() => {
     fetch(apiUrl)
       .then((response) => response.json())
-      .then((data) => setCurrentAccount(data))
+      .then((data) => setCurrentAccount(data.data))
       .catch((error) => console.error(error));
   }, []);
-
-  if (!currentAccount) {
+  if (!Account) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-    <SidebarManager></SidebarManager>
-      <h2>Thông Tin Tài Khoản Hiện Tại</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>Tên đăng nhập:</td>
-            <td>{currentAccount.userName}</td>
-          </tr>
-          <tr>
-            <td>Email:</td>
-            <td>{currentAccount.userEmail}</td>
-          </tr>
-          <tr>
-            <td>Số điện thoại:</td>
-            <td>{currentAccount.userPhone}</td>
-          </tr>
-          <tr>
-            <td>Role ID:</td>
-            <td>{currentAccount.role_id}</td>
-          </tr>
-          <tr>
-            <td>Địa chỉ:</td>
-            <td>{currentAccount.addressLine}</td>
-          </tr>
-        </tbody>
-      </table>
+      <AppBarManager />
+      <SidebarManager />
+      <div className='main-container'>
+        <h2>Thông Tin Tài Khoản</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td>Tên đăng nhập:</td>
+              <td>{Account.userName}</td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>{Account.userEmail}</td>
+            </tr>
+            <tr>
+              <td>Số điện thoại:</td>
+              <td>{Account.userPhone}</td>
+            </tr>
+            <tr>
+              <td>Role ID:</td>
+              <td>{Account.role}</td>
+            </tr>
+            <tr>
+              <td>Địa chỉ:</td>
+              <td>{Account.addressLine}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

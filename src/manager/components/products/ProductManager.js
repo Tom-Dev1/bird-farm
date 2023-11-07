@@ -104,7 +104,7 @@ function ProductManager() {
 													EditFunction(staff.id);
 												}}
 											>
-												<EditIcon sx={{ fontSize: 20 }} />
+												<EditIcon sx={{ fontSize: 15 }} />
 											</Button>
 											<Button
 												variant="outlined"
@@ -114,7 +114,7 @@ function ProductManager() {
 													RemoveFunction(staff.id);
 												}}
 											>
-												<DeleteIcon sx={{ fontSize: 20 }} />
+												<DeleteIcon sx={{ fontSize: 15 }} />
 											</Button>
 										</TableCell>
 									</TableRow>

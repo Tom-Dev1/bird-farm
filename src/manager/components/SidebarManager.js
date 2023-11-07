@@ -16,17 +16,6 @@ const SidebarManager = ({ children }) => {
         setIsOpen(!isOpen);
     };
     // dịch các thành phần sang phải khi bấm sidebar 
-    // useEffect(() => {
-    //     const sidebar = document.querySelector('.sidebar');
-    //     const main = document.querySelector('.main');
-    //     if (isOpen) {
-    //         sidebar.style.width = "200px";
-    //         main.style.marginTop = "80px";
-    //     } else {
-    //         sidebar.style.width = "80px";
-    //         main.style.marginTop  = "80px";
-    //     }
-    // }, [isOpen]);
     const menuItem = [
         {
             path: "/",

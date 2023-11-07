@@ -11,6 +11,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory';
 
@@ -75,7 +77,6 @@ function CategoryManager() {
               <TableRow>
                 <TableCell style={{ fontSize: '20px' }} align="center">ID</TableCell>
                 <TableCell style={{ fontSize: '20px' }} align="center">Tên Danh Mục</TableCell>
-                <TableCell style={{ fontSize: '20px' }} align="center">Số Sản Phẩm</TableCell>
                 <TableCell style={{ fontSize: '20px' }} align="center">Action</TableCell>
               </TableRow>
             </TableHead>
@@ -84,15 +85,15 @@ function CategoryManager() {
                 <TableRow key={category.id}>
                   <TableCell style={{ fontSize: '15px' }} align="center">{category.id}</TableCell>
                   <TableCell style={{ fontSize: '15px' }} align="center">{category.category_name}</TableCell>
-                  <TableCell style={{ fontSize: '15px' }} align="center">{category.products ? category.products.length : 0}</TableCell>
                   <TableCell align="center">
                     <Button
                       variant="outlined"
-                      color="primary"
+                      color="success"
                       className="edit-btn"
                       onClick={() => navigateToCategory(category.id)}
+
                     >
-                      Edit
+                      <EditIcon sx={{ fontSize: 15 }} />
                     </Button>
                     <Button
                       variant="outlined"
@@ -100,7 +101,7 @@ function CategoryManager() {
                       className="delete-btn"
                       onClick={() => handleDeleteCategory(category.id)}
                     >
-                      Delete
+                      <DeleteIcon sx={{ fontSize: 15 }} />
                     </Button>
                   </TableCell>
                 </TableRow>

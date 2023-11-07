@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
-
+import '../../StyleManager/editCategory.css';
 const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory';
 
 function EditCategory() {

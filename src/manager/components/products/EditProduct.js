@@ -50,7 +50,7 @@ function EditProduct() {
     discount: yup
       .number()
       .typeError('Discount must be a number')
-      .positive('Discount must be a positive number')
+      .min(0,'Discount must be a positive number')
       .required('Discount is required'),
   });
 
@@ -83,7 +83,7 @@ function EditProduct() {
       })
         .then((response) => {
           if (response.status === 200) {
-            toast.success('Product updated successfully!');
+            toast.success('Chỉnh sửa sản phẩm thành công!');
             navigate('/manager/products');
           } else {
             console.error('Product update failed.');
@@ -92,7 +92,7 @@ function EditProduct() {
         })
         .catch((error) => {
           console.error('Error updating product:', error);
-          toast.error('Error updating product.');
+          toast.error('Lỗi khi cập nhật sản phẩm.');
         });
     },
   });
@@ -117,36 +117,36 @@ function EditProduct() {
       <AppBarManager />
       <SidebarManager />
       <div className="main-edit-product">
-        <form className="edit-container" onSubmit={formik.handleSubmit}>
+        <form className="edit-products-container" onSubmit={formik.handleSubmit}>
           <div className="edit-form">
             <div className="form-title">
               <h2>Chỉnh Sửa Sản Phẩm</h2>
             </div>
             <div className="form-body">
-            <div className="form-group">
-              <Select
-                fullWidth
-                id="category_id"
-                name="category_id"
-                value={formik.values.category_id}
-                onChange={formik.handleChange}
-                variant="filled"
-                label="Danh mục"
-                error={formik.touched.category_id && Boolean(formik.errors.category_id)}
-              >
-                <MenuItem value="" disabled>
-                  Chọn danh mục
-                </MenuItem>
-                {categories.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.category_name}
+              <div className="form-group">
+                <Select
+                  fullWidth
+                  id="category_id"
+                  name="category_id"
+                  value={formik.values.category_id}
+                  onChange={formik.handleChange}
+                  variant="filled"
+                  label="Danh mục"
+                  error={formik.touched.category_id && Boolean(formik.errors.category_id)}
+                >
+                  <MenuItem value="" disabled>
+                    Chọn danh mục
                   </MenuItem>
-                ))}
-              </Select>
-              {formik.touched.category_id && formik.errors.category_id && (
-                <div className="error-text">{formik.errors.category_id}</div>
-              )}
-            </div>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.category_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.category_id && formik.errors.category_id && (
+                  <div className="error-text">{formik.errors.category_id}</div>
+                )}
+              </div>
               <div className="form-group">
                 <TextField
                   fullWidth
@@ -234,6 +234,19 @@ function EditProduct() {
                   name="day_of_birth"
                   error={formik.touched.day_of_birth && Boolean(formik.errors.day_of_birth)}
                   helperText={formik.touched.day_of_birth && formik.errors.day_of_birth}
+                />
+              </div>
+              <div className="form-group">
+                <TextField
+                  fullWidth
+                  id="description"
+                  label="Thông Tin"
+                  variant="filled"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  name="description"
+                  error={formik.touched.description && Boolean(formik.errors.description)}
+                  helperText={formik.touched.description && formik.errors.description}
                 />
               </div>
               <div className="form-group">
