@@ -12,6 +12,9 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import AccordionDash from '../components/AccordionDash'
+import BarChart from '../charts/BarChart';
+import CountUp from 'react-countup';
+
 function Home() {
   return (
     <>
@@ -30,7 +33,7 @@ function Home() {
                       <CreditCardIcon style={{ color: 'white' }} />
                     </div>
                     <Typography gutterBottom variant="h5" component="div" sx={{ color: '#ffffff' }}>
-                      $500.00
+                      $<CountUp delay={0.4} end={500} duration={1} />
                     </Typography>
                     <Typography
                       gutterBottom variant="body2"
@@ -48,7 +51,7 @@ function Home() {
                       <BusinessCenterIcon style={{ color: 'white' }} />
                     </div>
                     <Typography gutterBottom variant="h5" component="div" sx={{ color: '#ffffff' }}>
-                      $900.00
+                      $<CountUp delay={0.4} end={900} duration={1} />
                     </Typography>
                     <Typography
                       gutterBottom variant="body2"
@@ -71,7 +74,9 @@ function Home() {
                       <StorefrontIcon style={{ color: 'white' }} />
                     </div>
                     <div style={{ padding: 10 }}>
-                      <span style={{ fontWeight: 600 }}>230K</span>
+                      <span style={{ fontWeight: 600 }}>
+                        $<CountUp delay={0.4} end={335000} duration={1} />
+                      </span>
                       <br />
                       <span style={{ fontSize: 15 }}>Total Income</span>
                     </div>
@@ -83,9 +88,11 @@ function Home() {
                       <StorefrontIcon />
                     </div>
                     <div style={{ padding: 10 }}>
-                      <span style={{ fontWeight: 600 }}>230K</span>
+                      <span style={{ fontWeight: 600 }}>
+                        $<CountUp delay={0.4} end={22750} duration={1} />
+                      </span>
                       <br />
-                      <span style={{ fontSize: 15 }}>Total Income</span>
+                      <span style={{ fontSize: 15 }}>Total Order</span>
                     </div>
                   </Stack>
 
@@ -98,7 +105,7 @@ function Home() {
             <Grid item xs={8}>
               <Card sx={{ height: 60 + 'vh' }}>
                 <CardContent>
-
+                  <BarChart />
                 </CardContent>
               </Card>
             </Grid>
