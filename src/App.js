@@ -12,7 +12,9 @@ import AccountManager from './manager/components/account/AccountManager';
 import CategoryManager from './manager/components/categories/CategoryManager';
 import EditCategory from './manager/components/categories/EditCategory';
 import DashboardManager from './manager/components/dashboard/DashboardManager';
-import OrderManager from './manager/components/order/OrderManager';
+import OrderManager from './manager/components/order/OrderManager'
+import OrderDetails from './manager/components/order/OrderDetails'
+
 
 function App() {
     window.scrollTo(0, 0);
@@ -31,7 +33,8 @@ function App() {
                     <Route path="/manager/new-categories" element={<AddCategory />} />
                     <Route path="/manager/edit-category/:id" element={<EditCategory />} />
                     <Route path="/manager/dashboard" element={<DashboardManager />} />
-                    <Route path="/manager/orders" element={<OrderManager/>} />
+                    <Route path="/manager/order" element={<OrderManager/>} />
+                    <Route path="/manager/order/:id" component={<OrderDetails/>} />
                 </Routes>
                 <ToastContainer
                     position="top-right"

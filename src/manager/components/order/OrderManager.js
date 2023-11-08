@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 function OrderManager() {
 	const [orders, setOrders] = useState([]);
-	const baseUrl = `https://your-api-url-here`; // Thay thế URL API của bạn ở đây
+	const baseUrl = `https://birdsellingapi.azurewebsites.net/api/Cart/Get-All-Cart`; // Thay thế URL API của bạn ở đây
 	const confirm = useConfirm();
 	console.log(orders);
 	useEffect(() => {
@@ -68,11 +68,7 @@ function OrderManager() {
 			<div className='main'>
 				{(
 					<TableContainer component={Paper} className="dashboard-container">
-						<h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', marginTop: '20px' }}>Đơn Hàng</h2>
-						{/* Thêm nút tạo đơn hàng ở đây */}
-						<Link to="/manager/new-order" className="add-btn">
-							<Button variant="contained">Create</Button>
-						</Link>
+						<h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', margin:'20px' }}>Đơn Hàng</h2>
 						<Table sx={{ minWidth: 650 }} aria-label="simple table" className="order-table">
 							<TableHead>
 								<TableRow>
@@ -80,13 +76,13 @@ function OrderManager() {
 									<TableCell style={{ fontSize: '20px' }} align="center">Ngày Đặt Hàng</TableCell>
 									<TableCell style={{ fontSize: '20px' }} align="center">Tổng Tiền</TableCell>
 									<TableCell style={{ fontSize: '20px' }} align="center">Trạng Thái</TableCell>
-									<TableCell style={{ fontSize: '20px' }} align="center">Action</TableCell>
+									<TableCell style={{ fontSize: '20px' }} align="center">Hành Động</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								{orders?.map((order) => (
 									<TableRow key={order.id_order}>
-										<TableCell style={{ fontSize: '15px' }} align="center">{order.id_order}</TableCell>
+										<TableCell style={{ fontSize: '15px' }} align="center"> <Link to={`/manager/order/${order.id_order}`}>{order.id_order}</Link></TableCell>
 										<TableCell style={{ fontSize: '15px' }} align="center">{order.order_date}</TableCell>
 										<TableCell style={{ fontSize: '15px' }} align="center">{order.orderTotal}</TableCell>
 										<TableCell style={{ fontSize: '15px' }} align="center">{order.orderStatus}</TableCell>

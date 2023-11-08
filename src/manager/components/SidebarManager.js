@@ -43,7 +43,7 @@ const SidebarManager = ({ children }) => {
             icon: <AccountBoxIcon sx={{ fontSize: 25 }} />
         },
         {
-            path: "/manager/orders",
+            path: "/manager/order",
             name: "Orders",
             icon: <ShoppingCartIcon sx={{ fontSize: 25 }} />
         },
