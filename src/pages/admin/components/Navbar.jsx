@@ -165,7 +165,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: '#ffffff', color: '#2f2f2f' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -173,7 +173,7 @@ export default function Navbar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
-            onClick={()=> updateOpen(!dopen)}
+            onClick={() => updateOpen(!dopen)}
           >
             <MenuIcon />
           </IconButton>

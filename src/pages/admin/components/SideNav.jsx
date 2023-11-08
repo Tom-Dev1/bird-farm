@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function SideNav() {
   const theme = useTheme();
- // const [open, setOpen] = React.useState(true);
+  // const [open, setOpen] = React.useState(true);
 
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
@@ -97,7 +97,7 @@ export default function SideNav() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Box height={30}/>
+      <Box height={30} />
 
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
@@ -107,68 +107,68 @@ export default function SideNav() {
         </DrawerHeader>
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/")}}>
-              <ListItemButton
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/") }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <InboxIcon/>
-                </ListItemIcon>
-                <ListItemText primary='Home' sx={{ opacity: open ? 1 : 0 }}  />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/about")}}>
-              <ListItemButton
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary='Home' sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/about") }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <InboxIcon/>
-                </ListItemIcon>
-                <ListItemText primary='About' sx={{ opacity: open ? 1 : 0 }}  />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/settings")}}>
-              <ListItemButton
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary='About' sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/settings") }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <InboxIcon/>
-                </ListItemIcon>
-                <ListItemText primary='Setting' sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary='Setting' sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
         </List>
-        
+
       </Drawer>
     </Box>
   );
