@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
@@ -18,7 +19,7 @@ import SidebarManager from '../SidebarManager';
 
 function ProductManager() {
 	const [staff, setStaff] = useState([]);
-	const baseUrl = `https://birdsellingapi.azurewebsites.net/api/Product/GetProduct/`;
+	const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct/`;
 	const confirm = useConfirm();
 	console.log(staff);
 	useEffect(() => {
@@ -37,7 +38,7 @@ function ProductManager() {
 	};
 	const RemoveFunction = (id) => {
 		if (window.confirm(`Xóa: ${id}`)) {
-			const baseUrl = `https://birdsellingapi.azurewebsites.net/api/Product/DeleteProduct/`;
+			const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/DeleteProduct/`;
 			fetch(baseUrl + '/' + id, {
 				method: 'DELETE',
 				headers: {
@@ -61,7 +62,7 @@ function ProductManager() {
 		}
 	};
 	return (
-		<>
+		<Box>
 			<AppBarManager
 				className="appBar"
 			/>
@@ -124,7 +125,7 @@ function ProductManager() {
 					</TableContainer>
 				)}
 			</div>
-		</>
+		</Box>
 	);
 }
 

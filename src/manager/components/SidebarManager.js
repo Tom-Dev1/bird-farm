@@ -1,74 +1,197 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import '../StyleManager/SidebarManager.css';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import HomeIcon from '@mui/icons-material/Home';
-import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-import CategoryIcon from '@mui/icons-material/Category';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ListIcon from '@mui/icons-material/List';
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+// import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+// import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+// import MailIcon from '@mui/icons-material/Mail';
+import { useNavigate } from 'react-router-dom';
 
-const SidebarManager = ({ children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState({ name: 'TSQ' });
-    const toggle = () => {
-        setIsOpen(!isOpen);
-    };
-    // dịch các thành phần sang phải khi bấm sidebar 
-    const menuItem = [
-        {
-            path: "/",
-            name: "Home",
-            icon: <HomeIcon sx={{ fontSize: 25 }} />
-        },
-        {
-            path: "/manager/dashboard",
-            name: "Dashboard",
-            icon: <BarChartIcon sx={{ fontSize: 25 }} />
-        },
-        {
-            path: "/manager/products",
-            name: "Products",
-            icon: <ProductionQuantityLimitsIcon sx={{ fontSize: 25 }} />
-        },
-        {
-            path: "/manager/categories",
-            name: "Category",
-            icon: <CategoryIcon sx={{ fontSize: 25 }} />
-        },
-        {
-            path: "/manager/account",
-            name: "Account",
-            icon: <AccountBoxIcon sx={{ fontSize: 25 }} />
-        },
-        {
-            path: "/manager/order",
-            name: "Orders",
-            icon: <ShoppingCartIcon sx={{ fontSize: 25 }} />
-        },
-    ];
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up('sm')]: {
+        width: `calc(${theme.spacing(8)} + 1px)`,
+    },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+}));
+
+
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme),
+        }),
+    }),
+);
+
+export default function SideNav() {
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(true);
+
+    const navigate = useNavigate();
 
     return (
-        <div className="container_sidebar">
-            <div style={{ width: isOpen ? "200px" : "80px" }} className="sidebar">
-                <div className="top-section">
-                    <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">Xin Chào, {user.name}</h1>
-                    <div style={{ marginLeft: isOpen ? "130px" : "10px" }} className="bars">
-                        <ListIcon onClick={toggle} sx={{ fontSize: 35 }} />
-                    </div>
-                </div>
-                {
-                    menuItem.map((item, index) => (
-                        <NavLink to={item.path} key={index} className="link" activeClassName="active">
-                            <div className="icon">{item.icon}</div>
-                            <div style={{ display: isOpen ? "block" : "none" }} className="link_text">{item.name}</div>
-                        </NavLink>
-                    ))}
-            </div>
-            <main className="main">{children}</main>
-        </div>
-    );
-};
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <Box height={30} />
 
-export default SidebarManager;
+            <Drawer variant="permanent" open={open}>
+                <DrawerHeader>
+                    <IconButton onClick={()=>setOpen(!open)} >
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/manager/dashboard") }}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Dashboard' sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/manager/products") }}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Product' sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/manager/categories") }}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Category' sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/manager/order") }}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Order' sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { navigate("/manager/account") }}>
+                        <ListItemButton
+                            sx={{
+                                minHeight: 48,
+                                justifyContent: open ? 'initial' : 'center',
+                                px: 2.5,
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: 0,
+                                    mr: open ? 3 : 'auto',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='Account' sx={{ opacity: open ? 1 : 0 }} />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+
+            </Drawer>
+        </Box>
+    );
+}

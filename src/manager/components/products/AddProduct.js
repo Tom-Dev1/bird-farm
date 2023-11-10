@@ -9,8 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
 
-const categoriesApiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory/GetAll';
-const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/Product/CreateProduct';
+const categoriesApiUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory/GetAll';
+const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Product/CreateProduct';
 
 function AddProduct() {
   const navigate = useNavigate();

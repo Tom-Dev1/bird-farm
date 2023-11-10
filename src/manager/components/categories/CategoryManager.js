@@ -13,8 +13,9 @@ import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Box from '@mui/material/Box';
 
-const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory';
+const apiUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory';
 
 function CategoryManager() {
   const [categories, setCategories] = useState([]);
@@ -35,7 +36,7 @@ function CategoryManager() {
     const categoryToDelete = categories.find((category) => category.id === id);
 
     if (window.confirm(`Xóa danh mục: ${categoryToDelete?.category_name}`)) {
-      fetch(`https://birdsellingapi.azurewebsites.net/api/BirdCategory/DeleteBirdCategory?id=` + id, {
+      fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory/DeleteBirdCategory?id=` + id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -63,6 +64,7 @@ function CategoryManager() {
   };
 
   return (
+    <Box>
     <div className='main-category'>
       <AppBarManager></AppBarManager>
       <SidebarManager className="sidebar" />
@@ -111,6 +113,7 @@ function CategoryManager() {
         </TableContainer>
       </div>
     </div>
+    </Box>
   );
 }
 

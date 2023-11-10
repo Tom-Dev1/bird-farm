@@ -8,6 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import SidebarManager from '../SidebarManager';
 import AppBarManager from '../AppBarManager';
 import '../../StyleManager/editCategory.css';
+import Box from '@mui/material/Box';
+
+
 const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory';
 
 function EditCategory() {
@@ -63,7 +66,7 @@ function EditCategory() {
   }, [id]);
 
   return (
-    <>
+    <Box>
       <SidebarManager />
       <AppBarManager />
       <div className="main-edit-category">
@@ -109,7 +112,7 @@ function EditCategory() {
           </div>
         </form>
       </div>
-    </>
+    </Box>
   );
 }
 

@@ -11,7 +11,7 @@ import AppBarManager from '../AppBarManager';
 
 function AddCategory() {
   const navigate = useNavigate();
-  const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/BirdCategory/CreateBirdCategory'; // Thay đổi URL API của bạn
+  const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory/CreateBirdCategory'; // Thay đổi URL API của bạn
 
   const validationSchema = yup.object().shape({
     category_name: yup.string().required('Tên danh mục là bắt buộc'),
