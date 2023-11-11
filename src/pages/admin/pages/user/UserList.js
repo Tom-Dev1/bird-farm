@@ -22,6 +22,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useNavigate } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import AddUser from './AddUser';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const style = {
     position: 'absolute',
@@ -48,52 +52,87 @@ export default function UserList() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const roleNames = {
+        "190f2b3c66db4405afb29ec0bd9cfed2": "Admin",
+        "507cd3255f5e4e2589d999efa128dd0a": "Manager",
+        "e78ca8b85592426aa4d981581445eeb4": "User",
+        // Add more role_id to role name mappings as needed
+    };
 
-    const filterData = (v) => {
-        if (v) {
-            setUser([v]);
+    const [selectedRole, setSelectedRole] = React.useState('');
+
+    const filterDataByRole = (roleId) => {
+        if (roleId) {
+            // Convert roleId to string and then filter users based on the selected role
+            const filteredUsers = user.filter((u) => u.role_id === roleId);
+            setUser(filteredUsers);
+        } else {
+            // If no role is selected, fetch all users again
+            fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
+                .then((response) => response.json())
+                .then((data) => setUser(data.data))
+                .catch((error) => console.log(error.message));
         }
     };
 
 
     useEffect(() => {
-        fetch('https://birdsellingapi.azurewebsites.net/api/User/GetAllUser')
+        filterDataByRole(selectedRole);
+    }, [selectedRole]);
+
+    const handleChange = (event) => {
+        setSelectedRole(event.target.value);
+        filterDataByRole(event.target.value);
+    };
+
+
+
+    useEffect(() => {
+        fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
             .then((response) => response.json())
             .then((data) => setUser(data.data))
             .catch((error) => console.log(error.message));
     }, []);
 
     const deleteUser = (id) => {
-        const userToDelete = user.find((user) => user.id === id);
+        const userToDelete = user.find((u) => u.id === id);
 
-        if (window.confirm(`Xóa tài khoản : ${userToDelete?.userName}`)) {
-            fetch(`https://birdsellingapi.azurewebsites.net/api/User/DeleteProduct?id=` + id, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then((response) => {
-                    if (response.status === 200) {
-                        setUser(user.filter((user) => user.id !== id));
-                        Swal.fire('Tài khoản đã được xóa thành công.')
-                    } else if (response.status === 404) {
-                        Swal.fire('Tài khoản không tồn tại.');
-                    } else {
-                        Swal.fire('Xóa tài khoản không thành công.')
-                    }
+        Swal.fire({
+            title: `Xóa tài khoản : ${userToDelete?.userName}`,
+            text: "Bạn có chắc chắn muốn xóa tài khoản này?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy xóa',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/DeleteProduct?id=${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 })
-                .catch((error) => {
-
-                    Swal.fire('Xảy ra lỗi khi xóa tài khoản.')
-
-                });
-        }
-        else {
-            // Người dùng hủy bỏ, không làm gì cả
-            Swal.fire('Hủy bỏ xóa');
-
-        }
+                    .then((response) => {
+                        if (response.status === 200) {
+                            // Remove the deleted user from the state
+                            setUser((prevUsers) => prevUsers.filter((u) => u.id !== id));
+                            Swal.fire('Tài khoản đã được xóa thành công.');
+                        } else if (response.status === 404) {
+                            Swal.fire('Tài khoản không tồn tại.');
+                        } else {
+                            Swal.fire('Xóa tài khoản không thành công.');
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire('Xảy ra lỗi khi xóa tài khoản.');
+                    });
+            } else {
+                // Người dùng hủy bỏ, không làm gì cả
+                Swal.fire('Hủy bỏ xóa');
+            }
+        });
     };
 
 
@@ -106,8 +145,6 @@ export default function UserList() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
-
 
     return (
         <>
@@ -137,17 +174,20 @@ export default function UserList() {
                     <Divider />
                     <Box height={10} />
                     <Stack direction="row" spacing={2} className="my-2 mb-2">
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={user}
-                            sx={{ width: 300 }}
-                            onChange={(e, v) => filterData(v)}
-                            getOptionLabel={(user) => user.userName || ""}
-                            renderInput={(params) => (
-                                <TextField {...params} size="small" label="Search User Name" />
-                            )}
-                        />
+                        <FormControl sx={{ width: 300 }}>
+                            <InputLabel id="demo-simple-select-label">Role  Name</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={selectedRole}
+                                label="Role Name"
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={"190f2b3c66db4405afb29ec0bd9cfed2"}>Admin</MenuItem>
+                                <MenuItem value={"507cd3255f5e4e2589d999efa128dd0a"}>Manager</MenuItem>
+                                <MenuItem value={"e78ca8b85592426aa4d981581445eeb4"}>User</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Typography
                             variant="h6"
                             component="div"
@@ -162,7 +202,7 @@ export default function UserList() {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="left" style={{ minWidth: "100px" }}>
+                                    <TableCell align="left" style={{ minWidth: "10px" }}>
                                         User Name
                                     </TableCell>
                                     <TableCell align="left" style={{ minWidth: "100px" }}>
@@ -172,10 +212,10 @@ export default function UserList() {
                                         Email
                                     </TableCell>
                                     <TableCell align="left" style={{ minWidth: "100px" }}>
-                                        Status
+                                        Phone Number
                                     </TableCell>
                                     <TableCell align="left" style={{ minWidth: "100px" }}>
-                                        Create time
+                                        Create Time
                                     </TableCell>
                                     <TableCell align="left" style={{ minWidth: "100px" }}>
                                         Action
@@ -192,16 +232,24 @@ export default function UserList() {
                                                     {user.userName}
                                                 </TableCell>
                                                 <TableCell key={user.id} align="left">
-                                                    {user.role}
+                                                    {roleNames[user.role_id]}
                                                 </TableCell>
                                                 <TableCell key={user.id} align="left">
                                                     {user.userEmail}
                                                 </TableCell>
                                                 <TableCell key={user.id} align="left">
-                                                    {user.isActive}
+                                                    {user.userPhone}
                                                 </TableCell>
                                                 <TableCell key={user.id} align="left">
-                                                    {user.createdTime}
+                                                    {new Date(user.createdTime).toLocaleString("en-GB", {
+                                                        minute: "2-digit",
+                                                        hour: "2-digit",
+                                                        day: "2-digit",
+                                                        month: "2-digit",
+                                                        year: "numeric",
+                                                    }).replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, (_, d, m, y, h, min) => {
+                                                        return `Time:${min}:${h} - Day:${d}/${m}/${y}`;
+                                                    })}
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Stack spacing={2} direction="row">
