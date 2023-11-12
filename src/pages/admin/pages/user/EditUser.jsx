@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from "@mui/material/Typography";
@@ -11,37 +11,68 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Swal from "sweetalert2";
 
+// Validation functions
+const validateUsername = (value) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])([A-Za-z\d@#$%^&+=!]{6,})$/;
+    return regex.test(value);
+};
+
+const validatePassword = (value) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(value);
+};
+
+const validateEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+};
+
+const validatePhone = (value) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(value);
+};
+
 const EditUser = ({ userData, closeEvent, refreshUserList }) => {
-
-
-    //INPUT EVENT
     const [editedUser, setEditedUser] = useState({ ...userData });
+    const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        setEditedUser({ ...userData });
+    }, [userData]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
 
     const handleUpdateUser = () => {
+        // Validate all fields
+        if (
+            !validateUsername(editedUser.userName) ||
+            !validatePassword(editedUser.userPassword) ||
+            !validateEmail(editedUser.userEmail) ||
+            !validatePhone(editedUser.userPhone)
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi định dạng',
+                text: 'Vui lòng điền đúng yêu cầu trước khi cập nhật .',
+            });
+            return;
+        }
+
+        // Proceed with the update
         const { id, role_id, createdAt, address_id } = editedUser;
 
         const payload = {
-
-            //Giu co dinh
-            id: editedUser.id,
-            role_id: role_id,
-            createdAt: createdAt,
-            address_id: address_id,
-
-
-            //
             userName: editedUser.userName,
             userPassword: editedUser.userPassword,
             userEmail: editedUser.userEmail,
             userPhone: editedUser.userPhone,
-
-
+            createdAt: editedUser.createdAt,
+            role_id: editedUser.role_id,
+            address_id: editedUser.address_id,
         };
-        console.log('Request Payload:', JSON.stringify(payload));
 
         fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/UpdateProduct?id=${id}`, {
             method: 'PUT',
@@ -50,14 +81,14 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
             },
             body: JSON.stringify(payload),
         })
-            .then(response => {
+            .then((response) => {
                 console.log('API response status:', response.status);
                 if (!response.ok) {
                     throw new Error(`Network response was not ok: ${response.status}`);
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 console.log('API response:', data);
                 closeEvent();
                 refreshUserList();
@@ -66,7 +97,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                     title: 'Cập nhật tài khoản thành công !!!',
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error making API call:', error.message);
                 Swal.fire({
                     icon: 'error',
@@ -76,55 +107,22 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
             });
     };
 
-
-    //UserName
-    const validateUsername = (value) => {
-        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])([A-Za-z\d@#$%^&+=!]{6,})$/;
-        return regex.test(value);
-    };
-    //userPassword
-    const [showPassword, setShowPassword] = useState(false);
-
-    const validatePassword = (value) => {
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return passwordRegex.test(value);
-    };
-
-
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
-    //userEmail
-    const validateEmail = (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-    };
-
-    //User Phone
-    const validatePhone = (value) => {
-        const phoneRegex = /^\d{10}$/;
-        return phoneRegex.test(value);
-    };
-    // Addresses
-    // const validateAddress = (value) => {
-    //     return value != null && value.trim() !== '';
-    // };
 
     return (
-
         <>
             <Box sx={{ m: 2 }} />
             <Typography variant="h5" align="center">
                 Edit User
             </Typography>
-            <IconButton style={{ position: "absolute", top: "0", right: "0" }}
-                onClick={closeEvent}
-            >
+            <IconButton style={{ position: "absolute", top: "0", right: "0" }} onClick={closeEvent}>
                 <CloseIcon />
             </IconButton>
             <br />
             <Box height={20} />
-            <Grid contatter spacing={2}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
                         error={!validateUsername(editedUser.userName)}
@@ -163,7 +161,6 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                     />
                 </Grid>
                 <br />
-
                 <Grid item xs={12}>
                     <TextField
                         error={!validateEmail(editedUser.userEmail)}
@@ -192,18 +189,17 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                     />
                 </Grid>
                 <br />
-
                 <Grid item xs={12}>
                     <Typography variant='h5' align='center'>
-                        <Button variant="contained" onClick={() => handleUpdateUser(editedUser.id)}>
+                        <Button variant="contained" onClick={handleUpdateUser}>
                             Update
                         </Button>
                     </Typography>
                 </Grid>
             </Grid>
             <Box sx={{ m: 4 }} />
-
         </>
     );
 }
+
 export default EditUser;
