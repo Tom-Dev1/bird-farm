@@ -17,14 +17,13 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import AddUser from './AddUser';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import EditUser from './EditUser';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -41,24 +40,22 @@ const style = {
 
 export default function UserList() {
     const [user, setUser] = useState([]);
-    const navigate = useNavigate();
-
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
+    const [rowsPerPage, setRowsPerPage] = useState(6);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     //
     const [originalUsers, setOriginalUsers] = useState([]);
-
     const roleNames = {
         "190f2b3c66db4405afb29ec0bd9cfed2": "Admin",
         "507cd3255f5e4e2589d999efa128dd0a": "Manager",
         "e78ca8b85592426aa4d981581445eeb4": "User",
-        // Add more role_id to role name mappings as needed
     };
 
+
+    //Select Role 
     const [selectedRole, setSelectedRole] = React.useState('');
 
     const filterDataByRole = (roleId) => {
@@ -71,17 +68,11 @@ export default function UserList() {
             setUser(originalUsers);
         }
     };
-
-    useEffect(() => {
-        filterDataByRole(selectedRole);
-    }, [selectedRole]);
-
     const handleChange = (event) => {
         const selectedRoleId = event.target.value;
         setSelectedRole(selectedRoleId);
         filterDataByRole(selectedRoleId);
     };
-
 
     useEffect(() => {
         fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
@@ -102,7 +93,6 @@ export default function UserList() {
 
     const deleteUser = (id) => {
         const userToDelete = user.find((u) => u.id === id);
-
         Swal.fire({
             title: `Xóa tài khoản : ${userToDelete?.userName}`,
             text: "Bạn có chắc chắn muốn xóa tài khoản này?",
@@ -141,18 +131,14 @@ export default function UserList() {
         });
     };
 
-
-
+    // Handle renderUSer
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
-    // Handle
     const renderUsers = () => {
         return user
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -190,7 +176,7 @@ export default function UserList() {
                                     cursor: "pointer",
                                 }}
                                 className="cursor-pointer"
-                            // onClick={() => editUser(userData.id)}
+                                onClick={() => setSelectedUserForEdit(userData)}
                             />
                             <DeleteIcon
                                 style={{
@@ -207,9 +193,25 @@ export default function UserList() {
                 </TableRow>
             ));
     };
+    // Handle Eidt User Profile
+    const [selectedUserForEdit, setSelectedUserForEdit] = useState(null);
 
     return (
         <>
+            {selectedUserForEdit && (
+                <Modal
+                    open={Boolean(selectedUserForEdit)}
+                    onClose={() => setSelectedUserForEdit(null)}
+                >
+                    <Box sx={style}>
+                        <EditUser
+                            userData={selectedUserForEdit}
+                            closeEvent={() => setSelectedUserForEdit(null)}
+                            refreshUserList={refreshUserList}
+                        />
+                    </Box>
+                </Modal>
+            )}
             <div>
 
                 <Modal
@@ -222,6 +224,7 @@ export default function UserList() {
                         <AddUser closeEvent={handleClose} refreshUserList={refreshUserList} />
                     </Box>
                 </Modal>
+
             </div>
             {originalUsers.length > 0 && (
                 <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -244,7 +247,7 @@ export default function UserList() {
                                 value={selectedRole}
                                 label="Role Name"
                                 onChange={handleChange}
-                            >
+                            >   <MenuItem value=""><em>All Role Name</em></MenuItem>
                                 <MenuItem value={"190f2b3c66db4405afb29ec0bd9cfed2"}>Admin</MenuItem>
                                 <MenuItem value={"507cd3255f5e4e2589d999efa128dd0a"}>Manager</MenuItem>
                                 <MenuItem value={"e78ca8b85592426aa4d981581445eeb4"}>User</MenuItem>

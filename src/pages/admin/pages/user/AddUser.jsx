@@ -94,12 +94,29 @@ export default function AddUser({ closeEvent, refreshUserList }) {
         // For example, checking if the user phone follows a specific pattern
         const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number
         if (!phoneRegex.test(value)) {
-            setUserPhoneError('Invalid phone number');
+            setUserPhoneError('Số điện thoại không hợp lệ');
         } else {
             setUserPhoneError('');
         }
     };
 
+    // Addresses
+    const [addressLine, setAddressLine] = useState('');
+    const [addressError, setAddressError] = useState('');
+    const handleUserAddressChange = (event) => {
+        const value = event.target.value;
+        setAddressLine(value);
+
+        // Your validation logic for the address field
+        // ...
+
+        // For example, checking if the address is not empty
+        if (!value.trim()) {
+            setAddressError('Address không được trống !');
+        } else {
+            setAddressError('');
+        }
+    };
     //Handle SUBMIT event
 
     const handleSubmit = async () => {
@@ -120,6 +137,7 @@ export default function AddUser({ closeEvent, refreshUserList }) {
             role_id: role_id,
             userEmail: userEmail,
             userPhone: userPhone,
+            addressLine: addressLine
         };
 
         try {
@@ -252,11 +270,23 @@ export default function AddUser({ closeEvent, refreshUserList }) {
                         size="small"
                     />
                 </Grid>
-
+                <Grid item xs={12}>
+                    <TextField
+                        error={!!addressError}
+                        id="outlined-error-helper-text-address"
+                        label="User Address"
+                        value={addressLine}
+                        onChange={handleUserAddressChange}
+                        helperText={addressError || ' '}
+                        sx={{ minWidth: '100%' }}
+                        size="small"
+                    />
+                </Grid>
+                <br />
                 <Grid item xs={12}>
                     <Typography variant='h5' align='center'>
                         <Button variant="contained" size="medium" onClick={handleSubmit} >
-                            Submit
+                            ADD USER
                         </Button>
                     </Typography>
                 </Grid>
