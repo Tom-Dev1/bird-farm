@@ -17,8 +17,6 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import { useNavigate } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import AddUser from './AddUser';
@@ -51,6 +49,8 @@ export default function UserList() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    //
+    const [originalUsers, setOriginalUsers] = useState([]);
 
     const roleNames = {
         "190f2b3c66db4405afb29ec0bd9cfed2": "Admin",
@@ -64,35 +64,41 @@ export default function UserList() {
     const filterDataByRole = (roleId) => {
         if (roleId) {
             // Convert roleId to string and then filter users based on the selected role
-            const filteredUsers = user.filter((u) => u.role_id === roleId);
+            const filteredUsers = originalUsers.filter((u) => u.role_id === roleId);
             setUser(filteredUsers);
         } else {
-            // If no role is selected, fetch all users again
-            fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
-                .then((response) => response.json())
-                .then((data) => setUser(data.data))
-                .catch((error) => console.log(error.message));
+            // If no role is selected, set the user state back to the originalUsers
+            setUser(originalUsers);
         }
     };
-
 
     useEffect(() => {
         filterDataByRole(selectedRole);
     }, [selectedRole]);
 
     const handleChange = (event) => {
-        setSelectedRole(event.target.value);
-        filterDataByRole(event.target.value);
+        const selectedRoleId = event.target.value;
+        setSelectedRole(selectedRoleId);
+        filterDataByRole(selectedRoleId);
     };
-
 
 
     useEffect(() => {
         fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
             .then((response) => response.json())
-            .then((data) => setUser(data.data))
+            .then((data) => {
+                setOriginalUsers(data.data);
+                setUser(data.data);
+            })
             .catch((error) => console.log(error.message));
     }, []);
+    const refreshUserList = () => {
+        // Fetch the user list again
+        fetch('http://birdsellingapi-001-site1.ctempurl.com/api/User/GetAllUser')
+            .then((response) => response.json())
+            .then((data) => setUser(data.data))
+            .catch((error) => console.log(error.message));
+    };
 
     const deleteUser = (id) => {
         const userToDelete = user.find((u) => u.id === id);
@@ -146,6 +152,62 @@ export default function UserList() {
         setPage(0);
     };
 
+    // Handle
+    const renderUsers = () => {
+        return user
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((userData) => (
+                <TableRow key={userData.id} hover role="checkbox" tabIndex={-1}>
+                    <TableCell align="left">
+                        {userData.userName}
+                    </TableCell>
+                    <TableCell align="left">
+                        {roleNames[userData.role_id]}
+                    </TableCell>
+                    <TableCell align="left">
+                        {userData.userEmail}
+                    </TableCell>
+                    <TableCell align="left">
+                        {userData.userPhone}
+                    </TableCell>
+                    <TableCell align="left">
+                        {new Date(userData.createdTime).toLocaleString("en-GB", {
+                            minute: "2-digit",
+                            hour: "2-digit",
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                        }).replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, (_, d, m, y, h, min) => {
+                            return `Time:${min}:${h} - Day:${d}/${m}/${y}`;
+                        })}
+                    </TableCell>
+                    <TableCell align="left">
+                        <Stack spacing={2} direction="row">
+                            <EditIcon
+                                style={{
+                                    fontSize: "20px",
+                                    color: "blue",
+                                    cursor: "pointer",
+                                }}
+                                className="cursor-pointer"
+                            // onClick={() => editUser(userData.id)}
+                            />
+                            <DeleteIcon
+                                style={{
+                                    fontSize: "20px",
+                                    color: "darkred",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                    deleteUser(userData.id);
+                                }}
+                            />
+                        </Stack>
+                    </TableCell>
+                </TableRow>
+            ));
+    };
+
     return (
         <>
             <div>
@@ -157,11 +219,11 @@ export default function UserList() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <AddUser closeEvent={handleClose} />
+                        <AddUser closeEvent={handleClose} refreshUserList={refreshUserList} />
                     </Box>
                 </Modal>
             </div>
-            {user.length > 0 && (
+            {originalUsers.length > 0 && (
                 <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                     <Typography
                         gutterBottom
@@ -223,61 +285,7 @@ export default function UserList() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {user
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((user) => {
-                                        return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} >
-                                                <TableCell key={user.id} align="left">
-                                                    {user.userName}
-                                                </TableCell>
-                                                <TableCell key={user.id} align="left">
-                                                    {roleNames[user.role_id]}
-                                                </TableCell>
-                                                <TableCell key={user.id} align="left">
-                                                    {user.userEmail}
-                                                </TableCell>
-                                                <TableCell key={user.id} align="left">
-                                                    {user.userPhone}
-                                                </TableCell>
-                                                <TableCell key={user.id} align="left">
-                                                    {new Date(user.createdTime).toLocaleString("en-GB", {
-                                                        minute: "2-digit",
-                                                        hour: "2-digit",
-                                                        day: "2-digit",
-                                                        month: "2-digit",
-                                                        year: "numeric",
-                                                    }).replace(/(\d+)\/(\d+)\/(\d+), (\d+):(\d+)/, (_, d, m, y, h, min) => {
-                                                        return `Time:${min}:${h} - Day:${d}/${m}/${y}`;
-                                                    })}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                    <Stack spacing={2} direction="row">
-                                                        <EditIcon
-                                                            style={{
-                                                                fontSize: "20px",
-                                                                color: "blue",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            className="cursor-pointer"
-                                                        // onClick={() => editUser(row.id)}
-                                                        />
-                                                        <DeleteIcon
-                                                            style={{
-                                                                fontSize: "20px",
-                                                                color: "darkred",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            onClick={() => {
-                                                                deleteUser(user.id);
-                                                            }}
-                                                        />
-                                                    </Stack>
-                                                </TableCell>
-
-                                            </TableRow>
-                                        );
-                                    })}
+                                {renderUsers()}
                             </TableBody>
                         </Table>
                     </TableContainer>

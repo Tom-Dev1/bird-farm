@@ -16,7 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Swal from "sweetalert2";
 
-export default function AddUser({ closeEvent }) {
+export default function AddUser({ closeEvent, refreshUserList }) {
 
     //UserName
     const [userName, setUsername] = useState('');
@@ -139,6 +139,7 @@ export default function AddUser({ closeEvent }) {
                 const responseData = await response.json();
                 console.log('API Response:', responseData);
                 closeEvent();
+                refreshUserList();
                 Swal.fire({
                     icon: 'success',
                     title: 'Tạo tài khoản thành công !!!',
