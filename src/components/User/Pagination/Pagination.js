@@ -13,7 +13,7 @@ function Pagination({ productsPerPage, totalProducts, currentPage, paginate }) {
                 <button
                     key={number}
                     onClick={() => paginate(number)}
-                    className={number === currentPage ? 'btn-pagina active' : 'btn-pagina'}
+                    className={number === currentPage ? 'btn-pagina bnt-active' : 'btn-pagina'}
                 >
                     {number}
                 </button>

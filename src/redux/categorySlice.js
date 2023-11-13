@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-const BASE_URL = 'https://birdsellingapi.azurewebsites.net/api/';
+const BASE_URL = 'http://birdsellingapi-001-site1.ctempurl.com/api/';
 
 const categorySlice = createSlice({
     name: 'categories',
@@ -8,6 +8,11 @@ const categorySlice = createSlice({
         categories: [],
         categoryProducts: [],
         isLoading: false,
+    },
+    reducers: {
+        setSelectedCategory: (state, action) => {
+            state.selectedCategory = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCategories.pending, (state, action) => {
@@ -54,6 +59,7 @@ export const fetchProductsOfCategory = createAsyncThunk('category-products/fetch
         return error;
     }
 });
+
 export const getAllCategories = (state) => state.categories.categories;
 export const getAllProductsByCategory = (state) => state.categories.categoryProducts;
 export default categorySlice.reducer;

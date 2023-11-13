@@ -1,32 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import axios from 'axios';
-import Pagination from '../Pagination/Pagination';
-import { Link } from 'react-router-dom';
+import { fetchProducts, getAllProducts } from '../../../redux/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function ProductList() {
+import { Link } from 'react-router-dom';
+import { getSearchResults } from '../../../redux/searchSlice';
+
+import ProductListDisplay from './ProductListDisplay';
+import { fetchProductsOfCategory } from '../../../redux/categorySlice';
+
+const ProductList = () => {
+    const dispatch = useDispatch();
+    const searchResults = useSelector(getSearchResults);
+    const allProducts = useSelector(getAllProducts);
+
+    // const [selectedCategory, setSelectedCategory] = useState('all');
+
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(9);
-    const [products, setProducts] = useState([]);
-
-    const baseUrl = 'https://birdsellingapi.azurewebsites.net/api/Product/GetProduct';
-
-    useEffect(() => {
-        const fetchAPI = async () => {
-            try {
-                const response = await axios.get(baseUrl);
-                setProducts(response.data.data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        };
-
-        fetchAPI();
-    }, []);
-
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -35,52 +25,53 @@ export default function ProductList() {
         setProductsPerPage(newProductsPerPage);
         setCurrentPage(1);
     };
+    // useEffect(() => {
+    //     // Hoặc hiển thị một thông báo khác cho người dùng
+    //     // const numberOfResults = searchResults.length;
+    //     // if (numberOfResults === 0) {
+    //     //     setErrorMessage("Không tìm thấy kết quả nào phù hợp với từ khóa tìm kiếm của bạn.");
+    //     // } else {
+    //     //     setErrorMessage("");
+    //     // }
+    //     // Logic để xử lý thay đổi trong searchResults (nếu cần)
+    //     //  const numberOfResults = searchResults.length;
+    //     //   console.log(`Số lượng kết quả tìm kiếm: ${numberOfResults}`);
+    //     // Gọi API hoặc dispatch action Redux khác dựa trên kết quả tìm kiếm
+    //     // Cập nhật local state khác dựa trên kết quả tìm kiếm
+    //     // Thực hiện các thống kê khác nếu cần
+    //     // console.log('Search results have changed:', searchResults);
+    // }, [searchResults]);
+    useEffect(() => {
+        if (searchResults.length > 0) {
+            const maxPage = Math.ceil(searchResults.length / productsPerPage);
+            if (currentPage > maxPage) {
+                setCurrentPage(Math.max(1, maxPage));
+            }
+        }
+    }, [searchResults, currentPage, productsPerPage, setCurrentPage]);
+
+    // useEffect(() => {
+    // Fetch products based on the selected category
+    // Example:
+    // dispatch(fetchProductsOfCategory(selectedCategory));
+    // }, [selectedCategory]);
+    // useEffect(() => {
+    //     if (setSelectedCategory === 'all') {
+    //         dispatch(fetchProducts());
+    //     } else {
+    //         dispatch(fetchProductsOfCategory(setSelectedCategory));
+    //     }
+    // }, [dispatch, setSelectedCategory]);
 
     return (
-        <>
-            <div style={{ paddingBottom: '30px' }}>
-                Products per page: {``}
-                <select value={productsPerPage} onChange={handleProductsPerPage}>
-                    <option value={3}>3</option>
-                    <option value={6}>6</option>
-                    <option value={9}>9</option>
-                </select>
-            </div>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {currentProducts.map((product) => (
-                    <Grid item xs={12} sm={6} md={4} key={product.id}>
-                        <Card sx={{ maxWidth: 345 }}>
-                            <Link to={`/products/${product.id}`} style={{ textDecoration: 'none' }}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        height="300px"
-                                        // width="450px"
-                                        image={product.image}
-                                        alt={product.name}
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {product.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {product.price}$
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Link>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-
-            <Pagination
-                currentPage={currentPage}
-                productsPerPage={productsPerPage}
-                totalProducts={products.length}
-                paginate={paginate}
-            />
-        </>
+        <ProductListDisplay
+            products={searchResults.length > 0 ? searchResults : allProducts}
+            currentPage={currentPage}
+            productsPerPage={productsPerPage}
+            totalProducts={searchResults.length > 0 ? searchResults.length : allProducts.length}
+            paginate={paginate}
+            handleProductsPerPage={handleProductsPerPage}
+        />
     );
-}
+};
+export default ProductList;
