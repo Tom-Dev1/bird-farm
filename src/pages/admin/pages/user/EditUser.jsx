@@ -31,6 +31,10 @@ const validatePhone = (value) => {
     const phoneRegex = /^\d{10}$/;
     return phoneRegex.test(value);
 };
+// Addresses
+const validateAddress = (value) => {
+    return value != null && value.trim() !== '';
+};
 
 const EditUser = ({ userData, closeEvent, refreshUserList }) => {
     const [editedUser, setEditedUser] = useState({ ...userData });
@@ -62,19 +66,22 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
         }
 
         // Proceed with the update
-        const { id, role_id, createdAt, address_id } = editedUser;
-
+        // const { id, role_id, createdAt, address_id } = editedUser;
+        const { id, role_id } = editedUser;
         const payload = {
+            role_id: role_id,
+            id: editedUser.id,
             userName: editedUser.userName,
             userPassword: editedUser.userPassword,
             userEmail: editedUser.userEmail,
             userPhone: editedUser.userPhone,
-            createdAt: editedUser.createdAt,
-            role_id: editedUser.role_id,
-            address_id: editedUser.address_id,
+            addressLine: editedUser.addressLine
+            // createdAt: editedUser.createdAt,
+            // role_id: editedUser.role_id,
+            // address_id: editedUser.address_id,
         };
 
-        fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/UpdateProduct?id=${id}`, {
+        fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/UpdateUser?id=${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -188,10 +195,24 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                         size="small"
                     />
                 </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        error={!validateAddress(editedUser.addressLine)}
+                        id="outlined-error-helper-text-address"
+                        label="User Address"
+                        name='addressLine'
+                        value={editedUser.addressLine}
+                        onChange={handleInputChange}
+                        helperText={!validateAddress(editedUser.addressLine) && 'Address không được trống !'}
+                        sx={{ minWidth: '100%' }}
+                        size="small"
+                    />
+                </Grid>
                 <br />
                 <Grid item xs={12}>
                     <Typography variant='h5' align='center'>
-                        <Button variant="contained" onClick={handleUpdateUser}>
+                        {/* <Button variant="contained" onClick={handleUpdateUser}> */}
+                        <Button variant="contained" onClick={() => handleUpdateUser(editedUser.id)}>
                             Update
                         </Button>
                     </Typography>

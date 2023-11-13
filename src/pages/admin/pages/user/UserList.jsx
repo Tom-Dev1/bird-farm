@@ -104,7 +104,7 @@ export default function UserList() {
             cancelButtonText: 'Hủy xóa',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/DeleteProduct?id=${id}`, {
+                fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/DeleteUser?id=${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +114,10 @@ export default function UserList() {
                         if (response.status === 200) {
                             // Remove the deleted user from the state
                             setUser((prevUsers) => prevUsers.filter((u) => u.id !== id));
-                            Swal.fire('Tài khoản đã được xóa thành công.');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Xóa tài khoản thành công !!!',
+                            })
                         } else if (response.status === 404) {
                             Swal.fire('Tài khoản không tồn tại.');
                         } else {
