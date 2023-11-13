@@ -71,14 +71,18 @@ requestLogin.interceptors.response.use(
   (error) => Promise.reject((error.response && error.response.data) || 'Có lỗi xảy ra')
 );
 
+// class AxiosClientFactory {
+//   getAxiosClient(type, config = {}) {
+//     switch (type) {
+//       case 'login':
+//         return requestLogin;
+//     }
+//   }
+// }
 class AxiosClientFactory {
-  getAxiosClient(type, config = {}) {
-    switch (type) {
-      case 'login':
-        return requestLogin;
-    }
-  }
+  getAxiosClient = (type, config = {}) => (type === 'login' ? requestLogin : null);
 }
+
 
 const axiosClientFactory = new AxiosClientFactory();
 

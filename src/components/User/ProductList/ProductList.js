@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProducts, getAllProducts } from '../../../redux/productSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../../../redux/productSlice';
+import { useSelector } from 'react-redux';
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { getSearchResults } from '../../../redux/searchSlice';
 
 import ProductListDisplay from './ProductListDisplay';
-import { fetchProductsOfCategory } from '../../../redux/categorySlice';
+// import { fetchProductsOfCategory } from '../../../redux/categorySlice';
 
 const ProductList = () => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const searchResults = useSelector(getSearchResults);
     const allProducts = useSelector(getAllProducts);
 

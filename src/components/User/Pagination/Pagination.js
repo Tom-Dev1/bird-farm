@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './Pagination.scss';
 
 function Pagination({ productsPerPage, totalProducts, currentPage, paginate }) {

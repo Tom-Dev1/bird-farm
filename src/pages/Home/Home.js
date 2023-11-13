@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, getAllCategories } from '../../redux/categorySlice';
 import Category from '../../components/User/Category/Category';
 
-import { fetchProducts, getAllProducts } from '../../redux/productSlice';
+import { fetchProducts } from '../../redux/productSlice';
 
 import Search from '../../components/User/Search/Search';
 import ProductList from '../../components/User/ProductList/ProductList';

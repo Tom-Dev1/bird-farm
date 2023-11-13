@@ -48,10 +48,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './Search.scss';
 import { fetchSearchResults, setInput } from '../../../redux/searchSlice';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const dispatch = useDispatch();
     const [searchInput, setSearchInput] = useState('');
 

@@ -8,7 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductSingle, getProductSingle } from '../../../redux/productSlice';
-import { addToCart, addToCartAsync } from '../../../redux/cartSlice';
+import { addToCart } from '../../../redux/cartSlice';
 
 const SingleProduct = () => {
     const { id } = useParams();

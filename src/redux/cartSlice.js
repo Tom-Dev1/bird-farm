@@ -1,6 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-const BASE_URL = 'http://birdsellingapi-001-site1.ctempurl.com/api/';
+import { createSlice } from '@reduxjs/toolkit';
+// import axios from 'axios';
+
+
+
+// const BASE_URL = 'http://birdsellingapi-001-site1.ctempurl.com/api/';
 
 const cartSlice = createSlice({
     name: 'cart',

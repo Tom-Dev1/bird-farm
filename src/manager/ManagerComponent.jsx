@@ -9,9 +9,11 @@ import AddCategory from './components/categories/AddCategory';
 import EditCategory from './components/categories/EditCategory';
 import OrderManager from './components/order/OrderManager';
 import Dashboard from './components/dashboard/DashboardManager';
+import { ToastContainer } from 'react-toastify';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
-export default function managerIndex() {
+export default function ManagerComponent() {
     window.scrollTo(0, 0);
 
     return (
@@ -29,7 +31,7 @@ export default function managerIndex() {
                     <Route path="/manager/edit-category/:id" element={<EditCategory />} />
                     <Route path="/manager/dashboard" element={<Dashboard />} />
                     <Route path="/manager/order" element={<OrderManager />} />
-                    <Route path="/manager/order/:id" component={<OrderDetails />} />
+                    {/* <Route path="/manager/order/:id" component={<OrderDetails />} /> */}
                 </Routes>
                 <ToastContainer
                     position="top-right"
