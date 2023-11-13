@@ -13,10 +13,10 @@ function App() {
         <BrowserRouter>
           <Routes>
 
-            <Route path='/' extrac element={<Home />}></Route>
-            <Route path='/about' extrac element={<About />}></Route>
-            <Route path='/settings' extrac element={<Settings />}></Route>
-            <Route path='/user' extrac element={<User />}></Route>
+            <Route path='/admin' extrac element={<Home />}></Route>
+            <Route path='/admin/about' extrac element={<About />}></Route>
+            <Route path='/admin/settings' extrac element={<Settings />}></Route>
+            <Route path='/admin/user' extrac element={<User />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

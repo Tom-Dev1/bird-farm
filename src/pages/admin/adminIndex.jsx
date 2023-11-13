@@ -7,7 +7,7 @@ import Settings from './pages/Settings'
 import User from './pages/User';
 
 
-function adminIndex() {
+export default function adminIndex() {
     return (
         <div>
             <BrowserRouter>
@@ -21,4 +21,4 @@ function adminIndex() {
         </div>
     )
 }
-export default adminIndex
+
