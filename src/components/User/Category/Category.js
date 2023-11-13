@@ -6,14 +6,14 @@ const Category = ({ categories }) => {
         <div className="wrap-category">
             <div className="category-content">
                 <div className="category-title">
-                    <h2>CATEGORIES</h2>
+                    <h1>CATEGORIES</h1>
                 </div>
                 <div className="category-list">
-                    {categories.map((category) => {
+                    {categories.slice(0, 5).map((category) => {
                         return (
-                            <div className="category-item" key={category.id}>
-                                <Link to="/products">{category.category_name}</Link>
-                            </div>
+                            <h3 className="category-item" key={category.id}>
+                                <Link to={`/products/category/${category.id}`}>{category.category_name}</Link>
+                            </h3>
                         );
                     })}
                 </div>

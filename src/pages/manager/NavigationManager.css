@@ -1,0 +1,16 @@
+/* NavigationManager.css */
+.dropdown.open {
+    background-color: #fff; /* Màu nền khi dropdown mở */
+}
+
+.dropdown-menu {
+    background-color: #fff; /* Màu nền của menu dropdown */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+}
+
+.nav-link.btn-icon {
+    font-size: 20px; /* Kích thước biểu tượng */
+    color: #333; /* Màu biểu tượng */
+}
+
+/* Thêm các quy tắc CSS khác theo nhu cầu của bạn */

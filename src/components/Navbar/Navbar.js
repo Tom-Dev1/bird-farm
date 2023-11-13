@@ -2,7 +2,9 @@ import React from 'react';
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/bird-on-branch-svgrepo-com.png';
+import { useSelector } from 'react-redux';
 const Navbar = () => {
+    const cartProduct = useSelector((state) => state.cart);
     return (
         <div className="wrapper-navbar">
             <div className="navbar-inner">
@@ -17,7 +19,10 @@ const Navbar = () => {
                     <Link>Contact</Link>
                     <Link to="/products">Products</Link>
                 </div>
-                <div className="inner-right">Login</div>
+                <div className="inner-right">
+                    <Link to="/cart">My Bag {cartProduct.length}</Link>
+                    <div>Login</div>
+                </div>
             </div>
         </div>
     );
