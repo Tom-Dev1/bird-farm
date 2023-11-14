@@ -3,7 +3,7 @@ import SideNav from '../components/SideNav'
 import Box from '@mui/material/Box';
 import Navbar from '../components/Navbar'
 import UserList from './user/UserList';
-export default function User() {
+export default function AdminUser() {
     return (
         <>
             <Navbar />

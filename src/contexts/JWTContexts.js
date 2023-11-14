@@ -110,17 +110,15 @@ function AuthProvider({ children }) {
       userPassword
     });
     console.log(response.data.data.token);
-
     const decodedToken = jwtDecode(response.data.data.token);
-
     console.log('Username:', decodedToken.username);
     console.log('Email:', decodedToken.email);
     console.log('Role:', decodedToken.role);
 
     localStorage.setItem('role', decodedToken.role);
     localStorage.setItem('username', decodedToken.username);
-
     console.log(role);
+
     if (role === 'User') {
       navigate('/');
     } else if (role === 'Admin') {

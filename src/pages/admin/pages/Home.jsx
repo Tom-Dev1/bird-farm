@@ -15,7 +15,7 @@ import AccordionDash from '../components/AccordionDash'
 import BarChart from '../charts/BarChart';
 import CountUp from 'react-countup';
 
-function Home() {
+function AdminHome() {
   return (
     <>
       <Navbar />
@@ -131,4 +131,4 @@ function Home() {
   )
 }
 
-export default Home
+export default AdminHome

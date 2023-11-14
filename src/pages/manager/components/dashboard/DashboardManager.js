@@ -17,10 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
+import { mainListItems, secondaryListItems } from './listItems.js';
+import Chart from './Chart.js';
 import Deposits from './Deposits.js';
-import Orders from './Orders';
+import Orders from './Orders.js';
 
 function Copyright(props) {
   return (

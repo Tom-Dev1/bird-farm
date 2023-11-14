@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://birdsellingapi.azurewebsites.net/api/';
+export const BASE_URL = 'http://birdsellingapi-001-site1.ctempurl.com/api';
