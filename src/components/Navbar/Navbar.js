@@ -21,7 +21,7 @@ const Navbar = () => {
                 </div>
                 <div className="inner-right">
                     <Link to="/cart">My Bag {cartProduct.length}</Link>
-                    <div>Login</div>
+                    <Link to="/login">Login</Link>
                 </div>
             </div>
         </div>

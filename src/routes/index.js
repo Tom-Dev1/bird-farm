@@ -1,9 +1,18 @@
+import AboutAdmin from '../components/Admin/AboutAdmin/AboutAdmin';
+import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import Cart from '../pages/Cart/Cart';
 import Home from '../pages/Home/Home';
+import Login from '../pages/Login/Login';
+import ManagerScreen from '../pages/Manager/ManagerScreen';
 import Products from '../pages/ProductsPage/Products';
 import SingleProduct from '../pages/SingleProductPage/SingleProductPage';
+import Setting from '../components/Admin/Setting/Settings';
+import UserAdmin from '../components/Admin/UserAdmin/UserAdmin';
+import DashboardManager from '../components/Manager/dashboard/DashboardManager';
+import AccountManager from '../components/Manager/account/AccountManager';
 export const publicRoutes = [
     { path: '/', Component: Home },
+    { path: '/login', Component: Login },
     // { path: '/about', Component: Home },
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },
@@ -11,4 +20,28 @@ export const publicRoutes = [
     { path: '/cart', Component: Cart },
 ];
 
-export const privateRoutes = [];
+export const privateRoutes = {
+    admin: [
+        { path: '/admin', Component: HomeAdmin },
+        { path: '/admin/about', Component: AboutAdmin },
+        { path: '/admin/setting', Component: Setting },
+        { path: '/admin/userAdmin', Component: UserAdmin },
+        // Thêm các route khác cho admin
+    ],
+    user: [
+        { path: '/user/', Component: Home },
+        // { path: '/about', Component: Home },
+        { path: '/user/products', Component: Products },
+        { path: '/user/products/category/:id', Component: Products },
+        { path: '/user/products/:id', Component: SingleProduct },
+        { path: '/user/cart', Component: Cart },
+        // Thêm các route khác cho user
+    ],
+    manager: [
+        { path: '/manager', Component: ManagerScreen },
+        { path: '/manager/dashboard', Component: DashboardManager },
+        { path: '/manager/account', Component: AccountManager },
+
+        // Thêm các route khác cho manager
+    ],
+};
