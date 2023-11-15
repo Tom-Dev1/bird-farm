@@ -5,8 +5,9 @@ import AppBarManager from '../../components/Manager/AppBarManager/AppBarManager'
 const ManagerScreen = () => {
     return (
         <div>
-            {/* <AppBarManager />
-            <SidebarManager /> */}
+            <SidebarManager />
+            <AppBarManager />
+
         </div>
     );
 };
