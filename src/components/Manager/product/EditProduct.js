@@ -28,6 +28,7 @@ function EditProduct() {
     discount: 0,
     typeProduct: 1,
     day_of_birth: '',
+    statusProduct: '1', 
   });
   useEffect(() => {
     fetch(categoriesApiUrl)
@@ -52,7 +53,8 @@ function EditProduct() {
       .typeError('Discount must be a number')
       .min(0, 'Discount must be a positive number')
       .optional('Discount is optional'),
-  });
+      statusProduct: yup.string().required('Status is required'),
+    });
 
   const formik = useFormik({
     initialValues: productData,
@@ -250,6 +252,29 @@ function EditProduct() {
                     error={formik.touched.description && Boolean(formik.errors.description)}
                     helperText={formik.touched.description && formik.errors.description}
                   />
+                </div>
+                <div className="form-group">
+                  <Select
+                    fullWidth
+                    id="statusProduct"
+                    name="statusProduct"
+                    value={formik.values.statusProduct}
+                    onChange={formik.handleChange}
+                    variant="filled"
+                    label="Trạng thái"
+                    error={formik.touched.statusProduct && Boolean(formik.errors.statusProduct)}
+                  >
+                    <MenuItem value="" disabled>
+                      Chọn trạng thái
+                    </MenuItem>
+                    <MenuItem value="1">Còn hàng</MenuItem>
+                    <MenuItem value="2">Đã bán</MenuItem>
+                    <MenuItem value="3">Lỗi</MenuItem>
+                    <MenuItem value="4">Không bán</MenuItem>
+                  </Select>
+                  {formik.touched.statusProduct && formik.errors.statusProduct && (
+                    <div className="error-text">{formik.errors.statusProduct}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <div className="update-btn">

@@ -11,11 +11,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../Admin/AppStore/appStore';
+import CategoryIcon from '@mui/icons-material/Category';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 const drawerWidth = 220;
 
@@ -131,15 +133,15 @@ export default function SideNav() {
                 px: 2.5,
               }}
             >
-              <ListItemIcon
+              <DashboardIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}
               >
-                <InboxIcon />
-              </ListItemIcon>
+                <DashboardIcon />
+              </DashboardIcon>
               <ListItemText primary="DashBoard" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
@@ -157,15 +159,15 @@ export default function SideNav() {
                 px: 2.5,
               }}
             >
-              <ListItemIcon
+              <CategoryIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}
               >
-                <InboxIcon />
-              </ListItemIcon>
+                <CategoryIcon />
+              </CategoryIcon>
               <ListItemText primary="Category" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
@@ -183,15 +185,15 @@ export default function SideNav() {
                 px: 2.5,
               }}
             >
-              <ListItemIcon
+              <InventoryIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}
               >
-                <InboxIcon />
-              </ListItemIcon>
+                <InventoryIcon />
+              </InventoryIcon>
               <ListItemText primary="Product" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
@@ -209,15 +211,15 @@ export default function SideNav() {
                 px: 2.5,
               }}
             >
-              <ListItemIcon
+              <ShoppingBasketIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
                 }}
               >
-                <InboxIcon />
-              </ListItemIcon>
+                <ShoppingBasketIcon />
+              </ShoppingBasketIcon>
               <ListItemText primary="Order" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>

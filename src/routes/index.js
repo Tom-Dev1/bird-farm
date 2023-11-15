@@ -16,6 +16,9 @@ import AddCategory from '../components/Manager/categories/AddCategory';
 import ProductManager from '../components/Manager/product/ProductManager';
 import AddProduct from '../components/Manager/product/AddProduct';
 import EditProduct from '../components/Manager/product/EditProduct';
+import OrderManager from '../components/Manager/order/OrderManager';
+import OrderDetails from '../components/Manager/order/OrderDetails';
+
 
 export const publicRoutes = [
     { path: '/', Component: Home },
@@ -54,6 +57,11 @@ export const privateRoutes = {
         { path: '/manager/products', Component: ProductManager },
         { path: '/manager/new-product', Component: AddProduct },
         { path: '/manager/edit-product/:id', Component: EditProduct },
+        { path: '/manager/order', Component: OrderManager },
+        { path: '/manager/order/:id', Component: OrderDetails },
+
+
+        
 
 
         // Thêm các route khác cho manager

@@ -35,7 +35,7 @@ function ProductManager() {
     };
     const RemoveFunction = (id) => {
         if (window.confirm(`Xóa: ${id}`)) {
-            const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/DeleteProduct/`;
+            const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/DeleteProduct`;
             fetch(baseUrl + '/' + id, {
                 method: 'DELETE',
                 headers: {
@@ -56,6 +56,34 @@ function ProductManager() {
         } else {
             // Người dùng hủy bỏ, không làm gì cả
             toast.warning('Hủy bỏ xóa');
+        }
+    };
+    const getStatusName = (status) => {
+        switch (status) {
+          case 1:
+            return 'Còn Hàng';
+          case 2:
+            return 'Hết Hàng';
+          case 3:
+            return 'Lỗi';
+          case 4:
+            return 'Không Bán';
+          default:
+            return 'Unknown';
+        }
+      };
+      const getStatusColor = (status) => {
+        switch (status) {
+            case 1:
+                return '#00FF00';
+            case 2:
+                return '#FF0000';
+            case 3:
+                return '#808080'; 
+            case 4:
+                return '#FF0000'; 
+            default:
+                return '#FF0000'; 
         }
     };
     return (
@@ -79,7 +107,7 @@ function ProductManager() {
                                         <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Avatar</TableCell>
                                         <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Tên</TableCell>
                                         <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Giá</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Loại</TableCell>
+                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Trạng Thái</TableCell>
                                         <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Action</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -93,7 +121,7 @@ function ProductManager() {
                                             </TableCell>
                                             <TableCell style={{ fontSize: '17px' }} align="center">{staff.name}</TableCell>
                                             <TableCell style={{ fontSize: '17px' }} align="center">{staff.price}</TableCell>
-                                            <TableCell style={{ fontSize: '17px' }} align="center">{staff.sex}</TableCell>
+                                            <TableCell style={{ fontSize: '17px', color: getStatusColor(staff.statusProduct) }} align="center">{getStatusName(staff.statusProduct)}</TableCell>
                                             <TableCell align="center">
                                                 <Button
                                                     variant="outlined"
