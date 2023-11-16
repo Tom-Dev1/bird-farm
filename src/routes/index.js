@@ -2,7 +2,7 @@ import AboutAdmin from '../components/Admin/AboutAdmin/AboutAdmin';
 import Cart from '../pages/Cart/Cart';
 import Home from '../pages/Home/Home';
 import LoginForm from '../pages/Login/LoginForm';
-import ManagerScreen from '../pages/Manager/ManagerScreen';
+// import ManagerScreen from '../pages/Manager/ManagerScreen';
 import Products from '../pages/ProductsPage/Products';
 import SingleProduct from '../pages/SingleProductPage/SingleProductPage';
 import Setting from '../components/Admin/Setting/Settings';
@@ -18,7 +18,8 @@ import EditProduct from '../components/Manager/product/EditProduct';
 import OrderManager from '../components/Manager/order/OrderManager';
 import OrderDetails from '../components/Manager/order/OrderDetails';
 import EditAccount from '../components/Manager/account/EditAccount';
-
+import HomeAdmin from '../pages/admin/Home/HomeAdmin';
+import RegisterForm from '../pages/Login/RegisterForm';
 
 export const publicRoutes = [
     { path: '/', Component: Home },
