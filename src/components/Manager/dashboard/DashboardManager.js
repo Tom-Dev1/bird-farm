@@ -87,7 +87,7 @@ export default function Dashboard() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        height: '100vh',
+                        height: '150vh',
                         overflow: 'auto',
                     }}
                 >
@@ -100,7 +100,7 @@ export default function Dashboard() {
                                         p: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        height: 240,
+                                        height: 500,
                                     }}
                                 >
                                     <Chart />

@@ -18,6 +18,7 @@ import AddProduct from '../components/Manager/product/AddProduct';
 import EditProduct from '../components/Manager/product/EditProduct';
 import OrderManager from '../components/Manager/order/OrderManager';
 import OrderDetails from '../components/Manager/order/OrderDetails';
+import EditAccount from '../components/Manager/account/EditAccount';
 
 
 export const publicRoutes = [
@@ -59,6 +60,7 @@ export const privateRoutes = {
         { path: '/manager/edit-product/:id', Component: EditProduct },
         { path: '/manager/order', Component: OrderManager },
         { path: '/manager/order/:id', Component: OrderDetails },
+        { path: '/manager/edit-user/:id', Component: EditAccount },
 
 
         

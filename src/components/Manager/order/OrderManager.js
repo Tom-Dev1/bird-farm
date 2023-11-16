@@ -110,7 +110,7 @@ function OrderManager() {
                                     {orders?.map((order) => (
                                         <TableRow key={order.id_order}>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{order.id}</TableCell>
-                                            <TableCell style={{ fontSize: '15px' }} align="center">{order.order_date}</TableCell>
+                                            <TableCell style={{ fontSize: '15px' }} align="center">{new Date(order.order_date).toLocaleDateString()}</TableCell>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{order.orderTotal}</TableCell>
                                             <TableCell style={{ fontSize: '15px', background: getStatusColor(order.orderStatus) }} align="center">{getStatusName(order.orderStatus)}</TableCell>
                                             <TableCell align="center">

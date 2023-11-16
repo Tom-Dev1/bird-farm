@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
+import '../StyleManager/orderDetails.css';
 
 const OrderDetails = () => {
     const { id } = useParams();

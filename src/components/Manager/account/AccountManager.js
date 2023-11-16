@@ -40,7 +40,10 @@ function AccountManager() {
                             </tr>
                             <tr>
                                 <td className="label">Vai trò:</td>
-                                <td className="value">{Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? 'Quản Lí' : 'Khác'}</td>
+                                <td className="value"
+                                    style={{ pointerEvents: Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? 'none' : 'auto', color: Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? '#999' : 'inherit' }}>
+                                    {Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? 'Quản Lý' : 'Khác'}
+                                </td>
                             </tr>
                             <tr>
                                 <td className="label">Địa chỉ:</td>
