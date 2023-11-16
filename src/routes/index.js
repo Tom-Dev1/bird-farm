@@ -21,6 +21,7 @@ import EditAccount from '../components/Manager/account/EditAccount';
 import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import RegisterForm from '../pages/Login/RegisterForm';
 import Unauthorized from '../pages/404/unauthorized';
+import Checkout from '../pages/checkout/CheckOut';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -48,6 +49,8 @@ export const privateRoutes = {
         { path: '/user/products/category/:id', Component: Products },
         { path: '/user/products/:id', Component: SingleProduct },
         { path: '/user/cart', Component: Cart },
+        { path: '/user/checkout', Component: Checkout },
+
         // Thêm các route khác cho user
     ],
     manager: [

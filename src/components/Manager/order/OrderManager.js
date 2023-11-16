@@ -84,6 +84,8 @@ function OrderManager() {
         ? orders
         : orders.filter((order) => order.orderStatus.toString() === selectedStatusFilter);
 
+    const sortedOrders = filteredOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
+
     return (
         <Box sx={{ display: 'flex' }}>
             <SidebarManager />
@@ -118,7 +120,7 @@ function OrderManager() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {filteredOrders.map((order) => (
+                                    {sortedOrders.map((order) => (
                                         <TableRow key={order.id_order}>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{order.user.userName}</TableCell>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{new Date(order.order_date).toLocaleDateString()}</TableCell>
