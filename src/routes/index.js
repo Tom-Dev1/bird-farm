@@ -1,8 +1,7 @@
 import AboutAdmin from '../components/Admin/AboutAdmin/AboutAdmin';
-import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import Cart from '../pages/Cart/Cart';
 import Home from '../pages/Home/Home';
-import Login from '../pages/Login/Login';
+import LoginForm from '../pages/Login/LoginForm';
 import ManagerScreen from '../pages/Manager/ManagerScreen';
 import Products from '../pages/ProductsPage/Products';
 import SingleProduct from '../pages/SingleProductPage/SingleProductPage';
@@ -23,7 +22,8 @@ import EditAccount from '../components/Manager/account/EditAccount';
 
 export const publicRoutes = [
     { path: '/', Component: Home },
-    { path: '/login', Component: Login },
+    { path: '/login', Component: LoginForm },
+    { path: '/register', Component: RegisterForm },
     // { path: '/about', Component: Home },
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },
@@ -63,7 +63,7 @@ export const privateRoutes = {
         { path: '/manager/edit-user/:id', Component: EditAccount },
 
 
-        
+
 
 
         // Thêm các route khác cho manager
