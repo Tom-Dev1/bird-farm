@@ -9,8 +9,15 @@ import Setting from '../components/Admin/Setting/Settings';
 import UserAdmin from '../components/Admin/UserAdmin/UserAdmin';
 import DashboardManager from '../components/Manager/dashboard/DashboardManager';
 import AccountManager from '../components/Manager/account/AccountManager';
-import HomeAdmin from '../pages/admin/Home/HomeAdmin';
-import RegisterForm from '../pages/Login/RegisterForm';
+import CategoryManager from '../components/Manager/categories/CategoryManager';
+import EditCategory from '../components/Manager/categories/EditCategory';
+import AddCategory from '../components/Manager/categories/AddCategory';
+import ProductManager from '../components/Manager/product/ProductManager';
+import AddProduct from '../components/Manager/product/AddProduct';
+import EditProduct from '../components/Manager/product/EditProduct';
+import OrderManager from '../components/Manager/order/OrderManager';
+import OrderDetails from '../components/Manager/order/OrderDetails';
+import EditAccount from '../components/Manager/account/EditAccount';
 
 
 export const publicRoutes = [
@@ -42,9 +49,22 @@ export const privateRoutes = {
         // Thêm các route khác cho user
     ],
     manager: [
-        { path: '/manager', Component: ManagerScreen },
+        { path: '/manager', Component: DashboardManager },
         { path: '/manager/dashboard', Component: DashboardManager },
         { path: '/manager/account', Component: AccountManager },
+        { path: '/manager/categories', Component: CategoryManager },
+        { path: '/manager/new-categories', Component: AddCategory },
+        { path: '/manager/edit-category/:id', Component: EditCategory },
+        { path: '/manager/products', Component: ProductManager },
+        { path: '/manager/new-product', Component: AddProduct },
+        { path: '/manager/edit-product/:id', Component: EditProduct },
+        { path: '/manager/order', Component: OrderManager },
+        { path: '/manager/order/:id', Component: OrderDetails },
+        { path: '/manager/edit-user/:id', Component: EditAccount },
+
+
+
+
 
         // Thêm các route khác cho manager
     ],

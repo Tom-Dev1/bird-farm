@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-// import SidebarManager from '../SidebarManager';
-// import AppBarManager from '../AppBarManager';
+import SidebarManager from '../SideBarManager/SidebarManager';
+import AppBarManager from '../AppBarManager/AppBarManager';
+import Box from '@mui/material/Box';
 import '../StyleManager/accountManager.css';
 
-const apiUrl = 'https://birdsellingapi.azurewebsites.net/api/User/GetSingleID?id=734c8842090440a28ebfb1a54313f5a4';
+const apiUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=6613e41d374043c7886c7226f7628123';
 
 function AccountManager() {
     const [Account, setCurrentAccount] = useState(null);
@@ -16,39 +17,43 @@ function AccountManager() {
     if (!Account) {
         return <div>Loading...</div>;
     }
-
     return (
-        <div>
-            {/* <AppBarManager /> */}
-            {/* <SidebarManager /> */}
-            <div className="main-container">
-                <h2>Thông Tin Tài Khoản</h2>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Tên đăng nhập:</td>
-                            <td>{Account.userName}</td>
-                        </tr>
-                        <tr>
-                            <td>Email:</td>
-                            <td>{Account.userEmail}</td>
-                        </tr>
-                        <tr>
-                            <td>Số điện thoại:</td>
-                            <td>{Account.userPhone}</td>
-                        </tr>
-                        <tr>
-                            <td>Role ID:</td>
-                            <td>{Account.role}</td>
-                        </tr>
-                        <tr>
-                            <td>Địa chỉ:</td>
-                            <td>{Account.addressLine}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <Box sx={{ display: 'flex' }}>
+            <SidebarManager />
+            <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
+                <AppBarManager />
+                <div className="main-container">
+                    <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Thông Tin Tài Khoản</h2>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+                        <tbody>
+                            <tr>
+                                <td className="label">Tên đăng nhập:</td>
+                                <td className="value">{Account.userName}</td>
+                            </tr>
+                            <tr>
+                                <td className="label">Email:</td>
+                                <td className="value">{Account.userEmail}</td>
+                            </tr>
+                            <tr>
+                                <td className="label">Số điện thoại:</td>
+                                <td className="value">{Account.userPhone}</td>
+                            </tr>
+                            <tr>
+                                <td className="label">Vai trò:</td>
+                                <td className="value"
+                                    style={{ pointerEvents: Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? 'none' : 'auto', color: Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? '#999' : 'inherit' }}>
+                                    {Account.role_id === '507cd3255f5e4e2589d999efa128dd0a' ? 'Quản Lý' : 'Khác'}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="label">Địa chỉ:</td>
+                                <td className="value">{Account.addressLine}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </Box>
+        </Box>
     );
 }
 
