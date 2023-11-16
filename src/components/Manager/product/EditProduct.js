@@ -17,50 +17,52 @@ function EditProduct() {
   const categoriesApiUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory/GetAll';
 
   const [productData, setProductData] = useState({
-    category_id: 'string',
-    image: 'string',
+    category_id: '',
+    image: '',
     price: 0,
-    name: 'string',
-    sex: true, // Assuming true corresponds to 'male'
-    description: 'string',
-    bird_mother_id: 'string',
-    bird_father_id: 'string',
+    name: '',
+    sex: 'true', // Assuming 'true' corresponds to 'male'
+    description: '',
+    bird_mother_id: '',
+    bird_father_id: '',
     discount: 0,
     typeProduct: 1,
     day_of_birth: '',
-    statusProduct: '1', 
+    statusProduct: '1', // Default to '1: Còn hàng'
   });
+
   useEffect(() => {
     fetch(categoriesApiUrl)
       .then((response) => response.json())
       .then((data) => setCategories(data.data))
       .catch((error) => console.log(error.message));
   }, []);
+
   const validationSchema = yup.object().shape({
-    category_id: yup.string().required('Category ID is required'),
-    image: yup.string().required('Image URL is required'),
-    name: yup.string().required('Name is required'),
+    category_id: yup.string().required('Danh mục là bắt buộc'),
+    image: yup.string().required('URL hình ảnh là bắt buộc'),
+    name: yup.string().required('Tên sản phẩm là bắt buộc'),
     price: yup
       .number()
-      .typeError('Price must be a number')
-      .positive('Price must be a positive number')
-      .min(1, 'Price must be greater than or equal to 1')
-      .required('Price is required'),
-    sex: yup.string().required('Sex is required'),
-    description: yup.string().required('Description is required'),
+      .typeError('Giá tiền phải là một số')
+      .positive('Giá tiền phải là một số dương')
+      .min(1, 'Giá tiền phải lớn hơn hoặc bằng 1')
+      .required('Giá tiền là bắt buộc'),
+    sex: yup.string().required('Giới tính là bắt buộc'),
+    description: yup.string().required('Mô tả là bắt buộc'),
     discount: yup
       .number()
-      .typeError('Discount must be a number')
-      .min(0, 'Discount must be a positive number')
-      .optional('Discount is optional'),
-      statusProduct: yup.string().required('Status is required'),
-    });
+      .typeError('Giảm giá phải là một số')
+      .min(0, 'Giảm giá phải là một số không âm')
+      .optional(),
+    day_of_birth: yup.string().required('Ngày sinh là bắt buộc'),
+    statusProduct: yup.string().required('Trạng thái là bắt buộc'),
+  });
 
   const formik = useFormik({
     initialValues: productData,
     validationSchema,
     onSubmit: (values) => {
-      // Create the product object
       const product = {
         category_id: values.category_id,
         image: values.image,
@@ -73,9 +75,9 @@ function EditProduct() {
         discount: parseFloat(values.discount),
         typeProduct: values.typeProduct,
         day_of_birth: new Date(values.day_of_birth),
+        statusProduct: values.statusProduct,
       };
 
-      // Send a request to update the product
       fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/UpdateProduct/${id}`, {
         method: 'PUT',
         headers: {
@@ -88,19 +90,18 @@ function EditProduct() {
             toast.success('Chỉnh sửa sản phẩm thành công!');
             navigate('/manager/products');
           } else {
-            console.error('Product update failed.');
-            toast.error('Product update failed.');
+            console.error('Lỗi khi cập nhật sản phẩm.');
+            toast.error('Lỗi khi cập nhật sản phẩm.');
           }
         })
         .catch((error) => {
-          console.error('Error updating product:', error);
+          console.error('Lỗi khi cập nhật sản phẩm:', error);
           toast.error('Lỗi khi cập nhật sản phẩm.');
         });
     },
   });
 
   useEffect(() => {
-    // Fetch the product data based on the ID
     fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -124,7 +125,6 @@ function EditProduct() {
             <div className="edit-form">
               <div className="form-title">
                 <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '25px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Chỉnh Sửa Sản Phẩm</h2>
-
               </div>
               <div className="form-body">
                 <div className="form-group">
@@ -155,7 +155,7 @@ function EditProduct() {
                   <TextField
                     fullWidth
                     id="image"
-                    label="Image URL"
+                    label="URL hình ảnh"
                     variant="filled"
                     value={formik.values.image}
                     onChange={formik.handleChange}
@@ -168,7 +168,7 @@ function EditProduct() {
                   <TextField
                     fullWidth
                     id="name"
-                    label="Name"
+                    label="Tên sản phẩm"
                     variant="filled"
                     value={formik.values.name}
                     onChange={formik.handleChange}
@@ -181,7 +181,7 @@ function EditProduct() {
                   <TextField
                     fullWidth
                     id="price"
-                    label="Price"
+                    label="Giá tiền"
                     variant="filled"
                     type="number"
                     value={formik.values.price}
@@ -192,7 +192,7 @@ function EditProduct() {
                   />
                 </div>
                 <div className="form-group">
-                  <FormLabel id="sex">Sex</FormLabel>
+                  <FormLabel id="sex">Giới tính</FormLabel>
                   <RadioGroup
                     required
                     name="sex"
@@ -203,20 +203,23 @@ function EditProduct() {
                     <FormControlLabel
                       value="true"
                       control={<Radio color="primary" />}
-                      label="Male"
+                      label="Nam"
                     />
                     <FormControlLabel
                       value="false"
                       control={<Radio color="primary" />}
-                      label="Female"
+                      label="Nữ"
                     />
                   </RadioGroup>
+                  {formik.touched.sex && formik.errors.sex && (
+                    <div className="error-text">{formik.errors.sex}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <TextField
                     fullWidth
                     id="discount"
-                    label="Discount"
+                    label="Giảm giá"
                     variant="filled"
                     type="number"
                     value={formik.values.discount}
@@ -230,7 +233,7 @@ function EditProduct() {
                   <TextField
                     fullWidth
                     id="day_of_birth"
-                    label="Day of Birth"
+                    label="Ngày sinh"
                     variant="filled"
                     type="datetime-local"
                     value={formik.values.day_of_birth}
@@ -244,7 +247,7 @@ function EditProduct() {
                   <TextField
                     fullWidth
                     id="description"
-                    label="Thông Tin"
+                    label="Mô tả"
                     variant="filled"
                     value={formik.values.description}
                     onChange={formik.handleChange}
@@ -284,7 +287,7 @@ function EditProduct() {
                       type="submit"
                       disabled={!formik.isValid}
                     >
-                      Save
+                      Lưu
                     </Button>
                   </div>
                   <div className="cancel-btn">
@@ -292,9 +295,9 @@ function EditProduct() {
                       <Button
                         variant="contained"
                         color="error"
-                        onClick={() => toast.warning('Cancel product edit')}
+                        onClick={() => toast.warning('Hủy chỉnh sửa sản phẩm')}
                       >
-                        Cancel
+                        Hủy
                       </Button>
                     </Link>
                   </div>
@@ -305,7 +308,6 @@ function EditProduct() {
         </div>
       </Box>
     </Box>
-
   );
 }
 
