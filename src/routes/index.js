@@ -1,8 +1,7 @@
 import AboutAdmin from '../components/Admin/AboutAdmin/AboutAdmin';
-import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import Cart from '../pages/Cart/Cart';
 import Home from '../pages/Home/Home';
-import Login from '../pages/Login/Login';
+import LoginForm from '../pages/Login/LoginForm';
 import ManagerScreen from '../pages/Manager/ManagerScreen';
 import Products from '../pages/ProductsPage/Products';
 import SingleProduct from '../pages/SingleProductPage/SingleProductPage';
@@ -10,9 +9,14 @@ import Setting from '../components/Admin/Setting/Settings';
 import UserAdmin from '../components/Admin/UserAdmin/UserAdmin';
 import DashboardManager from '../components/Manager/dashboard/DashboardManager';
 import AccountManager from '../components/Manager/account/AccountManager';
+import HomeAdmin from '../pages/admin/Home/HomeAdmin';
+import RegisterForm from '../pages/Login/RegisterForm';
+
+
 export const publicRoutes = [
     { path: '/', Component: Home },
-    { path: '/login', Component: Login },
+    { path: '/login', Component: LoginForm },
+    { path: '/register', Component: RegisterForm },
     // { path: '/about', Component: Home },
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },

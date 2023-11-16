@@ -127,7 +127,7 @@ export default function AddUser({ closeEvent, refreshUserList }) {
             closeEvent();
             return;
         }
-        // Prepare the data to be sent in the request body
+
         const requestData = {
             userName: userName,
             userPassword: userPassword,
