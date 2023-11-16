@@ -80,9 +80,9 @@ export default function Dashboard() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-        <SidebarManager />
-        <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
-            <AppBarManager />
+            <SidebarManager />
+            <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
+                <AppBarManager />
                 <Box
                     component="main"
                     sx={{
@@ -129,6 +129,6 @@ export default function Dashboard() {
                     </Container>
                 </Box>
             </Box>
-            </Box>
+        </Box>
     );
 }

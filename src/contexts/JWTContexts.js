@@ -292,10 +292,11 @@ function AuthProvider({ children }) {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('role');
                 localStorage.removeItem('username');
-
                 localStorage.setItem('accessToken', response.data.data.token);
                 localStorage.setItem('role', decodedToken.role);
                 localStorage.setItem('username', decodedToken.username);
+                localStorage.setItem('id', decodedToken.UserID);
+
                 console.log(decodedToken);
                 if (decodedToken.role === 'User') {
                     navigate('/');

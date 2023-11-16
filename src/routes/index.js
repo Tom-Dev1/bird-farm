@@ -21,6 +21,8 @@ import EditAccount from '../components/Manager/account/EditAccount';
 import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import RegisterForm from '../pages/Login/RegisterForm';
 import Unauthorized from '../pages/404/unauthorized';
+import MixFormUser from '../components/MixBIRD/MixFormUser';
+import Checkout from '../components/MixBIRD/Checkout';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -31,6 +33,9 @@ export const publicRoutes = [
     { path: '/products/:id', Component: SingleProduct },
     { path: '/cart', Component: Cart },
     { path: '/unauthorized', Component: Unauthorized },
+
+    { path: '/mixBird', Component: MixFormUser },
+    { path: '/testing', Component: Checkout }
 ];
 
 export const privateRoutes = {
