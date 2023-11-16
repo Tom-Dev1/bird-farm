@@ -114,7 +114,7 @@ function ProductManager() {
                                 <TableBody>
                                     {staff?.map((staff) => (
                                         <TableRow key={staff.id}>
-                                            <TableCell style={{ fontSize: '20px' }} align="center">{staff.id}</TableCell>
+                                            <TableCell style={{ fontSize: '13px' }} align="center">{staff.id}</TableCell>
 
                                             <TableCell component="th" scope="row" align="center">
                                                 <img style={{ width: '150px', height: '150px' }} src={staff.image} alt="" />

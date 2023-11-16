@@ -16,6 +16,11 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../../components/Admin/AppStore/appStore';
+import { useEffect } from 'react';
+import useAuth from '../../../hooks/useAuth';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 const AppBar = styled(
     MuiAppBar,
     {},
@@ -88,7 +93,25 @@ export default function NavbarAdmin() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+    // LOGOUT
+    const { logout, isAuthenticated } = useAuth();
+    const [isLoggedIn, setLoggedIn] = useState(false);
 
+    useEffect(() => {
+        // Update the isLoggedIn state when the authentication status changes
+        setLoggedIn(isAuthenticated);
+    }, [isAuthenticated]);
+    const handleLogout = () => {
+        logout();
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
+    };
+    
+    const navigate = useNavigate();
+
+    const handleAccount = () => {
+        navigate('/manager/account');
+    };
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
         <Menu
@@ -106,8 +129,8 @@ export default function NavbarAdmin() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={handleAccount}>My account</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
     );
 
@@ -175,7 +198,7 @@ export default function NavbarAdmin() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        Manager BirdFarm Shop
+                        Manager Shop
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

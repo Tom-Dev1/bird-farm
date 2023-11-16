@@ -48,7 +48,7 @@ export const privateRoutes = {
         // Thêm các route khác cho user
     ],
     manager: [
-        { path: '/manager', Component: ManagerScreen },
+        { path: '/manager', Component: DashboardManager },
         { path: '/manager/dashboard', Component: DashboardManager },
         { path: '/manager/account', Component: AccountManager },
         { path: '/manager/categories', Component: CategoryManager },
