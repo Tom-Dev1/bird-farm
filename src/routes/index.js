@@ -18,9 +18,9 @@ import EditProduct from '../components/Manager/product/EditProduct';
 import OrderManager from '../components/Manager/order/OrderManager';
 import OrderDetails from '../components/Manager/order/OrderDetails';
 import EditAccount from '../components/Manager/account/EditAccount';
-import HomeAdmin from '../pages/admin/Home/HomeAdmin';
+import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import RegisterForm from '../pages/Login/RegisterForm';
-
+import Unauthorized from '../pages/404/unauthorized';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -30,6 +30,7 @@ export const publicRoutes = [
     { path: '/products/category/:id', Component: Products },
     { path: '/products/:id', Component: SingleProduct },
     { path: '/cart', Component: Cart },
+    { path: '/unauthorized', Component: Unauthorized },
 ];
 
 export const privateRoutes = {
@@ -41,7 +42,7 @@ export const privateRoutes = {
         // Thêm các route khác cho admin
     ],
     user: [
-        { path: '/user/', Component: Home },
+        { path: '/', Component: Home },
         // { path: '/about', Component: Home },
         { path: '/user/products', Component: Products },
         { path: '/user/products/category/:id', Component: Products },
@@ -62,10 +63,6 @@ export const privateRoutes = {
         { path: '/manager/order', Component: OrderManager },
         { path: '/manager/order/:id', Component: OrderDetails },
         { path: '/manager/edit-user/:id', Component: EditAccount },
-
-
-
-
 
         // Thêm các route khác cho manager
     ],

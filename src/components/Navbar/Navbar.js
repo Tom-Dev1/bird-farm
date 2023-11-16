@@ -12,8 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import { AccountCircle } from '@mui/icons-material';
 import swal from 'sweetalert2';
 
-
-
 const Navbar = () => {
     const { logout, isAuthenticated } = useAuth();
     const cartProduct = useSelector((state) => state.cart);
@@ -57,7 +55,6 @@ const Navbar = () => {
     };
     const handleMenuClose = () => {
         setAnchorEl(null);
-
     };
     const menuId = 'primary-search-account-menu';
 

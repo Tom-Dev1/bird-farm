@@ -72,6 +72,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductSingle, getProductSingle, setAddReviewToProduct } from '../../../redux/productSlice';
 import { addToCart, addToCartAsync } from '../../../redux/cartSlice';
+import Swal from 'sweetalert2';
 
 const SingleProduct = () => {
     const { id } = useParams();
@@ -80,11 +81,31 @@ const SingleProduct = () => {
         dispatch(fetchProductSingle(id));
     }, [dispatch, id]);
     const productSingle = useSelector(getProductSingle);
+
     const [userRating, setUserRating] = useState(0);
     const [userComment, setUserComment] = useState('');
-    // console.log(productSingle);
-    const handleAddToCart = (productSingle) => {
-        dispatch(addToCart(productSingle));
+
+    const item = useSelector((state) => state.cart.items);
+    console.log(item);
+    const handleAddToCart = () => {
+        if (productSingle) {
+            const { id, name, price } = productSingle;
+
+            const isItemInCart = item.some((item) => item.id === id);
+            Swal.fire({
+                icon: 'success',
+                title: `Thêm sản phẩm ${name} thành công !!!`,
+            });
+            if (isItemInCart) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Sản phẩm ${name} đã có trong giỏ hàng`,
+                });
+            } else {
+                dispatch(addToCart({ id, name, price }));
+            }
+        }
     };
     const handleAddReview = (productID) => {
         dispatch(setAddReviewToProduct({ rating: userRating, comment: userComment }));
@@ -96,12 +117,12 @@ const SingleProduct = () => {
             <div className="layout">
                 <div className="single-product-page">
                     <div className="left">
-                        <img src={productSingle?.image} alt="" />
+                        <img src={productSingle.image} alt="" />
                     </div>
                     <div className="right">
-                        <span className="name">{productSingle?.name}</span>
-                        <span className="price">&#8377;{productSingle?.price}</span>
-                        <span className="desc">{productSingle?.description}</span>
+                        <span className="name">{productSingle.name}</span>
+                        <span className="price">&#8377;{productSingle.price}</span>
+                        <span className="desc">{productSingle.description}</span>
                         <div className="cart-button">
                             <button className="add-to-cart-button" onClick={() => handleAddToCart(productSingle.id)}>
                                 <AddShoppingCartIcon fontSize={'large'} />

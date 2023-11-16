@@ -1,65 +1,71 @@
-import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { privateRoutes, publicRoutes } from './routes/index';
+import GuestLayout from './layout/GuestLayout/GuestLayout';
 
-import { privateRoutes, publicRoutes } from './routes';
 import UserLayout from './layout/UserLayout/UserLayout';
 import AdminLayout from './layout/AdminLayout/AdminLayout';
 import ManagerLayout from './layout/ManagerLayout/ManagerLayout';
-
+import useAuth from './hooks/useAuth';
+import PrivateRoute from './routes/PrivateRoutes';
 import './App.css';
-import GuestLayout from './layout/GuestLayout/GuestLayout';
-import { useState } from 'react';
 function App() {
-    // const [userRole, setUserRole] = useState('guest');
-    const getLayoutByRole = (role) => {
-        switch (role) {
-            case 'admin':
-                return AdminLayout;
-            case 'user':
-                return UserLayout;
-            case 'manager':
-                return ManagerLayout;
-            case 'guest':
-                return GuestLayout;
-            default:
-                return GuestLayout;
-        }
-    };
-
     return (
-        <div className="App">
-            <Routes>
-                {publicRoutes.map((route, index) => {
-                    const Page = route.Component;
-                    const Layout = UserLayout;
-                    return (
-                        <Route
-                            key={index}
-                            path={route.path}
-                            element={
-                                <Layout>
-                                    <Page />
-                                </Layout>
-                            }
+        <Routes>
+            {/* Public Routes */}
+            {publicRoutes.map((route, index) => (
+                <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                        <GuestLayout>
+                            <route.Component />
+                        </GuestLayout>
+                    }
+                />
+            ))}
+            {privateRoutes.user.map((route, index) => (
+                <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                        <PrivateRoute
+                            element={<UserLayout>{<route.Component />}</UserLayout>}
+                            layout={UserLayout}
+                            allowedRoles={['User']}
                         />
-                    );
-                })}
+                    }
+                />
+            ))}
 
-                {Object.entries(privateRoutes).map(([role, roleRoutes]) => {
-                    const Layout = getLayoutByRole(role);
-                    return roleRoutes.map((route, index) => (
-                        <Route
-                            key={index}
-                            path={route.path}
-                            element={
-                                <Layout>
-                                    <route.Component />
-                                </Layout>
-                            }
+            {privateRoutes.admin.map((route, index) => (
+                <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                        <PrivateRoute
+                            element={<AdminLayout>{<route.Component />}</AdminLayout>}
+                            layout={AdminLayout}
+                            allowedRoles={['Admin']}
                         />
-                    ));
-                })}
-            </Routes>
-        </div>
+                    }
+                />
+            ))}
+
+            {privateRoutes.manager.map((route, index) => (
+                <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                        <PrivateRoute
+                            element={<ManagerLayout>{<route.Component />}</ManagerLayout>}
+                            layout={ManagerLayout}
+                            allowedRoles={['Manager']}
+                        />
+                    }
+                />
+            ))}
+        </Routes>
     );
 }
 

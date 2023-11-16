@@ -298,7 +298,7 @@ function AuthProvider({ children }) {
                 localStorage.setItem('username', decodedToken.username);
                 console.log(decodedToken);
                 if (decodedToken.role === 'User') {
-                    navigate('/user');
+                    navigate('/');
                 } else if (decodedToken.role === 'Admin') {
                     navigate('/admin', { replace: true });
                 } else if (decodedToken.role === 'Manager') {
@@ -313,7 +313,7 @@ function AuthProvider({ children }) {
                     },
                 });
 
-                navigate(`/${decodedToken.role.toLowerCase()}`);
+                // navigate(`/${decodedToken.role.toLowerCase()}`);
             } else {
                 dispatch({
                     type: 'SET_ERROR',
