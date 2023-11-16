@@ -91,7 +91,7 @@ const Navbar = () => {
                     <Link to="/">Home</Link>
                     <Link>About</Link>
                     <Link>Contact</Link>
-                    <Link to="/products">Products</Link>
+                    <Link to="/products/category/38a3260d9bf44451961e9dc56def7388">Products</Link>
                     <Link to="/cart">My Bag {cartProduct.length}</Link>
                 </div>
                 <div className="inner-right">
