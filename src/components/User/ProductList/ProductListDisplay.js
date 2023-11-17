@@ -19,7 +19,7 @@ const ProductListDisplay = ({
     return (
         <div>
             <div style={{ paddingBottom: '30px' }}>
-                Số sản phẩm trên mỗi trang: {''}
+                Number products on page: {''}
                 <select value={productsPerPage} onChange={handleProductsPerPage}>
                     <option value={3}>3</option>
                     <option value={6}>6</option>
