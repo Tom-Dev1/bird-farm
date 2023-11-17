@@ -145,6 +145,7 @@ const SingleProduct = () => {
                         <span className="name">{productSingle.name}</span>
                         <span className="price">{productSingle.price}$</span>
                         <span className="desc">{productSingle.description}</span>
+                        <span className="desc">{productSingle.day_of_birth}</span>
                         <div className="cart-button">
                             <button className="add-to-cart-button" onClick={() => handleAddToCart(productSingle.id)}>
                                 <AddShoppingCartIcon fontSize={'large'} />
@@ -166,7 +167,7 @@ const SingleProduct = () => {
                                 </span>
                             </span>
                         </div>
-                        <div className="info-item">
+                        {/* <div className="info-item">
                             <span className="text-bold">
                                 <p>Rating:</p>
                                 <span>{productSingle.rating}</span>
@@ -185,7 +186,7 @@ const SingleProduct = () => {
                                     <button onClick={handleAddReview}>Submit Review</button>
                                 </div>
                             </span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
