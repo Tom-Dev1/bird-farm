@@ -143,7 +143,7 @@ const SingleProduct = () => {
                     </div>
                     <div className="right">
                         <span className="name">{productSingle.name}</span>
-                        <span className="price">&#8377;{productSingle.price}</span>
+                        <span className="price">{productSingle.price}$</span>
                         <span className="desc">{productSingle.description}</span>
                         <div className="cart-button">
                             <button className="add-to-cart-button" onClick={() => handleAddToCart(productSingle.id)}>
