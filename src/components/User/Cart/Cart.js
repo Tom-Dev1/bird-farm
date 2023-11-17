@@ -108,8 +108,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Cart.scss';
+import { useDispatch } from 'react-redux';
+import { fetchFromLocalStorage } from '../../../redux/cartSlice';
 
 const Cart = () => {
+    const dispatch = useDispatch();
     const initialCart = JSON.parse(localStorage.getItem('cart')) || [];
     const [carts, setCarts] = useState(initialCart);
 
@@ -154,7 +157,10 @@ const Cart = () => {
     //     handleClearCart();
     //     alert('Checkout successful! Cart cleared.');
     // };
-
+    // const handleCheckout = () => {
+    //     dispatch(fetchFromLocalStorage(carts.id));
+    // };
+    // console.log('carts.id', carts.id);
     return (
         <>
             {carts.length === 0 ? (
@@ -200,6 +206,7 @@ const Cart = () => {
                         <div className="item-div">
                             <div className="item-name">Total</div>
                             <div className="item-value">${calculateTotalAmount()}</div>
+
                             <button className="checkout-btn">
                                 <Link to="/user/checkout"> Checkout</Link>
                             </button>
