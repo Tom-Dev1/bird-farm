@@ -28,7 +28,6 @@ export const publicRoutes = [
     { path: '/login', Component: LoginForm },
     { path: '/register', Component: RegisterForm },
     { path: '/about', Component: AboutPage },
-
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },
     { path: '/products/:id', Component: SingleProduct },
@@ -46,7 +45,7 @@ export const privateRoutes = {
     ],
     user: [
         { path: '/', Component: Home },
-        // { path: '/about', Component: Home },
+        { path: '/about', Component: AboutPage },
         { path: '/user/products', Component: Products },
         { path: '/user/products/category/:id', Component: Products },
         { path: '/user/products/:id', Component: SingleProduct },

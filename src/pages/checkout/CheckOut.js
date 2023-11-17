@@ -10,23 +10,23 @@ import Link from '@mui/material/Link';
 import Review from './Review';
 
 export default function Checkout() {
-  const [activeStep, setActiveStep] = React.useState(2);
+    const [activeStep, setActiveStep] = React.useState(2);
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          {activeStep === 2 ? (
-            <React.Fragment>
-              <Review />
-            </React.Fragment>
-          ) : null}
-        </Paper>
-      </Container>
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <CssBaseline />
+            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                    <Typography component="h1" variant="h4" align="center">
+                        Checkout
+                    </Typography>
+                    {activeStep === 2 ? (
+                        <React.Fragment>
+                            <Review />
+                        </React.Fragment>
+                    ) : null}
+                </Paper>
+            </Container>
+        </React.Fragment>
+    );
 }

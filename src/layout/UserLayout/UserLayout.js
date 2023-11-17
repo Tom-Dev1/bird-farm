@@ -6,6 +6,7 @@ const UserLayout = ({ children }) => {
     return (
         <div className="wrap">
             <Navbar />
+
             <div className="container">{children}</div>
             <Footer />
         </div>
