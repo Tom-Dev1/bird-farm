@@ -2,24 +2,37 @@ import React, { useEffect } from 'react';
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/bird-on-branch-svgrepo-com.png';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 // import AccountCircle from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AccountCircle } from '@mui/icons-material';
 import swal from 'sweetalert2';
+import { clearCart } from '../../redux/cartSlice';
 
 const Navbar = () => {
     const { logout, isAuthenticated } = useAuth();
+    const dispatch = useDispatch();
     const cartProduct = useSelector((state) => state.cart);
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [cartItemCount, setCartItemCount] = useState(0);
+    useEffect(() => {
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItemCount(existingCart.length);
+    }, [cartProduct]);
+    // useEffect(() => {
+    // Update cart count whenever the localStorage changes (e.g., after adding a product)
+    // const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    // setCartItemCount(existingCart.length);
+    // console.log(setCartItemCount);
+    // }, [localStorage.getItem('cart')]);
 
     useEffect(() => {
-        // Update the isLoggedIn state when the authentication status changes
         setLoggedIn(isAuthenticated);
     }, [isAuthenticated]);
     const isMenuOpen = Boolean(anchorEl);
@@ -49,6 +62,10 @@ const Navbar = () => {
             console.error('Error during logout:', error);
             swal.fire('Error', 'An error occurred during logout.', 'error');
         }
+        localStorage.removeItem('cart');
+        dispatch(clearCart());
+
+        setCartItemCount(0);
     };
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -89,10 +106,15 @@ const Navbar = () => {
                 </Link>
                 <div className="inner-center">
                     <Link to="/">Home</Link>
-                    <Link>About</Link>
+                    <Link to="/about">About</Link>
                     <Link>Contact</Link>
                     <Link to="/products">Products</Link>
-                    <Link to="/cart">My Bag {cartProduct.length}</Link>
+                    <Link to="/cart" className="cart-icon-link">
+                        <IconButton color="inherit">
+                            <ShoppingCartIcon />
+                            {cartItemCount > 0 && <span className="cart-item-count">{cartItemCount}</span>}
+                        </IconButton>
+                    </Link>
                 </div>
                 <div className="inner-right">
                     {isLoggedIn ? (
