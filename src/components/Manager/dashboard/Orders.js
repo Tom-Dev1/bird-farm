@@ -29,13 +29,19 @@ export default function Orders() {
     const getStatusName = (status) => {
         switch (status) {
             case 1:
-                return 'Đang chuẩn bị';
+                return 'Chờ Xác Nhận';
             case 2:
-                return 'Đang vận chuyển';
+                return 'Đã Xác Nhận';
             case 3:
-                return 'Đã nhận hàng';
+                return 'Đang Vận Chuyển';
             case 4:
-                return 'Hủy';
+                return 'Đã Nhận Hàng';
+            case 5:
+                return 'Hủy Đơn';
+            case 6:
+                return 'Hoàn Trả Hàng';
+            case 7:
+                return 'Hết Hàng';
             default:
                 return 'Unknown';
         }

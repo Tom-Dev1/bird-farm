@@ -86,17 +86,17 @@ export default function Dashboard() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        height: '150vh',
+                        height: '180vh',
                         overflow: 'auto',
                     }}
                 >
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={4}>
                             {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
+                            <Grid item xs={12} md={8} lg={6}>
                                 <Paper
                                     sx={{
-                                        p: 2,
+                                        p: 5,
                                         display: 'flex',
                                         flexDirection: 'column',
                                         height: 500,
