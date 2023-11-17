@@ -73,10 +73,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductSingle, getProductSingle, setAddReviewToProduct } from '../../../redux/productSlice';
 import { addToCart, addToCartAsync } from '../../../redux/cartSlice';
 import Swal from 'sweetalert2';
+import useAuth from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom/dist';
 
 const SingleProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const authContext = useAuth();
     useEffect(() => {
         dispatch(fetchProductSingle(id));
     }, [dispatch, id]);
@@ -86,24 +90,42 @@ const SingleProduct = () => {
     const [userComment, setUserComment] = useState('');
 
     const item = useSelector((state) => state.cart.items);
-    console.log(item);
+    // console.log(item);
     const handleAddToCart = () => {
-        if (productSingle) {
-            const { id, name, price } = productSingle;
-
-            const isItemInCart = item.some((item) => item.id === id);
+        if (authContext.isAuthenticated === false) {
             Swal.fire({
-                icon: 'success',
-                title: `Thêm sản phẩm ${name} thành công !!!`,
+                icon: 'info',
+                title: 'Thông báo',
+                text: 'Bạn cần đăng nhập để truy cập trang này.',
+                confirmButtonText: 'Đăng nhập',
+                showCancelButton: true,
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/login');
+                }
             });
-            if (isItemInCart) {
+        } else {
+            if (productSingle) {
+                const { id, name, price, image } = productSingle;
+
+                const isItemInCart = item.some((item) => item.id === id);
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: `Sản phẩm ${name} đã có trong giỏ hàng`,
+                    icon: 'success',
+                    title: `Thêm sản phẩm ${name} thành công !!!`,
                 });
-            } else {
-                dispatch(addToCart({ id, name, price }));
+                if (isItemInCart) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Error',
+                        text: `Sản phẩm ${name} đã có trong giỏ hàng`,
+                    });
+                } else {
+                    dispatch(addToCart({ id, name, price, image }));
+                    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const updatedCart = [...existingCart, { id, name, price, image }];
+                    localStorage.setItem('cart', JSON.stringify(updatedCart));
+                }
             }
         }
     };

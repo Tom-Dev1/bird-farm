@@ -288,7 +288,7 @@ function AuthProvider({ children }) {
 
             if (response.data && response.data.data && response.data.data.token) {
                 const decodedToken = jwtDecode(response.data.data.token);
-
+                console.log(decodedToken);
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('role');
                 localStorage.removeItem('username');
@@ -297,6 +297,7 @@ function AuthProvider({ children }) {
                 localStorage.setItem('role', decodedToken.role);
                 localStorage.setItem('username', decodedToken.username);
                 localStorage.setItem('id', decodedToken.UserID);
+                // localStorage.setItem('userid', decodedToken.id);
                 console.log(decodedToken);
                 if (decodedToken.role === 'User') {
                     navigate('/');

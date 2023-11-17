@@ -1,5 +1,5 @@
 import AboutAdmin from '../components/Admin/AboutAdmin/AboutAdmin';
-import Cart from '../pages/Cart/Cart';
+import Cart from '../pages/CartPage/Cart';
 import Home from '../pages/Home/Home';
 import LoginForm from '../pages/Login/LoginForm';
 // import ManagerScreen from '../pages/Manager/ManagerScreen';
@@ -21,12 +21,14 @@ import EditAccount from '../components/Manager/account/EditAccount';
 import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import RegisterForm from '../pages/Login/RegisterForm';
 import Unauthorized from '../pages/404/unauthorized';
+import AboutPage from '../pages/About/AboutPage';
 import Checkout from '../pages/checkout/CheckOut';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
     { path: '/register', Component: RegisterForm },
-    // { path: '/about', Component: Home },
+    { path: '/about', Component: AboutPage },
+
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },
     { path: '/products/:id', Component: SingleProduct },
