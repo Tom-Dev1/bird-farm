@@ -109,7 +109,9 @@ const Navbar = () => {
                     <Link to="/about">About</Link>
                     <Link>Contact</Link>
                     <Link to="/products">Products</Link>
+                    <Link to='/mixbird'>Mix Birds</Link>
                     <Link to="/cart" className="cart-icon-link">
+
                         <IconButton color="inherit">
                             <ShoppingCartIcon />
                             {cartItemCount > 0 && <span className="cart-item-count">{cartItemCount}</span>}
