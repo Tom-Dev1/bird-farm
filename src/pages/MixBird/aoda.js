@@ -14,31 +14,31 @@ export default function Step2() {
     const [sex, setSex] = useState('');
     const [productsAvailable, setProductsAvailable] = useState(true);
 
-    const fetchProducts = async (storedCategory, storedSex) => {
+
+    const fetchProducts = async (storedCategory, selectedSex) => {
         try {
-            const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct?category_id=${storedCategory}&sex=${storedSex || ''}`);
+            const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct?category_id=${storedCategory}&sex=${selectedSex}`);
             const data = await response.json();
             setProducts(data.data);
             setSelectedProduct('');
             setProductDetails({});
             setProductsAvailable(data.data.length > 0);
+
+
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
-
-
-    const fetchProductDetails = async (productId) => {
+    const fetchProductDetails = async (productId, category) => {
         try {
-            const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${productId}`);
+            const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${productId}&category_id=${category}`);
             const data = await response.json();
             setProductDetails(data.data);
         } catch (error) {
             console.error('Error fetching product details:', error);
         }
     };
-
 
     const handleChangeProduct = async (productName) => {
         setSelectedProduct(productName);
@@ -76,7 +76,7 @@ export default function Step2() {
         }
 
         // Fetch products with the current sex
-        fetchProducts(storedSex === 'true' ? 'false' : 'true');
+        fetchProducts(category, storedSex === 'true' ? 'false' : 'true');
     }, [sex]); // Add sex as a dependency
 
     const getSexName = (value) => {
@@ -93,8 +93,6 @@ export default function Step2() {
     useEffect(() => {
         localStorage.setItem('chimMuonPhoi_id', productDetails?.id || '');
     }, [productDetails]);
-
-
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -109,7 +107,6 @@ export default function Step2() {
                     <Typography variant="subtitle1">Sex of Bird: {getSexName(sex)} </Typography>
                 </Grid>
                 <Grid item xs={12} >
-
                     {productsAvailable ? (
                         <FormControl fullWidth>
                             <InputLabel id="product-select-label">Product</InputLabel>
@@ -131,13 +128,11 @@ export default function Step2() {
                         <Typography variant="subtitle1"
                         >The birds are in the process of being updated, please come back and choose another bird</Typography>
                     )}
-
                 </Grid>
                 {productsAvailable && selectedProduct && (
                     <Grid item xs={12}>
                         <Typography variant="subtitle1">Product Information:</Typography>
-                        <Typography>{`Category_id: ${productDetails.category_id}`}</Typography>
-                        <Typography>{`Sex: ${getSexName(productDetails.sex)}`}</Typography>
+                        <Typography>{`Sex: ${productDetails.sex}`}</Typography>
                         <Typography>{`Name: ${productDetails.name}`}</Typography>
                         <Typography>{`Description: ${productDetails.description}`}</Typography>
                         <Typography>{`Price: ${productDetails.price}$`}</Typography>

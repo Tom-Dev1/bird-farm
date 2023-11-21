@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
+import { useState } from 'react';
 
 function Copyright() {
     return (
@@ -44,13 +45,30 @@ function getStepContent(step) {
 }
 
 export default function Step4() {
-    const [activeStep, setActiveStep] = React.useState(0);
-
+    const [activeStep, setActiveStep] = useState(0);
+    // const [category, setCategory] = React.useState('');
+    // const [sex, setSex] = React.useState('');
+    // const [name, setName] = React.useState('');
+    // const [image, setImage] = React.useState('');
+    //handleNextstep
     const handleNext = () => {
+
+        // const step1Values = {
+        //     category_s1: category,
+        //     sex_s1: sex,
+        //     name_s1: name,
+        //     image_s1: image
+        // };
+        // // Convert the object to a JSON string
+        // const step1ValuesString = JSON.stringify(step1Values);
+        // localStorage.setItem('step1', step1ValuesString);
+        // const { category, name, sex, image } = step1Values;
+        //activeStep
         setActiveStep(activeStep + 1);
     };
 
     const handleBack = () => {
+        localStorage.removeItem('step1');
         setActiveStep(activeStep - 1);
     };
 

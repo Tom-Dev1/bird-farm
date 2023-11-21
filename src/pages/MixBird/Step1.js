@@ -4,24 +4,61 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+
+import { useEffect, useState } from 'react';
+
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 export default function Step1() {
+    const [file, setFile] = useState(null);
+    const [category, setCategory] = useState(null);
+    const [sex, setSex] = useState(null);
+    const [nameBird, setNameBird] = useState('');
 
+    const handleChangeCategory = (event) => {
+        setCategory(event.target.value);
+    };
 
-    const [sex, setSex] = React.useState('');
-
-    const handleChange = (event) => {
+    const handleChangeSex = (event) => {
         setSex(event.target.value);
     };
 
+    const handleNameChange = (event) => {
+        setNameBird(event.target.value);
+    };
 
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        setFile(selectedFile);
+    };
 
+    useEffect(() => {
+        localStorage.setItem('category_id', category);
+    }, [category]);
 
+    useEffect(() => {
+        localStorage.setItem('sex', sex);
+    }, [sex]);
+
+    useEffect(() => {
+        // Save the file to localStorage as a base64 string
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                localStorage.setItem('imageFiles', reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }, [file]);
+
+    useEffect(() => {
+        localStorage.setItem('name', nameBird);
+    }, [nameBird]);
 
     return (
         <React.Fragment>
@@ -30,15 +67,20 @@ export default function Step1() {
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="name"
-                        name="name"
-                        label="Name of the Bird"
-                        fullWidth
-                        autoComplete="given-name"
-                        variant="standard"
-                    />
+                    <FormControl fullWidth>
+                        <InputLabel id="category-select-label">Category</InputLabel>
+                        <Select
+                            labelId="category-select-label"
+                            id="category-select"
+                            value={category}
+                            label="Category"
+                            onChange={handleChangeCategory}
+                        >
+                            <MenuItem value={'51d334ad9f0a48a59fa4c7a20f70dcfd'}>Đại bàng</MenuItem>
+                            <MenuItem value={'6a2aab32b3574510a434136b31cec3df'}>Vẹt</MenuItem>
+                            <MenuItem value={'6bc3f28de70c4982b67d3bd1f0011cf2'}>Chào mào</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
@@ -48,38 +90,40 @@ export default function Step1() {
                             id="demo-simple-select"
                             value={sex}
                             label="Sex of birds"
-                            onChange={handleChange}
+                            onChange={handleChangeSex}
                         >
                             <MenuItem value={true}>Male</MenuItem>
                             <MenuItem value={false}>Female</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                     <TextField
-                        required
-                        id="description"
-                        name="description"
-                        label="Description"
-                        fullWidth
-                        autoComplete="description"
-                        variant="standard"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        id="linkimage"
-                        name="linkimage"
-                        label="Link Image "
-                        fullWidth
-                        autoComplete="linkimage"
-                        variant="standard"
+                        id="outlined-basic"
+                        label="Bird Name"
+                        variant="outlined"
+                        value={nameBird}
+                        onChange={handleNameChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-
+                    <label htmlFor="file-input">
+                        <Button
+                            component="span"
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                        >
+                            Upload image
+                        </Button>
+                    </label>
+                    <input
+                        id="file-input"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                    />
                 </Grid>
-
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
