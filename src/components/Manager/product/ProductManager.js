@@ -17,7 +17,7 @@ import AppBarManager from '../AppBarManager/AppBarManager';
 
 function ProductManager() {
     const [staff, setStaff] = useState([]);
-    const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct/`;
+    const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct`;
     console.log(staff);
     useEffect(() => {
         fetch(baseUrl)
@@ -60,30 +60,30 @@ function ProductManager() {
     };
     const getStatusName = (status) => {
         switch (status) {
-          case 1:
-            return 'Còn Hàng';
-          case 2:
-            return 'Hết Hàng';
-          case 3:
-            return 'Lỗi';
-          case 4:
-            return 'Không Bán';
-          default:
-            return 'Unknown';
+            case 1:
+                return 'Còn Hàng';
+            case 2:
+                return 'Hết Hàng';
+            case 3:
+                return 'Lỗi';
+            case 4:
+                return 'Không Bán';
+            default:
+                return 'Unknown';
         }
-      };
-      const getStatusColor = (status) => {
+    };
+    const getStatusColor = (status) => {
         switch (status) {
             case 1:
                 return '#00FF00';
             case 2:
                 return '#FF0000';
             case 3:
-                return '#808080'; 
+                return '#808080';
             case 4:
-                return '#FF0000'; 
+                return '#FF0000';
             default:
-                return '#FF0000'; 
+                return '#FF0000';
         }
     };
     return (
@@ -117,7 +117,7 @@ function ProductManager() {
                                             <TableCell style={{ fontSize: '13px' }} align="center">{staff.id}</TableCell>
 
                                             <TableCell component="th" scope="row" align="center">
-                                                <img style={{ width: '150px', height: '150px' }} src={staff.image} alt="" />
+                                                <img style={{ width: '150px', height: '150px' }} src={'http://birdsellingapi-001-site1.ctempurl.com/' + staff.image} alt="" />
                                             </TableCell>
                                             <TableCell style={{ fontSize: '17px' }} align="center">{staff.name}</TableCell>
                                             <TableCell style={{ fontSize: '17px' }} align="center">{staff.price}</TableCell>

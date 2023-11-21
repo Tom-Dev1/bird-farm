@@ -139,7 +139,7 @@ const SingleProduct = () => {
             <div className="layout">
                 <div className="single-product-page">
                     <div className="left">
-                        <img src={productSingle.image} alt="" />
+                        <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + productSingle.image} alt="" />
                     </div>
                     <div className="right">
                         <span className="name">{productSingle.name}</span>

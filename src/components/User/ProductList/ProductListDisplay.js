@@ -35,7 +35,7 @@ const ProductListDisplay = ({
                                     <CardMedia
                                         component="img"
                                         height="350px"
-                                        image={product.image}
+                                        image={'http://birdsellingapi-001-site1.ctempurl.com/'+product.image}
                                         alt={product.name}
                                         style={{ objectFit: 'contain' }}
                                     />
