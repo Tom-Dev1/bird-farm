@@ -4,12 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
-import { useEffect } from 'react';
-
 export default function Step3() {
-
-
 
     const getCategoryName = (value) => {
         switch (value) {

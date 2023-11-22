@@ -65,20 +65,71 @@ export default function Step4() {
         localStorage.removeItem('step1');
         setActiveStep(activeStep - 1);
     };
-    const placeOrder = () => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Combine successfully, keep buying !',
-        });
-        navigate('/');
-        // For example, you can show a confirmation message, make an API call, etc.
-        console.log('Placing order...');
+    const placeOrder = async () => {
+        try {
+            // Get data from localStorage
+            const categoryId = localStorage.getItem('category_id');
+            const imageFiles = localStorage.getItem('imagefiles');
+            const name = localStorage.getItem('name');
+            const sex = localStorage.getItem('sex');
+            const userId = localStorage.getItem('UserID');
+            const chimMuonPhoi_id = localStorage.getItem('chimMuonPhoi_id');
+            const price = '0';
+            const description = '';
+            const bird_mother_id = '';
+            const bird_father_id = '';
+            const discount = '0';
+            const typeProduct = '1'
+            const statusProduct = '1'
+            const day_of_birth = '2023-11-22T18:13:32.139Z'
+            const order = {
+                chimCuaKhacHang: {
+                    categoryId,
+                    imageFiles,
+                    name,
+                    sex,
+                    userId,
+                    price,
+                    description,
+                    bird_mother_id,
+                    bird_father_id,
+                    discount,
+                    typeProduct,
+                    statusProduct,
+                    day_of_birth,
+                },
+                chimMuonPhoi_id,
+            };
 
-        // Once the order is placed, you can update the UI or perform any necessary actions.
+            // Make a POST request to the API endpoint
+            const response = await fetch('http://birdsellingapi-001-site1.ctempurl.com/api/PhoiGiong/Create-Phoi-Chim', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
 
-        setTimeout(() => {
+                },
+                body: JSON.stringify(order)
+            });
+
+            // Check if the request was successful
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             console.log('Order placed successfully!');
-        }, 2000);
+            Swal.fire({
+                icon: 'success',
+                title: 'Combine successfully, keep buying !',
+            });
+            navigate('/');
+        } catch (error) {
+            console.error('Error placing order:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            });
+        }
     };
     return (
         <React.Fragment>
