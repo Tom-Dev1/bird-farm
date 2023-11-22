@@ -7,19 +7,31 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Select, MenuItem } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import OrderDetailsDialog from './OrderDetails';  // Adjust the path accordingly
+
 
 function OrderManager() {
     const [orders, setOrders] = useState([]);
     const [selectedStatusFilter, setSelectedStatusFilter] = useState('all'); // Default: show all orders
     const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetAll';
-    console.log(orders);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+    const handleChangeStatus = (newStatus) => {
+        console.log('Changing status to:', newStatus);
+        // Implement the logic to update the status
+    };
 
     useEffect(() => {
         fetch(baseUrl)
@@ -76,6 +88,18 @@ function OrderManager() {
         }
     };
 
+    const handleViewDetails = (id) => {
+        // Fetch data for the selected order by ID
+        const orderDetailsUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=${id}`;
+
+        fetch(orderDetailsUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                setSelectedOrder(data);
+                setIsDetailsDialogOpen(true);
+            })
+            .catch((error) => console.log(error.message));
+    };
     const handleStatusFilterChange = (event) => {
         setSelectedStatusFilter(event.target.value);
     };
@@ -132,7 +156,8 @@ function OrderManager() {
                                                     color="success"
                                                     className="edit-btn"
                                                     onClick={() => {
-                                                        ViewFunction(order.id);
+                                                        handleViewDetails(order.id);
+                                                        setIsDialogOpen(true); // Change this line to set isDialogOpen to true
                                                     }}
                                                 >
                                                     <VisibilityIcon sx={{ fontSize: 20 }} />
@@ -146,6 +171,37 @@ function OrderManager() {
                     )}
                 </div>
             </Box>
+            <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+                <DialogTitle>Order Details</DialogTitle>
+                <DialogContent>
+                    {selectedOrder && (
+                        <div>
+
+                            <div>
+                                <p>User Name: {selectedOrder.data.user_id}</p>
+                                {/* Other user-related information */}
+                            </div>
+                            <p>Order Date: {new Date(selectedOrder.data.order_date).toLocaleDateString()}</p>
+                            <p>Total Amount: {selectedOrder.data.orderTotal}</p>
+                            <p>Status: {getStatusName(selectedOrder.data.orderStatus)}</p>
+
+                            {/* Add other order details as needed */}
+                        </div>
+                    )}
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={() => setIsDialogOpen(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <OrderDetailsDialog
+                isOpen={isDetailsDialogOpen}
+                onClose={() => setIsDetailsDialogOpen(false)}
+                orderDetails={selectedOrder}
+                handleChangeStatus={handleChangeStatus}
+            />
         </Box>
     );
 }

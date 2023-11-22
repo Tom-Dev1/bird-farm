@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Select, MenuItem } from '@mui/material';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
@@ -9,14 +9,14 @@ import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
 import Box from '@mui/material/Box';
 
-const EditProductForm = ({ id }) => {
+const EditProductForm = ({ productId }) => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const validationSchema = yup.object().shape({
     category_id: yup.string().required('Danh mục là bắt buộc'),
-    image: yup.mixed().required('URL hình ảnh là bắt buộc'),
+    image: yup.mixed().optional('Hình ảnh là bắt buộc'),
     name: yup.string().required('Tên sản phẩm là bắt buộc'),
     price: yup
       .number()
@@ -52,22 +52,21 @@ const EditProductForm = ({ id }) => {
       const formData = new FormData();
 
       formData.append('category_id', values.category_id);
-      if (values.image instanceof File) {
-        formData.append('image', values.image);
-      } else {
-        // If it's not a file, assume it's a URL and append it as a string
-        formData.append('image', values.image);
-      }
-      formData.append('name', values.name);
+      formData.append('imageFiles', values.image); // Use 'imageFiles' as the field name for the image
       formData.append('price', values.price);
+      formData.append('name', values.name);
       formData.append('sex', values.sex);
       formData.append('description', values.description);
-      formData.append('discount', values.discount);
-      formData.append('day_of_birth', new Date(values.day_of_birth).toISOString());
+      formData.append('bird_mother_id', values.bird_mother_id);
+      formData.append('bird_father_id', values.bird_father_id);
+      formData.append('Discount', values.discount); // Note: 'Discount' should match the API field name
+      formData.append('TypeProduct', values.typeProduct); // Note: 'TypeProduct' should match the API field name
       formData.append('statusProduct', values.statusProduct);
+      formData.append('day_of_birth', values.day_of_birth);
+      formData.append('userId', values.userId); // Note: 'userId' should match the API field name
 
       try {
-        const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/UpdateProduct/${id}`, {
+        const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/UpdateProduct/${productId}`, {
           method: 'PUT',
           body: formData,
         });
@@ -87,7 +86,7 @@ const EditProductForm = ({ id }) => {
   });
 
   useEffect(() => {
-    fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${id}`)
+    fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${productId}`)
       .then((response) => response.json())
       .then((data) => {
         const productData = data.data;
@@ -98,7 +97,7 @@ const EditProductForm = ({ id }) => {
         setSelectedFile(productData.image);
       })
       .catch((error) => console.error(error));
-  }, [id]);
+  }, [productId]);
 
   useEffect(() => {
     fetch('http://birdsellingapi-001-site1.ctempurl.com/api/BirdCategory/GetAll')
@@ -172,12 +171,12 @@ const EditProductForm = ({ id }) => {
           <FormControlLabel
             value="true"
             control={<Radio color="primary" />}
-            label="Nam"
+            label="Male"
           />
           <FormControlLabel
             value="false"
             control={<Radio color="primary" />}
-            label="Nữ"
+            label="FeMale"
           />
         </RadioGroup>
         {formik.touched.sex && formik.errors.sex && (
@@ -252,7 +251,7 @@ const EditProductForm = ({ id }) => {
         <TextField
           fullWidth
           id="image"
-          label="Hình ảnh"
+          label="Image"
           variant="filled"
           onChange={(event) => {
             formik.setFieldValue("image", event.currentTarget.files[0]);
@@ -267,7 +266,7 @@ const EditProductForm = ({ id }) => {
           <img
             src={URL.createObjectURL(selectedFile)}
             alt="Selected"
-            style={{ width: '100px', height: '100px', marginTop: '10px' }}
+            style={{ width: '200px', height: '200px', marginTop: '10px' }}
           />
         )}
       </div>
@@ -292,7 +291,7 @@ const EditProduct = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
         <AppBarManager />
         <div className="main-edit-product">
-          <EditProductForm id={id} />
+          <EditProductForm productId={id} />
         </div>
       </Box>
     </Box>

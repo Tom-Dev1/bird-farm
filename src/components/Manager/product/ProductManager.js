@@ -63,7 +63,7 @@ function ProductManager() {
             case 1:
                 return 'Còn Hàng';
             case 2:
-                return 'Hết Hàng';
+                return 'Đã Bán';
             case 3:
                 return 'Lỗi';
             case 4:
