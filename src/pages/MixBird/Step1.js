@@ -124,8 +124,7 @@ export default function Step1() {
                         style={{ display: 'none' }}
                     />
                     <br />
-
-                    {uploadSuccess && <Typography ><CheckCircleOutlineIcon /> Upload Successful!!</Typography>}
+                    {uploadSuccess && <Typography color={'green'} ><CheckCircleOutlineIcon color="success" fontSize="small" /> Upload Successful!!</Typography>}
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel

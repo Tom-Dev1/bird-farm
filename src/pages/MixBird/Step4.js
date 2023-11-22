@@ -15,6 +15,8 @@ import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright() {
     return (
@@ -46,28 +48,16 @@ function getStepContent(step) {
 
 export default function Step4() {
     const [activeStep, setActiveStep] = useState(0);
-    // const [category, setCategory] = React.useState('');
-    // const [sex, setSex] = React.useState('');
-    // const [name, setName] = React.useState('');
-    // const [image, setImage] = React.useState('');
-    //handleNextstep
+    const navigate = useNavigate();
+
+
     const handleNext = () => {
-
-        // const step1Values = {
-        //     category_s1: category,
-        //     sex_s1: sex,
-        //     name_s1: name,
-        //     image_s1: image
-        // };
-        // // Convert the object to a JSON string
-        // const step1ValuesString = JSON.stringify(step1Values);
-        // localStorage.setItem('step1', step1ValuesString);
-        // const { category, name, sex, image } = step1Values;
-        //activeStep
-
-
-
-        setActiveStep(activeStep + 1);
+        if (activeStep === steps.length - 1) {
+            // Handle "Place order" logic here
+            placeOrder();
+        } else {
+            setActiveStep(activeStep + 1);
+        }
     };
 
     const handleBack = () => {
@@ -75,7 +65,21 @@ export default function Step4() {
         localStorage.removeItem('step1');
         setActiveStep(activeStep - 1);
     };
+    const placeOrder = () => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Combine successfully, keep buying !',
+        });
+        navigate('/');
+        // For example, you can show a confirmation message, make an API call, etc.
+        console.log('Placing order...');
 
+        // Once the order is placed, you can update the UI or perform any necessary actions.
+
+        setTimeout(() => {
+            console.log('Order placed successfully!');
+        }, 2000);
+    };
     return (
         <React.Fragment>
             <CssBaseline />

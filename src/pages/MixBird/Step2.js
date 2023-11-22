@@ -89,12 +89,26 @@ export default function Step2() {
     useEffect(() => {
         localStorage.setItem('chimMuonPhoi_id', productDetails?.id || '');
     }, [productDetails]);
-
-
+    //bird of SHOPP
+    useEffect(() => {
+        localStorage.setItem('nameShop', productDetails?.name || '');
+    }, [productDetails]);
+    useEffect(() => {
+        localStorage.setItem('categoryShop', productDetails.category || '');
+    }, [productDetails]);
+    useEffect(() => {
+        localStorage.setItem('sexShop', productDetails.sex || '');
+    }, [productDetails]);
+    useEffect(() => {
+        localStorage.setItem('imageShop', productDetails.image || '');
+    }, [productDetails]);
+    useEffect(() => {
+        localStorage.setItem('priceShop', productDetails.price || '');
+    }, [productDetails]);
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Birds of Our Shop
+                Birds of Bird Farm Shop
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
@@ -137,11 +151,11 @@ export default function Step2() {
                         <Typography>{`Price: ${productDetails.price || 'N/A'}$`}</Typography>
                         {productDetails.image && (
                             <img
-                                src={productDetails.image}
+                                src={'http://birdsellingapi-001-site1.ctempurl.com/' + productDetails.image}
                                 alt={productDetails.name}
                                 style={{
-                                    maxWidth: '100%',
-                                    height: 'auto',
+                                    maxWidth: '461px',
+                                    height: '250px',
                                     borderRadius: '5px',
                                     boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
                                     transition: '0.3s',

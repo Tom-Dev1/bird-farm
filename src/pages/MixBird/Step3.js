@@ -7,113 +7,79 @@ import Grid from '@mui/material/Grid';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const products = [
-    {
-        name: localStorage.getItem('name'), category: localStorage.getItem('category_id'), sex: localStorage.getItem('sex'), image: localStorage.getItem('imageFiles'),
-    }
-];
-const getCategoryName = (value) => {
-    switch (value) {
-        case '51d334ad9f0a48a59fa4c7a20f70dcfd':
-            return 'Đại bàng';
-        case '6a2aab32b3574510a434136b31cec3df':
-            return 'Vẹt';
-        case '6bc3f28de70c4982b67d3bd1f0011cf2':
-            return 'Chào mào';
-        default:
-            return '';
-    }
-};
-
-const getSexName = (value) => {
-    switch (value) {
-        case 'true':
-            return 'Male';
-        case 'false':
-            return 'Female';
-        default:
-            return '';
-    }
-};
+export default function Step3() {
 
 
 
-
-const [birdData, setBirdData] = useState([]);
-useEffect(() => {
-    const fetchBirdData = async (chimMuonPhoi_id) => {
-        try {
-            const chimMuonPhoi_id = localStorage.getItem('chimMuonPhoi_id');
-
-            // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
-            const response = await fetch('http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProductByID/${chimMuonPhoi_id}');
-            const data = await response.json();
-            setBirdData(data);
-        } catch (error) {
-            console.error('Error fetching bird data:', error);
+    const getCategoryName = (value) => {
+        switch (value) {
+            case '51d334ad9f0a48a59fa4c7a20f70dcfd':
+                return 'Đại bàng';
+            case '6a2aab32b3574510a434136b31cec3df':
+                return 'Vẹt';
+            case '6bc3f28de70c4982b67d3bd1f0011cf2':
+                return 'Chào mào';
+            default:
+                return '';
+        }
+    };
+    const getSexName = (value) => {
+        switch (value) {
+            case 'true':
+                return 'Male';
+            case 'false':
+                return 'Female';
+            default:
+                return '';
         }
     };
 
-    fetchBirdData();
-}, []);
-
-export default function Step3() {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 Mix summary
             </Typography>
             <List disablePadding>
-                {products.map((product) => (
-                    <div key={product.name}>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={`Name of your bird: ${product.name}`} secondary={`Category: ${getCategoryName(product.category)}`} />
-                            <Typography variant="body2">{`Gender: ${getSexName(product.sex)}`}</Typography>
-
-
-                        </ListItem>
-
-                        <img src={product.image} alt={product.name}
-                            style={{
-                                maxWidth: '250px',
-                                height: '250px',
-                                borderRadius: '5px',
-                                boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-                                transition: '0.3s',
-                                marginBottom: '10px'
-                            }} />
-                    </div>
-                ))}
-                {birdData.map((bird) => (
-                    <div key={bird.name}>
-                        <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText
-                                primary={`Name of your bird: ${bird.name}`}
-                                secondary={`Category: ${getCategoryName(bird.category)}`}
-                            />
-                            <Typography variant="body2">{`Gender: ${getSexName(bird.sex)}`}</Typography>
-                        </ListItem>
-                        <img
-                            src={bird.image}
-                            alt={bird.name}
-                            style={{
-                                maxWidth: '250px',
-                                height: '250px',
-                                borderRadius: '5px',
-                                boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-                                transition: '0.3s',
-                                marginBottom: '10px',
-                            }}
+                <div>
+                    <ListItem sx={{ py: 1, px: 0 }}>
+                        <ListItemText
+                            primary={`Name of your bird: ${localStorage.getItem('name')}`}
+                            secondary={`Category: ${getCategoryName(localStorage.getItem('category_id'))}`}
                         />
-                    </div>
-                ))}
-                <ListItem sx={{ py: 1, px: 0 }}>
-
-                </ListItem>
+                        <Typography variant="body2">{`Gender: ${getSexName(localStorage.getItem('sex'))}`}</Typography>
+                    </ListItem>
+                    <img src={localStorage.getItem('imageFiles')} alt={localStorage.getItem('name')}
+                        style={{
+                            maxWidth: '461px',
+                            height: '261px',
+                            borderRadius: '5px',
+                            boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+                            transition: '0.3s',
+                            marginBottom: '10px'
+                        }} />
+                </div>
+                <div>
+                    <ListItem sx={{ py: 1, px: 0 }}>
+                        <ListItemText
+                            primary={`Name of Bird Farm: ${localStorage.getItem('nameShop')}`}
+                            secondary={`Category: ${getCategoryName(localStorage.getItem('category_id'))} | Price: $${localStorage.getItem('priceShop')}`}
+                        />
+                        <Typography variant="body2">{`Gender: ${(localStorage.getItem('sex') === 'true' ? 'Female' : 'Male')}`}</Typography>
+                    </ListItem>
+                    <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + localStorage.getItem('imageShop')} alt={localStorage.getItem('nameShop')}
+                        style={{
+                            maxWidth: '461px',
+                            height: '250px',
+                            borderRadius: '5px',
+                            boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+                            transition: '0.3s',
+                            marginBottom: '10px'
+                        }} />
+                </div>
                 <ListItem sx={{ py: 1, px: 0 }}>
                     <ListItemText primary="Cost to mix birds:" />
                     <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        $34.06
+                        $29.99
                     </Typography>
                 </ListItem>
             </List>
