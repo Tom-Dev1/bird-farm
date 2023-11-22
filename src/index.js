@@ -16,7 +16,9 @@ root.render(
         <BrowserRouter>
             <Provider store={store}>
                 <AuthProvider>
+
                     <App />
+
                 </AuthProvider>
             </Provider>
             <ToastContainer
