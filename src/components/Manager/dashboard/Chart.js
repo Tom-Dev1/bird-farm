@@ -24,17 +24,15 @@ export default function Chart() {
   const [selectedTimeRange, setSelectedTimeRange] = useState('day');
 
   useEffect(() => {
-    // Define the API endpoint based on the selected time range
-    const apiEndpoint =
-      selectedTimeRange === 'day'
-        ? 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetAll'
-        : ''; // Add other API endpoints for week, month, etc. as needed
-
-    // Make the HTTP request to fetch data
-    axios.get(apiEndpoint)
+    // Make the HTTP request to fetch all data
+    axios.get('http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetAll')
       .then((response) => {
-        // Assuming the response data structure is similar to the provided JSON
-        const groupedData = groupDataByTimeRange(response.data.data, selectedTimeRange);
+        // Filter data based on the selected time range
+        const filteredData = filterDataByTimeRange(response.data.data, selectedTimeRange);
+
+        // Group data by time range
+        const groupedData = groupDataByTimeRange(filteredData, selectedTimeRange);
+
         setData(
           Object.keys(groupedData).map((time) =>
             createData(time, groupedData[time].length)
@@ -45,6 +43,12 @@ export default function Chart() {
         console.error('Error fetching data:', error);
       });
   }, [selectedTimeRange]);
+
+  const filterDataByTimeRange = (data, timeRange) => {
+    // Implement logic to filter data based on the selected time range
+    // For simplicity, let's assume the data is already filtered on the server-side
+    return data;
+  };
 
   const groupDataByTimeRange = (data, timeRange) => {
     // Implement logic to group data by day, week, month, etc.
@@ -81,16 +85,16 @@ export default function Chart() {
   };
 
   const handleTimeRangeChange = (event) => {
-    setSelectedTimeRange(event.target.value);
+    const value = event.target.value;
+    setSelectedTimeRange(value);
   };
-
   return (
     <React.Fragment>
-      <Title>{`Số đơn hàng ${selectedTimeRange.charAt(0).toUpperCase() + selectedTimeRange.slice(1)}`}</Title>
+      <Title>{`Order DashBoard`}</Title>
       <Select value={selectedTimeRange} onChange={handleTimeRangeChange}>
-        <MenuItem value="day">Ngày</MenuItem>
-        <MenuItem value="week">Tuần</MenuItem>
-        <MenuItem value="month">Tháng</MenuItem>
+        <MenuItem value="day">Day</MenuItem>
+        <MenuItem value="week">Week</MenuItem>
+        <MenuItem value="month">Month</MenuItem>
       </Select>
       <ResponsiveContainer>
         <BarChart
@@ -121,7 +125,7 @@ export default function Chart() {
                 ...theme.typography.body1,
               }}
             >
-              Số đơn hàng
+              Orders
             </Label>
           </YAxis>
           <Bar
