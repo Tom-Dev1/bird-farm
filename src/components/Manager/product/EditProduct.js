@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, RadioGroup, FormControlLabel, Radio, FormLabel, Select, MenuItem } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
@@ -278,6 +278,15 @@ const EditProductForm = ({ productId }) => {
       >
         Lưu
       </Button>
+      <Link to="/manager/products">
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => toast.warning('Hủy chỉnh sửa sản phẩm')}
+        >
+          Hủy
+        </Button>
+      </Link>
     </form>
   );
 };
