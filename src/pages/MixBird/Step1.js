@@ -8,8 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import { useEffect, useState } from 'react';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'; import { useEffect, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -18,8 +17,8 @@ export default function Step1() {
     const [file, setFile] = useState(null);
     const [category, setCategory] = useState(null);
     const [sex, setSex] = useState(null);
-    const [nameBird, setNameBird] = useState('');
-
+    const [name, setName] = useState('');
+    const [uploadSuccess, setUploadSuccess] = useState(false);
     const handleChangeCategory = (event) => {
         setCategory(event.target.value);
     };
@@ -29,7 +28,7 @@ export default function Step1() {
     };
 
     const handleNameChange = (event) => {
-        setNameBird(event.target.value);
+        setName(event.target.value);
     };
 
     const handleFileChange = (event) => {
@@ -51,14 +50,15 @@ export default function Step1() {
             const reader = new FileReader();
             reader.onloadend = () => {
                 localStorage.setItem('imageFiles', reader.result);
+                setUploadSuccess(true); // Set uploadSuccess to true after file is loaded
             };
             reader.readAsDataURL(file);
         }
     }, [file]);
 
     useEffect(() => {
-        localStorage.setItem('name', nameBird);
-    }, [nameBird]);
+        localStorage.setItem('name', name);
+    }, [name]);
 
     return (
         <React.Fragment>
@@ -84,7 +84,7 @@ export default function Step1() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Sex of birds</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -102,7 +102,7 @@ export default function Step1() {
                         id="outlined-basic"
                         label="Bird Name"
                         variant="outlined"
-                        value={nameBird}
+                        value={name}
                         onChange={handleNameChange}
                     />
                 </Grid>
@@ -123,6 +123,9 @@ export default function Step1() {
                         onChange={handleFileChange}
                         style={{ display: 'none' }}
                     />
+                    <br />
+
+                    {uploadSuccess && <Typography ><CheckCircleOutlineIcon /> Upload Successful!!</Typography>}
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel

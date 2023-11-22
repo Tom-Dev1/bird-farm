@@ -64,10 +64,14 @@ export default function Step4() {
         // localStorage.setItem('step1', step1ValuesString);
         // const { category, name, sex, image } = step1Values;
         //activeStep
+
+
+
         setActiveStep(activeStep + 1);
     };
 
     const handleBack = () => {
+        localStorage.removeItem('imageFiles');
         localStorage.removeItem('step1');
         setActiveStep(activeStep - 1);
     };
