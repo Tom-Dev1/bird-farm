@@ -30,9 +30,7 @@ function Copyright() {
         </Typography>
     );
 }
-
 const steps = ['Your bird information', 'Birds of the Shop', 'Review your mix'];
-
 function getStepContent(step) {
     switch (step) {
         case 0:
@@ -49,8 +47,6 @@ function getStepContent(step) {
 export default function Step4() {
     const [activeStep, setActiveStep] = useState(0);
     const navigate = useNavigate();
-
-
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
             // Handle "Place order" logic here
@@ -66,56 +62,45 @@ export default function Step4() {
         setActiveStep(activeStep - 1);
     };
     const placeOrder = async () => {
+        // Get data from localStorage
+        // category_id
+        const category_id = localStorage.getItem('category_id');
+        //image data
+        const base64Image = localStorage.getItem('imageFiles');
+
+        // Remove Data URI prefix if present
+        const base64Data = base64Image.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+
+        // Add padding if needed
+        const base64DataWithPadding = base64Data + "=".repeat((4 - base64Data.length % 4) % 4);
+
+        // Convert base64 to binary
+        const binaryString = atob(base64DataWithPadding);
+
+        // Create a Blob from the binary data
+        const blob = new Blob([new Uint8Array([...binaryString].map(char => char.charCodeAt(0)))], { type: 'image/jpeg' });
+        const name = localStorage.getItem('name');
+        const sex = localStorage.getItem('sex');
+        const userId = localStorage.getItem('id');
+        const chimMuonPhoi_id = localStorage.getItem('chimMuonPhoi_id');
+        const formData = new FormData();
+        formData.append('ChimCuaKhacHang.category_id', category_id); //51d334ad9f0a48a59fa4c7a20f70dcfd
+        formData.append('ChimCuaKhacHang.imageFiles', blob, 'image.jpg'); //
+        formData.append('ChimCuaKhacHang.userId', userId);
+        formData.append('ChimMuonPhoi_id', chimMuonPhoi_id);
+        formData.append('ChimCuaKhacHang.statusProduct', 1);
+        formData.append('ChimCuaKhacHang.name', name);
+        formData.append('ChimCuaKhacHang.sex', sex);
         try {
-            // Get data from localStorage
-            const categoryId = localStorage.getItem('category_id');
-            const imageFiles = localStorage.getItem('imagefiles');
-            const name = localStorage.getItem('name');
-            const sex = localStorage.getItem('sex');
-            const userId = localStorage.getItem('UserID');
-            const chimMuonPhoi_id = localStorage.getItem('chimMuonPhoi_id');
-            const price = '0';
-            const description = '';
-            const bird_mother_id = '';
-            const bird_father_id = '';
-            const discount = '0';
-            const typeProduct = '1'
-            const statusProduct = '1'
-            const day_of_birth = '2023-11-22T18:13:32.139Z'
-            const order = {
-                chimCuaKhacHang: {
-                    categoryId,
-                    imageFiles,
-                    name,
-                    sex,
-                    userId,
-                    price,
-                    description,
-                    bird_mother_id,
-                    bird_father_id,
-                    discount,
-                    typeProduct,
-                    statusProduct,
-                    day_of_birth,
-                },
-                chimMuonPhoi_id,
-            };
-
-            // Make a POST request to the API endpoint
-            const response = await fetch('http://birdsellingapi-001-site1.ctempurl.com/api/PhoiGiong/Create-Phoi-Chim', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-
-                },
-                body: JSON.stringify(order)
-            });
-
+            const response = await fetch('http://birdsellingapi-001-site1.ctempurl.com/api/PhoiGiong/Create-Phoi-Chim',
+                {
+                    method: 'POST',
+                    body: formData
+                });
             // Check if the request was successful
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             console.log('Order placed successfully!');
             Swal.fire({
                 icon: 'success',
@@ -170,6 +155,8 @@ export default function Step4() {
                                 Your mix number is #2001539. We have emailed your mix
                                 confirmation, and will send you an update when your mix has
                                 shipped.
+
+
                             </Typography>
                         </React.Fragment>
                     ) : (
