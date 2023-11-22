@@ -147,7 +147,7 @@ export default function UserList() {
                 <TableCell align="left">{userData.userEmail}</TableCell>
                 <TableCell align="left">{userData.userPhone}</TableCell>
                 <TableCell align="left">
-                    {new Date(userData.createdTime)
+                    {new Date(userData.createdAt)
                         .toLocaleString('en-GB', {
                             minute: '2-digit',
                             hour: '2-digit',

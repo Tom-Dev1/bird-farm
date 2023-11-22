@@ -4,14 +4,26 @@ import AppBarManager from '../AppBarManager/AppBarManager';
 import Box from '@mui/material/Box';
 import '../StyleManager/accountManager.css';
 
-const apiUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=6613e41d374043c7886c7226f7628123';
+const apiUrlBase = 'http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=';
 
 function AccountManager() {
-    const [Account, setCurrentAccount] = useState(null);
+    const [Account, setAccount] = useState(null);
     useEffect(() => {
+        // Retrieve user ID from local storage
+        const id = localStorage.getItem('id');
+
+        // Check if userId is available
+        if (!id) {
+            console.error('User ID not found in local storage');
+            return;
+        }
+
+        // Construct the API URL with the retrieved user ID
+        const apiUrl = `${apiUrlBase}${id}`;
+
         fetch(apiUrl)
             .then((response) => response.json())
-            .then((data) => setCurrentAccount(data.data))
+            .then((data) => setAccount(data.data))
             .catch((error) => console.error(error));
     }, []);
     if (!Account) {

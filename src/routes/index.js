@@ -22,14 +22,13 @@ import HomeAdmin from '../pages/Admin/Home/HomeAdmin';
 import RegisterForm from '../pages/Login/RegisterForm';
 import Unauthorized from '../pages/404/unauthorized';
 import AboutPage from '../pages/About/AboutPage';
-
+import Checkout from '../pages/checkout/CheckOut';
 import Step4 from '../pages/MixBird/Step4';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
     { path: '/register', Component: RegisterForm },
     { path: '/about', Component: AboutPage },
-
     { path: '/products', Component: Products },
     { path: '/products/category/:id', Component: Products },
     { path: '/products/:id', Component: SingleProduct },
@@ -43,17 +42,16 @@ export const privateRoutes = {
         { path: '/admin/about', Component: AboutAdmin },
         { path: '/admin/setting', Component: Setting },
         { path: '/admin/userAdmin', Component: UserAdmin },
-        // Thêm các route khác cho admin
     ],
     user: [
         { path: '/', Component: Home },
-        // { path: '/about', Component: Home },
+        { path: '/about', Component: AboutPage },
         { path: '/user/products', Component: Products },
         { path: '/user/products/category/:id', Component: Products },
         { path: '/user/products/:id', Component: SingleProduct },
         { path: '/user/cart', Component: Cart },
+        { path: '/user/checkout', Component: Checkout },
         { path: '/mixbird', Component: Step4 }
-        // Thêm các route khác cho user
     ],
     manager: [
         { path: '/manager', Component: DashboardManager },
@@ -68,7 +66,5 @@ export const privateRoutes = {
         { path: '/manager/order', Component: OrderManager },
         { path: '/manager/order/:id', Component: OrderDetails },
         { path: '/manager/edit-user/:id', Component: EditAccount },
-
-        // Thêm các route khác cho manager
     ],
 };

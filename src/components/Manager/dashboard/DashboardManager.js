@@ -19,7 +19,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems.js';
 import Chart from './Chart.js';
-import Deposits from './Deposits.js';
 import Orders from './Orders.js';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
@@ -87,17 +86,17 @@ export default function Dashboard() {
                     component="main"
                     sx={{
                         flexGrow: 1,
-                        height: '150vh',
+                        height: '180vh',
                         overflow: 'auto',
                     }}
                 >
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={4}>
                             {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
+                            <Grid item xs={12} md={8} lg={6}>
                                 <Paper
                                     sx={{
-                                        p: 2,
+                                        p: 5,
                                         display: 'flex',
                                         flexDirection: 'column',
                                         height: 500,
@@ -107,18 +106,6 @@ export default function Dashboard() {
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <Deposits />
-                                </Paper>
-                            </Grid>
                             {/* Recent Orders */}
                             <Grid item xs={12}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>

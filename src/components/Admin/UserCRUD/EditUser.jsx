@@ -27,11 +27,15 @@ const validateEmail = (value) => {
     return emailRegex.test(value);
 };
 
+
+
+
 const validatePhone = (value) => {
     const phoneRegex = /^\d{10}$/;
     return phoneRegex.test(value);
 };
 // Addresses
+// Addresses    can contain only letters, numbers, dashes, and spaces   must be between 5 and 60 characters    must not contain spaces at the beginning or end       
 const validateAddress = (value) => {
     return value != null && value.trim() !== '';
 };

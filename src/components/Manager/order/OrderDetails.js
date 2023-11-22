@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Select, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
@@ -8,33 +8,64 @@ import AppBarManager from '../AppBarManager/AppBarManager';
 const OrderDetails = () => {
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
-        const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=`; // Update with your API URL
+        const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
         fetch(baseUrl + id)
             .then((response) => response.json())
-            .then((data) => setOrderDetails(data.data))
+            .then((data) => {
+                setOrderDetails(data.data);
+                setSelectedStatus(data.data.orderStatus.toString()); // Assuming orderStatus is a string
+            })
             .catch((error) => console.log(error.message));
     }, [id]);
-
-    if (!orderDetails) {
-        return <div>Loading...</div>;
-    }
 
     const getStatusName = (status) => {
         switch (status) {
             case 1:
-                return 'Đang chuẩn bị';
+                return 'Chờ Xác Nhận';
             case 2:
-                return 'Đang vận chuyển';
+                return 'Đã Xác Nhận';
             case 3:
-                return 'Đã nhận hàng';
+                return 'Đang Vận Chuyển';
             case 4:
-                return 'Hủy';
+                return 'Đã Nhận Hàng';
+            case 5:
+                return 'Hủy Đơn';
+            case 6:
+                return 'Hoàn Trả Hàng';
+            case 7:
+                return 'Hết Hàng';
             default:
                 return 'Unknown';
         }
     };
+
+    const handleStatusUpdate = (newStatus) => {
+        const updateStatusUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Order/Update-Status-Product?orderId=${id}&orderStatus=${newStatus}`;
+
+        fetch(updateStatusUrl, {
+            method: 'PUT',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Status updated successfully');
+                // Optionally update the local state or perform other actions upon successful update
+            })
+            .catch((error) => {
+                console.error('Error updating status:', error.message);
+            });
+    };
+
+    const handleChangeStatus = (event) => {
+        setSelectedStatus(event.target.value);
+        handleStatusUpdate(event.target.value);
+    };
+
+    if (!orderDetails) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
@@ -56,7 +87,23 @@ const OrderDetails = () => {
                     <p>Mã đơn hàng: {orderDetails.id}</p>
                     <p>Tổng tiền: {orderDetails.orderTotal}</p>
                     <p>Trạng thái: {getStatusName(orderDetails.orderStatus)}</p>
-                    <p>Tên người dùng: {orderDetails.user_id}</p>
+                    <Select
+                        value={selectedStatus}
+                        onChange={handleChangeStatus}
+                        style={{ marginRight: '10px' }}
+                    >
+                        <MenuItem value="1">Chờ Xác Nhận</MenuItem>
+                        <MenuItem value="2">Đã Xác Nhận</MenuItem>
+                        <MenuItem value="3">Đang Vận Chuyển</MenuItem>
+                        <MenuItem value="4">Đã Nhận Hàng</MenuItem>
+                        <MenuItem value="5">Hủy Đơn</MenuItem>
+                        <MenuItem value="6">Hoàn Trả Hàng</MenuItem>
+                        <MenuItem value="7">Hết Hàng</MenuItem>
+
+      
+                        {/* Add other status options as MenuItem */}
+                    </Select>
+                    <p>Tên người dùng: {orderDetails.id}</p>
                     <p>Địa chỉ: {orderDetails.address}</p>
                     <Link to="/manager/order" className="add-btn">
                         <Button sx={{ fontSize: 20 }} variant="contained">
