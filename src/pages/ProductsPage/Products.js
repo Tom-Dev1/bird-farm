@@ -11,16 +11,22 @@ import {
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { fetchProducts, getAllProducts } from '../../redux/productSlice';
 
 const Products = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const categories = useSelector(getAllCategories);
     const products = useSelector(getAllProductsByCategory);
+    const allProducts = useSelector(getAllProducts);
 
     useEffect(() => {
         dispatch(fetchCategories());
-        dispatch(fetchProductsOfCategory(id));
+        if (id === 'all') {
+            dispatch(fetchProducts());
+        } else {
+            dispatch(fetchProductsOfCategory(id));
+        }
     }, [dispatch, id]);
 
     return (
@@ -32,7 +38,7 @@ const Products = () => {
 
                 <div className="products">
                     <Grid container spacing={2}>
-                        {products.map((product) => {
+                        {(id === 'all' ? allProducts : products).map((product) => {
                             return (
                                 <Grid item xs={12} sm={6} md={4} key={product.id}>
                                     <Card sx={{ maxWidth: 345 }}>
@@ -41,16 +47,40 @@ const Products = () => {
                                                 <CardMedia
                                                     component="img"
                                                     height="350px"
-                                                    image={product.image}
+                                                    image={
+                                                        'http://birdsellingapi-001-site1.ctempurl.com/' + product.image
+                                                    }
                                                     alt={product.name}
                                                     style={{ objectFit: 'contain' }}
                                                 />
                                                 <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div">
+                                                    <Typography height="40px" gutterBottom variant="h5" component="div">
                                                         {product.name}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        {product.price}$
+                                                        {product.sex ? 'Male Bird' : 'Female Bird'}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        Price:{' '}
+                                                        <span style={{ fontSize: 'large', fontWeight: 'bold' }}>
+                                                            ${product.price}
+                                                        </span>
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        <span
+                                                            style={{
+                                                                color:
+                                                                    product.statusProduct === 1
+                                                                        ? 'green'
+                                                                        : product.statusProduct === 2
+                                                                        ? 'red'
+                                                                        : 'inherit',
+                                                                fontWeight: 'bold',
+                                                                fontSize: 'large',
+                                                            }}
+                                                        >
+                                                            {product.statusProduct === 1 ? 'Sell' : 'Sold out'}
+                                                        </span>
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>

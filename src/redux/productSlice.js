@@ -79,7 +79,7 @@ const productSlice = createSlice({
             description: '',
             image: '',
             rating: 0,
-            reviews: [], // Mảng để lưu các review, mỗi review có thể có trường rating và comment
+            reviews: [],
         },
 
         isLoading: false,
@@ -88,12 +88,10 @@ const productSlice = createSlice({
         setAddReviewToProduct: (state, action) => {
             const { rating, comment } = action.payload;
 
-            // Kiểm tra nếu state.productSingle không được định nghĩa hoặc là undefined
             if (!state.productSingle) {
                 state.productSingle = {};
             }
 
-            // Kiểm tra nếu reviews không được định nghĩa hoặc là undefined
             if (!state.productSingle.reviews) {
                 state.productSingle.reviews = [];
             }

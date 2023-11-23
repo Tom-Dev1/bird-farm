@@ -20,6 +20,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import { useDispatch } from 'react-redux';
+import { fetchAllCart, updateCart } from '../../redux/cartSlice';
 
 function Copyright(props) {
     return (
@@ -38,7 +40,7 @@ const defaultTheme = createTheme();
 
 export default function Login() {
     const { login, error } = useAuth();
-
+    const dispatch = useDispatch();
     //UserName
     const [userName, setUsername] = useState('');
     const [usernameError, setUsernameError] = useState('');
@@ -87,7 +89,6 @@ export default function Login() {
             return;
         }
         login(userName, userPassword);
-
     };
 
     useEffect(() => {
@@ -132,7 +133,6 @@ export default function Login() {
                         />
                         <TextField
                             error={!!passwordError}
-
                             margin="normal"
                             required
                             fullWidth
@@ -156,17 +156,12 @@ export default function Login() {
                         />
                         <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
                         {/* {error} */}
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                             Sign In
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href='/register' variant="body2">
+                                <Link href="/register" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
@@ -178,4 +173,3 @@ export default function Login() {
         </ThemeProvider>
     );
 }
-

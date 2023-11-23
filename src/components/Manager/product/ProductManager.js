@@ -25,7 +25,6 @@ function ProductManager() {
             .then((data) => setStaff(data.data))
             .catch((error) => console.log(error.message));
         console.log(setStaff);
-
     }, []);
 
     const navigate = useNavigate();
@@ -60,68 +59,124 @@ function ProductManager() {
     };
     const getStatusName = (status) => {
         switch (status) {
-          case 1:
-            return 'Còn Hàng';
-          case 2:
-            return 'Hết Hàng';
-          case 3:
-            return 'Lỗi';
-          case 4:
-            return 'Không Bán';
-          default:
-            return 'Unknown';
+            case 1:
+                return 'Còn Hàng';
+            case 2:
+                return 'Hết Hàng';
+            case 3:
+                return 'Lỗi';
+            case 4:
+                return 'Không Bán';
+            default:
+                return 'Unknown';
         }
-      };
-      const getStatusColor = (status) => {
+    };
+    const getStatusColor = (status) => {
         switch (status) {
             case 1:
                 return '#00FF00';
             case 2:
                 return '#FF0000';
             case 3:
-                return '#808080'; 
+                return '#808080';
             case 4:
-                return '#FF0000'; 
+                return '#FF0000';
             default:
-                return '#FF0000'; 
+                return '#FF0000';
         }
     };
     return (
         <Box sx={{ display: 'flex' }}>
             <SidebarManager />
             <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
-
                 <AppBarManager />
-                <div className='main'>
-                    {(
+                <div className="main">
+                    {
                         <TableContainer component={Paper} className="dashboard-container">
-                            <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Sản Phẩm</h2>
+                            <h2
+                                style={{
+                                    textAlign: 'center',
+                                    color: '#205295',
+                                    fontSize: '40px',
+                                    marginTop: '20px',
+                                    fontFamily: 'Arial, sans-serif',
+                                }}
+                            >
+                                Sản Phẩm
+                            </h2>
 
                             <Link to="/manager/new-product" className="add-btn">
-                                <Button sx={{ fontSize: 20 }} variant="contained">Create</Button>
+                                <Button sx={{ fontSize: 20 }} variant="contained">
+                                    Create
+                                </Button>
                             </Link>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table" className="staff-table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">ID</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Avatar</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Tên</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Giá</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Trạng Thái</TableCell>
-                                        <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Action</TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            ID
+                                        </TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            Avatar
+                                        </TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            Tên
+                                        </TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            Giá
+                                        </TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            Trạng Thái
+                                        </TableCell>
+                                        <TableCell
+                                            style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}
+                                            align="center"
+                                        >
+                                            Action
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {staff?.map((staff) => (
                                         <TableRow key={staff.id}>
-                                            <TableCell style={{ fontSize: '13px' }} align="center">{staff.id}</TableCell>
+                                            <TableCell style={{ fontSize: '13px' }} align="center">
+                                                {staff.id}
+                                            </TableCell>
 
                                             <TableCell component="th" scope="row" align="center">
-                                                <img style={{ width: '150px', height: '150px' }} src={staff.image} alt="" />
+                                                <img
+                                                    style={{ width: '150px', height: '150px' }}
+                                                    src={staff.image}
+                                                    alt=""
+                                                />
                                             </TableCell>
-                                            <TableCell style={{ fontSize: '17px' }} align="center">{staff.name}</TableCell>
-                                            <TableCell style={{ fontSize: '17px' }} align="center">{staff.price}</TableCell>
-                                            <TableCell style={{ fontSize: '17px', color: getStatusColor(staff.statusProduct) }} align="center">{getStatusName(staff.statusProduct)}</TableCell>
+                                            <TableCell style={{ fontSize: '17px' }} align="center">
+                                                {staff.name}
+                                            </TableCell>
+                                            <TableCell style={{ fontSize: '17px' }} align="center">
+                                                {staff.price}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{ fontSize: '17px', color: getStatusColor(staff.statusProduct) }}
+                                                align="center"
+                                            >
+                                                {getStatusName(staff.statusProduct)}
+                                            </TableCell>
                                             <TableCell align="center">
                                                 <Button
                                                     variant="outlined"
@@ -149,7 +204,7 @@ function ProductManager() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    )}
+                    }
                 </div>
             </Box>
         </Box>

@@ -45,11 +45,12 @@
 // export default Search;
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import './Search.scss';
-import { fetchSearchResults, setInput } from '../../../redux/searchSlice';
+import { useDispatch } from 'react-redux';
+import { fetchSearchResults, clearSearch } from '../../../redux/searchSlice';
 import { useNavigate } from 'react-router-dom';
-
+import { Button, IconButton, InputAdornment, InputBase, Paper, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 const Search = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -57,23 +58,34 @@ const Search = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        dispatch(fetchSearchResults(searchInput));
-        dispatch(setInput(searchInput));
-        // navigate('/products');
+        if (searchInput.trim() !== '') {
+            dispatch(fetchSearchResults(searchInput));
+        } else {
+            dispatch(clearSearch());
+        }
+        // navigate('/products'); // Nếu bạn muốn điều hướng sau khi tìm kiếm, hãy sử dụng navigate ở đây
     };
 
     return (
-        <form className="search-container" onSubmit={handleSearch}>
-            <input
-                type="text"
+        <Paper
+            component="form"
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: 400,
+            }}
+            onSubmit={handleSearch}
+        >
+            <InputBase
+                sx={{ ml: 1, flex: 1 }}
                 placeholder="Search products..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
             />
-            <button className="search-button" type="submit">
-                Search
-            </button>
-        </form>
+            <IconButton type="submit" sx={{ p: '10px' }}>
+                <SearchIcon />
+            </IconButton>
+        </Paper>
     );
 };
 

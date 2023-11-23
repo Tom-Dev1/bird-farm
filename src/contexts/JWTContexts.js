@@ -183,6 +183,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { API_ROOT } from '../utils/apiUrl';
 import { jwtDecode } from 'jwt-decode';
+import { fetchAllCart, resetCart, updateCart } from '../redux/cartSlice';
 
 const Types = {
     Initialize: 'INITIALIZE',
@@ -289,14 +290,15 @@ function AuthProvider({ children }) {
             if (response.data && response.data.data && response.data.data.token) {
                 const decodedToken = jwtDecode(response.data.data.token);
                 console.log(decodedToken);
+                console.log(decodedToken.UserID);
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('role');
                 localStorage.removeItem('username');
-
+                localStorage.removeItem('userID');
                 localStorage.setItem('accessToken', response.data.data.token);
                 localStorage.setItem('role', decodedToken.role);
                 localStorage.setItem('username', decodedToken.username);
-                localStorage.setItem('id', decodedToken.UserID);
+                localStorage.setItem('userID', decodedToken.UserID);
                 // localStorage.setItem('userid', decodedToken.id);
                 console.log(decodedToken);
                 if (decodedToken.role === 'User') {
@@ -339,6 +341,8 @@ function AuthProvider({ children }) {
     };
 
     const logout = async () => {
+        localStorage.removeItem('userID');
+
         setSession(null);
         setUserInfo({});
         dispatch({ type: Types.Logout });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from './routes/index';
 import GuestLayout from './layout/GuestLayout/GuestLayout';
 
@@ -30,7 +30,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<UserLayout>{<route.Component />}</UserLayout>}
+                            element={<>{<route.Component />}</>}
                             layout={UserLayout}
                             allowedRoles={['User']}
                         />
@@ -44,7 +44,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<AdminLayout>{<route.Component />}</AdminLayout>}
+                            element={<>{<route.Component />}</>}
                             layout={AdminLayout}
                             allowedRoles={['Admin']}
                         />
@@ -58,7 +58,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<ManagerLayout>{<route.Component />}</ManagerLayout>}
+                            element={<>{<route.Component />}</>}
                             layout={ManagerLayout}
                             allowedRoles={['Manager']}
                         />
