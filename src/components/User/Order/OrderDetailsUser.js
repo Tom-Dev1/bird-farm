@@ -16,7 +16,6 @@ const OrderDetailsUser = () => {
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState('');
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [tableRows, setTableRows] = useState([]);
 
     useEffect(() => {
@@ -28,11 +27,19 @@ const OrderDetailsUser = () => {
                 console.log(data);
                 setOrderDetails(data.data);
                 setSelectedStatus(data.data.orderStatus.toString());
+                renderTableAsync(data.data); // Pass the order details to the rendering function
             })
             .catch((error) => console.log(error.message));
-        renderTableAsync().then((rows) => setTableRows(rows));
-
     }, [id]);
+
+    const renderTableAsync = (orderDetails) => {
+        try {
+            renderTable(orderDetails).then((rows) => setTableRows(rows));
+        } catch (error) {
+            console.error('Error rendering table:', error.message);
+            setTableRows([]); // Set empty array if there's an error
+        }
+    };
 
     const getStatusName = (status) => {
         switch (status) {
@@ -61,56 +68,61 @@ const OrderDetailsUser = () => {
             const response = await fetch(productDetailsUrl);
             const productDetails = await response.json();
             return productDetails.data;
-            console.log(productDetails);
         } catch (error) {
             console.error('Error fetching product details:', error.message);
             return null;
         }
     };
 
-    const renderTable = () => {
-        if (!orderDetails.carts || orderDetails.carts.length === 0) {
+    const renderTable = (orderDetails) => {
+        if (!orderDetails || !orderDetails.carts || orderDetails.carts.length === 0) {
             return [
                 <TableRow key="no-items">
-                    <TableCell colSpan={3} align="center">No items in the order</TableCell>
-                </TableRow>
+                    <TableCell colSpan={3} align="center">
+                        No items in the order
+                    </TableCell>
+                </TableRow>,
             ];
         }
 
+        // Ensure orderDetails.carts is not null
+        if (!orderDetails.carts) {
+            return null;
+        }
+
         // Fetch product details for all carts in parallel
-        const productDetailsPromises = orderDetails.carts.map((carts) =>
-            fetchProductDetails(carts.product_id)
+        const productDetailsPromises = orderDetails.carts.map((cart) =>
+            fetchProductDetails(cart.product_id)
         );
 
         // Use Promise.all without await
         return Promise.all(productDetailsPromises).then((productDetails) => {
             // Render table rows
-            return orderDetails.carts.map((carts, index) => (
-                <TableRow key={carts.id}>
+            return orderDetails.carts.map((cart, index) => (
+                <TableRow key={cart.product_id}>
                     <TableCell style={{ fontSize: '15px' }} align="center">
                         {productDetails[index] ? (
                             <>
                                 <div>{productDetails[index].name}</div>
-                                <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + productDetails[index].image} 
-                                alt="Product" style={{ width: '100px', height: '100px' }} />
+                                <img
+                                    src={`http://birdsellingapi-001-site1.ctempurl.com/${productDetails[index].image}`}
+                                    alt="Product"
+                                    style={{ width: '100px', height: '100px' }}
+                                />
                             </>
-                        ) : 'Unknown'}
+                        ) : (
+                            'Unknown'
+                        )}
                     </TableCell>
-                    <TableCell style={{ fontSize: '15px' }} align="center">{carts.price}</TableCell>
-                    <TableCell style={{ fontSize: '15px' }} align="center">{carts.quantity}</TableCell>
+                    <TableCell style={{ fontSize: '15px' }} align="center">
+                        {cart.price}
+                    </TableCell>
+                    <TableCell style={{ fontSize: '15px' }} align="center">
+                        {cart.quantity}
+                    </TableCell>
                 </TableRow>
             ));
         });
-    };
-
-    const renderTableAsync = async () => {
-        try {
-            const rows = await renderTable();
-            return rows;
-        } catch (error) {
-            console.error('Error rendering table:', error.message);
-            return [];
-        }
     };
 
     if (!orderDetails) {
@@ -134,6 +146,7 @@ const OrderDetailsUser = () => {
                 <p>Mã đơn hàng: {orderDetails.id}</p>
                 <p>Tổng tiền: {orderDetails.orderTotal}</p>
                 <p>Trạng thái: {getStatusName(orderDetails.orderStatus)}</p>
+                <p>Địa chỉ: {orderDetails.address}</p>
                 <Select
                     value={selectedStatus}
                     onChange={(event) => setSelectedStatus(event.target.value)}
@@ -152,14 +165,18 @@ const OrderDetailsUser = () => {
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="order-table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">Sản Phẩm</TableCell>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">Giá Tiền</TableCell>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">Số Lượng</TableCell>
+                                    <TableCell style={{ fontSize: '20px' }} align="center">
+                                        Sản Phẩm
+                                    </TableCell>
+                                    <TableCell style={{ fontSize: '20px' }} align="center">
+                                        Giá Tiền
+                                    </TableCell>
+                                    <TableCell style={{ fontSize: '20px' }} align="center">
+                                        Số Lượng
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
-                                {tableRows}
-                            </TableBody>
+                            <TableBody>{tableRows}</TableBody>
                         </Table>
                     </TableContainer>
                 </div>
@@ -167,7 +184,6 @@ const OrderDetailsUser = () => {
                     <Button
                         sx={{ fontSize: 20 }}
                         variant="contained"
-                        onClick={() => setIsDialogOpen(true)}
                     >
                         Back
                     </Button>
