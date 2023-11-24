@@ -131,7 +131,7 @@
 // };
 // export default SingleProduct;
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import './SingleProduct.scss';
@@ -179,8 +179,14 @@ const SingleProduct = () => {
         } else {
             if (productSingle) {
                 const isItemInCart = item.some((item) => item.product_id === id);
-                // console.log(productSingle.name);
-                if (isItemInCart) {
+
+                if (productSingle.statusProduct === 2) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Error',
+                        text: `Sản phẩm ${productSingle.name} đã hết hàng`,
+                    });
+                } else if (isItemInCart) {
                     Swal.fire({
                         icon: 'info',
                         title: 'Error',
@@ -228,8 +234,8 @@ const SingleProduct = () => {
                                         productSingle.statusProduct === 1
                                             ? 'green'
                                             : productSingle.statusProduct === 2
-                                            ? 'red'
-                                            : 'inherit',
+                                                ? 'red'
+                                                : 'inherit',
                                     fontWeight: 'bold',
                                     fontSize: 'large',
                                 }}

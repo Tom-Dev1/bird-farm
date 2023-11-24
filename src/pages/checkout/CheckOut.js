@@ -1,116 +1,3 @@
-// import * as React from 'react';
-// import CssBaseline from '@mui/material/CssBaseline';
-// import AppBar from '@mui/material/AppBar';
-// import Box from '@mui/material/Box';
-// import Container from '@mui/material/Container';
-// import Toolbar from '@mui/material/Toolbar';
-// import Paper from '@mui/material/Paper';
-// import Typography from '@mui/material/Typography';
-// import Link from '@mui/material/Link';
-// import Review from './Review';
-
-// export default function Checkout() {
-//     const [activeStep, setActiveStep] = React.useState(2);
-
-//     return (
-//         <React.Fragment>
-//             <CssBaseline />
-//             <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-//                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-//                     <Typography component="h1" variant="h4" align="center">
-//                         Checkout
-//                     </Typography>
-//                     {activeStep === 2 ? (
-//                         <React.Fragment>
-//                             <Review />
-//                         </React.Fragment>
-//                     ) : null}
-//                 </Paper>
-//             </Container>
-//         </React.Fragment>
-//     );
-// }
-
-// import React from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useLocation } from 'react-router-dom';
-
-// export default function Checkout() {
-//     // const location = useLocation();
-//     // // dispatch = useDispatch();
-//     // const selectedProductsIds = location.state?.selectedProducts || [];
-//     // const cartItems = useSelector((state) => state.cart.cartData);
-//     // const selectedProducts = cartItems.filter((item) => selectedProductsIds.includes(item.id));
-//     const location = useLocation();
-//     const selectedProducts = location.state?.selectedProducts || [];
-//     console.log(selectedProducts);
-
-//     const calculateTotalAmount = () => {
-//         return selectedProducts.reduce((total, product) => {
-//             return total + product.price;
-//         }, 0);
-//     };
-
-//     return (
-//         <div>
-//             <ul>
-//                 {selectedProducts.map((product) => (
-//                     <li key={product.id}>
-//                         <p>Name: {product.name}</p>
-//                         <p>ID: {product.id}</p>
-//                         <p>Price: ${product.price}</p>
-//                         <p>Discount: {product.discount}%</p>
-//                     </li>
-//                 ))}
-//             </ul>
-//             <p>Total Amount: ${calculateTotalAmount()}</p>
-
-//         </div>
-//     );
-// }
-// Checkout.js
-
-// import React from 'react';
-// import { useState } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import AddressForm from './AddressForm';
-// import Review from './Review';
-// import { Container } from '@mui/system';
-// import { Paper, Typography } from '@mui/material';
-// const CheckOut = () => {
-//     const [step, setStep] = useState(1);
-//     const [addressInfo, setAddressInfo] = useState(null);
-//     const location = useLocation();
-//     const selectedProducts = location.state?.selectedProducts || [];
-//     const handleAddressNext = (addressData) => {
-//         setAddressInfo(addressData);
-//         setStep(2);
-//     };
-//     const handleBack = () => {
-//         setStep(1);
-//     };
-//     return (
-//         <div>
-//             <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-//                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-//                     <Typography component="h1" variant="h4" align="center">
-//                         Checkout
-//                     </Typography>
-//                     {step === 1 ? (
-//                         <AddressForm onNext={handleAddressNext} />
-//                     ) : (
-//                         <Review selectedProducts={selectedProducts} addressInfo={addressInfo} />
-//                     )}
-//                 </Paper>
-//             </Container>
-
-//             {step !== 1 && <button onClick={handleBack}>Back</button>}
-//         </div>
-//     );
-// };
-
-// export default CheckOut;
-
 import React from 'react';
 import AddressForm from './AddressForm';
 import Review from './Review';
@@ -118,6 +5,8 @@ import { AppBar, Button, CssBaseline, Paper, Step, StepLabel, Stepper, Toolbar, 
 import { Box, Container } from '@mui/system';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright() {
     return (
@@ -145,6 +34,7 @@ function getStepContent(step, handleShippingInfoChange, shippingInfo) {
 }
 
 export default function Checkout() {
+    const navigate = useNavigate();
     const [activeStep, setActiveStep] = React.useState(0);
     const [shippingInfo, setShippingInfo] = React.useState({});
     const location = useLocation();
@@ -164,7 +54,11 @@ export default function Checkout() {
                 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/Create-Order',
                 orderData,
             );
-
+            Swal.fire({
+                icon: 'success',
+                title: 'Successful order. Keep buying!',
+            });
+            navigate('/');
             console.log('Order created successfully:', response.data);
         } catch (error) {
             console.error('Error placing order:', error);

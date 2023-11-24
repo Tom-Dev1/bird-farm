@@ -159,6 +159,7 @@ const Navbar = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [cartItemCount, setCartItemCount] = useState(0);
+    const itemsCount = useSelector((state) => state.cart.itemsCount);
     const navigate = useNavigate();
     useEffect(() => {
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -214,6 +215,11 @@ const Navbar = () => {
         navigate('/user/mybird');
         handleMenuClose();
     }
+    const handleOrder = () => {
+        navigate('/user/order');
+        handleMenuClose();
+    }
+
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -233,6 +239,7 @@ const Navbar = () => {
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
             <MenuItem onClick={handleMixBird}>My Bird List</MenuItem>
+            <MenuItem onClick={handleOrder}>My Order</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
     );
@@ -248,7 +255,7 @@ const Navbar = () => {
                     <Link to="/">Home</Link>
                     <Link to="/about">About</Link>
                     <Link>Contact</Link>
-                    <Link to="/products">Products</Link>
+                    <Link to="/products/category/all">Products</Link>
                     <Link to='/user/mixbird'>Mix Birds</Link>
                     <Link to="/cart" className="cart-icon-link">
 
