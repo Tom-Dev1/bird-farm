@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from './routes/index';
 import GuestLayout from './layout/GuestLayout/GuestLayout';
 
