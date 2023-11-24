@@ -31,7 +31,7 @@ export default function MyBird() {
     const navigate = useNavigate();
     const userID = localStorage.getItem('id');
     const [data, setData] = useState(null);
-    console.log(userID);
+    console.log('User ID : ', userID);
 
     useEffect(() => {
         try {
@@ -81,7 +81,6 @@ export default function MyBird() {
                                         Gender
                                     </TableCell>
                                     <TableCell align="center" style={{ minWidth: '100px', fontWeight: 'bolder' }}>
-
                                         View mix details
                                     </TableCell>
                                 </TableRow>
