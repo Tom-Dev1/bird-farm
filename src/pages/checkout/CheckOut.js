@@ -151,7 +151,7 @@ export default function Checkout() {
     const selectedProducts = location.state?.selectedProducts || [];
 
     const handlePlaceOrder = async () => {
-        const userId = localStorage.getItem('userID');
+        const userId = localStorage.getItem('id');
         try {
             const orderData = {
                 listIDCarts: selectedProducts.map((product) => product.id),

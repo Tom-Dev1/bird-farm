@@ -294,11 +294,11 @@ function AuthProvider({ children }) {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('role');
                 localStorage.removeItem('username');
-                localStorage.removeItem('userID');
+                localStorage.removeItem('id');
                 localStorage.setItem('accessToken', response.data.data.token);
                 localStorage.setItem('role', decodedToken.role);
                 localStorage.setItem('username', decodedToken.username);
-                localStorage.setItem('userID', decodedToken.UserID);
+                localStorage.setItem('id', decodedToken.UserID);
                 // localStorage.setItem('userid', decodedToken.id);
                 console.log(decodedToken);
                 if (decodedToken.role === 'User') {
@@ -341,6 +341,7 @@ function AuthProvider({ children }) {
     };
 
     const logout = async () => {
+        localStorage.removeItem('id');
         localStorage.removeItem('userID');
 
         setSession(null);

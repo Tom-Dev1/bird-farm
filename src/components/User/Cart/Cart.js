@@ -411,7 +411,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const userID = localStorage.getItem('userID');
+    const userID = localStorage.getItem('id');
     const cartItems = useSelector((state) => state.cart.cartData);
 
     useEffect(() => {

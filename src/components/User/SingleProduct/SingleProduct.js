@@ -160,7 +160,7 @@ const SingleProduct = () => {
     const item = useSelector((state) => state.cart.cartData);
     // console.log('item ne', item);
 
-    const userID = localStorage.getItem('userID');
+    const userID = localStorage.getItem('id');
 
     const handleAddToCart = () => {
         if (authContext.isAuthenticated === false) {
