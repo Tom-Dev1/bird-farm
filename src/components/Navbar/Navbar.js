@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './Navbar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/bird-on-branch-svgrepo-com.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -21,6 +21,7 @@ const Navbar = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [cartItemCount, setCartItemCount] = useState(0);
+    const navigate = useNavigate();
     useEffect(() => {
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartItemCount(existingCart.length);
@@ -75,6 +76,11 @@ const Navbar = () => {
     };
     const menuId = 'primary-search-account-menu';
 
+
+    const handleMixBird = () => {
+        navigate('/user/mybird');
+        handleMenuClose();
+    }
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -92,7 +98,8 @@ const Navbar = () => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
+            <MenuItem onClick={handleMixBird}>My Bird List</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
     );
@@ -109,7 +116,7 @@ const Navbar = () => {
                     <Link to="/about">About</Link>
                     <Link>Contact</Link>
                     <Link to="/products">Products</Link>
-                    <Link to='/mixbird'>Mix Birds</Link>
+                    <Link to='/user/mixbird'>Mix Birds</Link>
                     <Link to="/cart" className="cart-icon-link">
 
                         <IconButton color="inherit">
