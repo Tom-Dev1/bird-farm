@@ -26,7 +26,8 @@ import Checkout from '../pages/checkout/CheckOut';
 import Step4 from '../pages/MixBird/Step4';
 import MyBird from '../components/Navbar/YourBird';
 import DetailMixBird from '../components/Navbar/DetailMixBird';
-
+import OrderUser from '../components/User/Order/OrderUser';
+import OrderDetailsUser from '../components/User/Order/OrderDetailsUser';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -54,6 +55,9 @@ export const privateRoutes = {
         { path: '/user/products/:id', Component: SingleProduct },
         { path: '/user/cart', Component: Cart },
         { path: '/user/checkout', Component: Checkout },
+        { path: '/mixbird', Component: Step4 },
+        { path: '/user/order', Component: OrderUser },
+        { path: '/user/order/:id', Component: OrderDetailsUser },
         { path: '/user/mixbird', Component: Step4 },
         { path: '/user/mybird', Component: MyBird },
         { path: '/user/mybird/detail/:birdID', Component: DetailMixBird },
