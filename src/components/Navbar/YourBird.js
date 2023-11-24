@@ -45,7 +45,7 @@ export default function MyBird() {
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
-    }, []);
+    }, [userID]);
 
     const handleViewDetail = (birdID) => {
         // Add logic to navigate or show details for the bird with the given ID

@@ -18,11 +18,6 @@ export default function DetailMixBird() {
     const { birdID } = useParams();
     const navigate = useNavigate();
     const [getAll, setGetAll] = useState(null);
-    const [bird_KH, setBird_KH] = useState(null);
-    const [bird_SHOP, setBird_SHOP] = useState(null);
-    const [Mix_Bird, setMix_Bird] = useState(null);
-    const [status_Mix, setStatus_Mix] = useState(null);
-
 
     useEffect(() => {
         try {
@@ -37,10 +32,7 @@ export default function DetailMixBird() {
                     setGetAll(data.data);
                     const selectedBird = data.data.find(bird => bird.bird_KH_id === birdID);
                     if (selectedBird) {
-                        setBird_KH(selectedBird.bird_KH);
-                        setBird_SHOP(selectedBird.bird_Shop);
-                        setMix_Bird(selectedBird.id);
-                        setStatus_Mix(selectedBird.phoiGiongStatus);
+
                     }
                 })
                 .catch(error => {
@@ -64,12 +56,6 @@ export default function DetailMixBird() {
         true: "Male",
         false: "Female",
     };
-
-    console.log('getAll : ', getAll);
-    console.log('Mix_Bird_ID:', Mix_Bird);
-    console.log('BIRD_KH', bird_KH);
-    console.log('BIRD_SHOP', bird_SHOP);
-    console.log('Phoi giong Status:', status_Mix);
     const selectedBird = getAll.find(bird => bird.bird_KH_id === birdID);
     return (
         <React.Fragment>
