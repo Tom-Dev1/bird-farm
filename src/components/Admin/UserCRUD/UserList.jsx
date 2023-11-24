@@ -49,7 +49,7 @@ export default function UserList() {
     const roleNames = {
         '190f2b3c66db4405afb29ec0bd9cfed2': 'Admin',
         '507cd3255f5e4e2589d999efa128dd0a': 'Manager',
-        e78ca8b85592426aa4d981581445eeb4: 'User',
+        'e78ca8b85592426aa4d981581445eeb4': 'User',
     };
 
     //Select Role
@@ -147,7 +147,7 @@ export default function UserList() {
                 <TableCell align="left">{userData.userEmail}</TableCell>
                 <TableCell align="left">{userData.userPhone}</TableCell>
                 <TableCell align="left">
-                    {new Date(userData.createdTime)
+                    {new Date(userData.createdAt)
                         .toLocaleString('en-GB', {
                             minute: '2-digit',
                             hour: '2-digit',
@@ -159,8 +159,8 @@ export default function UserList() {
                             return `Time:${min}:${h} - Day:${d}/${m}/${y}`;
                         })}
                 </TableCell>
-                <TableCell align="left">
-                    <Stack spacing={2} direction="row">
+                <TableCell align="center">
+                    <Stack spacing={2} direction="row" justifyContent="center">
                         <EditIcon
                             style={{
                                 fontSize: '20px',
@@ -249,22 +249,22 @@ export default function UserList() {
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="left" style={{ minWidth: '10px' }}>
+                                    <TableCell align="center" style={{ minWidth: '10px' }}>
                                         User Name
                                     </TableCell>
-                                    <TableCell align="left" style={{ minWidth: '100px' }}>
+                                    <TableCell align="center" style={{ minWidth: '100px' }}>
                                         Role Name
                                     </TableCell>
-                                    <TableCell align="left" style={{ minWidth: '100px' }}>
+                                    <TableCell align="center" style={{ minWidth: '100px' }}>
                                         Email
                                     </TableCell>
-                                    <TableCell align="left" style={{ minWidth: '100px' }}>
+                                    <TableCell align="center" style={{ minWidth: '100px' }}>
                                         Phone Number
                                     </TableCell>
-                                    <TableCell align="left" style={{ minWidth: '100px' }}>
+                                    <TableCell align="center" style={{ minWidth: '100px' }}>
                                         Create Time
                                     </TableCell>
-                                    <TableCell align="left" style={{ minWidth: '100px' }}>
+                                    <TableCell align="center" style={{ minWidth: '100px' }}>
                                         Action
                                     </TableCell>
                                 </TableRow>

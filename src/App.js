@@ -30,7 +30,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<>{<route.Component />}</>}
+                            element={<route.Component />}
                             layout={UserLayout}
                             allowedRoles={['User']}
                         />
@@ -44,7 +44,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<>{<route.Component />}</>}
+                            element={<route.Component />}
                             layout={AdminLayout}
                             allowedRoles={['Admin']}
                         />
@@ -58,7 +58,7 @@ function App() {
                     path={route.path}
                     element={
                         <PrivateRoute
-                            element={<>{<route.Component />}</>}
+                            element={<route.Component />}
                             layout={ManagerLayout}
                             allowedRoles={['Manager']}
                         />

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button, Select, MenuItem } from '@mui/material';
 import Box from '@mui/material/Box';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Select, MenuItem } from '@mui/material';
 
 const OrderDetails = () => {
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState('');
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
         const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
@@ -99,19 +100,49 @@ const OrderDetails = () => {
                         <MenuItem value="5">Hủy Đơn</MenuItem>
                         <MenuItem value="6">Hoàn Trả Hàng</MenuItem>
                         <MenuItem value="7">Hết Hàng</MenuItem>
-
-      
-                        {/* Add other status options as MenuItem */}
                     </Select>
                     <p>Tên người dùng: {orderDetails.id}</p>
                     <p>Địa chỉ: {orderDetails.address}</p>
                     <Link to="/manager/order" className="add-btn">
-                        <Button sx={{ fontSize: 20 }} variant="contained">
+                        <Button sx={{ fontSize: 20 }} variant="contained" onClick={() => setIsDialogOpen(true)}>
                             Back
                         </Button>
                     </Link>
                 </Box>
             </Box>
+            <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+                <DialogTitle>Order Details</DialogTitle>
+                <DialogContent>
+                    {orderDetails && (
+                        <div>
+                            <p>Order Date: {orderDetails.order_date}</p>
+                            <p>Mã đơn hàng: {orderDetails.id}</p>
+                            <p>Tổng tiền: {orderDetails.orderTotal}</p>
+                            <p>Trạng thái: {getStatusName(orderDetails.orderStatus)}</p>
+                            <Select
+                                value={orderDetails.orderStatus.toString()}
+                                onChange={(event) => handleChangeStatus(event.target.value)}
+                                style={{ marginRight: '10px' }}
+                            >
+                                <MenuItem value="1">Chờ Xác Nhận</MenuItem>
+                                <MenuItem value="2">Đã Xác Nhận</MenuItem>
+                                <MenuItem value="3">Đang Vận Chuyển</MenuItem>
+                                <MenuItem value="4">Đã Nhận Hàng</MenuItem>
+                                <MenuItem value="5">Hủy Đơn</MenuItem>
+                                <MenuItem value="6">Hoàn Trả Hàng</MenuItem>
+                                <MenuItem value="7">Hết Hàng</MenuItem>
+                            </Select>
+                            <p>Tên người dùng: {orderDetails.id}</p>
+                            <p>Địa chỉ: {orderDetails.address}</p>
+                        </div>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setIsDialogOpen(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

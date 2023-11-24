@@ -17,7 +17,7 @@ import AppBarManager from '../AppBarManager/AppBarManager';
 
 function ProductManager() {
     const [staff, setStaff] = useState([]);
-    const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct/`;
+    const baseUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct`;
     console.log(staff);
     useEffect(() => {
         fetch(baseUrl)
@@ -62,7 +62,7 @@ function ProductManager() {
             case 1:
                 return 'Còn Hàng';
             case 2:
-                return 'Hết Hàng';
+                return 'Đã Bán';
             case 3:
                 return 'Lỗi';
             case 4:
@@ -159,23 +159,7 @@ function ProductManager() {
                                             </TableCell>
 
                                             <TableCell component="th" scope="row" align="center">
-                                                <img
-                                                    style={{ width: '150px', height: '150px' }}
-                                                    src={staff.image}
-                                                    alt=""
-                                                />
-                                            </TableCell>
-                                            <TableCell style={{ fontSize: '17px' }} align="center">
-                                                {staff.name}
-                                            </TableCell>
-                                            <TableCell style={{ fontSize: '17px' }} align="center">
-                                                {staff.price}
-                                            </TableCell>
-                                            <TableCell
-                                                style={{ fontSize: '17px', color: getStatusColor(staff.statusProduct) }}
-                                                align="center"
-                                            >
-                                                {getStatusName(staff.statusProduct)}
+                                                <img style={{ width: '150px', height: '150px' }} src={'http://birdsellingapi-001-site1.ctempurl.com/' + staff.image} alt="" />
                                             </TableCell>
                                             <TableCell align="center">
                                                 <Button

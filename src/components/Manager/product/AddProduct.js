@@ -15,6 +15,7 @@ const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Product/Create
 function AddProduct() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     fetch(categoriesApiUrl)
@@ -33,60 +34,57 @@ function AddProduct() {
       .required('Giá là bắt buộc'),
     sex: yup.string().required('Giới tính là bắt buộc'),
     description: yup.string().required('Thông tin là bắt buộc'),
-    dayOfBirth: yup.string().required('Ngày sinh là bắt buộc'),
+    dayOfBirth: yup.string().optional('Ngày sinh là bắt buộc'),
     category_id: yup.string().required('Danh mục là bắt buộc'),
+    image: yup.mixed().required('Hãy chọn hình ảnh'),
   });
 
   const formik = useFormik({
     initialValues: {
-      category_id: '', // Khởi tạo category_id là chuỗi rỗng
-      image: '',
+      category_id: '',
+      image: null,
       price: 0,
       name: '',
       sex: 'true',
       description: '',
-      bird_mother_id: '',
-      bird_father_id: '',
       discount: 0,
-      is_egg: 'true',
-      dayOfBirth: new Date().toISOString(),
-      birdCategory: '',
-      id: '',
+      dayOfBirth: new Date().toISOString().split('T')[0], // Format date to 'YYYY-MM-DD'
     },
     validationSchema,
-    onSubmit: (values) => {
-      const product = {
-        category_id: values.category_id,
-        image: values.image,
-        price: values.price,
-        name: values.name,
-        sex: values.sex === 'true', // Convert to boolean
-        description: values.description,
-        bird_mother_id: values.bird_mother_id,
-        bird_father_id: values.bird_father_id,
-        discount: values.discount,
-        is_egg: values.is_egg === 'true', // Convert to boolean
-        day_of_birth: values.dayOfBirth, // Rename to match API
-      };
-      fetch(baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
-      })
-        .then((res) => {
-          if (res.ok) {
-            toast.success('Thêm sản phẩm thành công!');
-            navigate('/manager/products');
-          } else {
-            toast.error('Lỗi khi thêm sản phẩm');
-          }
-        })
-        .catch((err) => {
-          toast.error('Lỗi khi thêm sản phẩm');
-          console.error(err);
+    onSubmit: async (values) => {
+      const formData = new FormData();
+
+      // Append each field to the FormData object
+      formData.append('category_id', values.category_id);
+      formData.append('imageFiles', values.image); // Assuming values.image is a File object
+      formData.append('price', values.price);
+      formData.append('name', values.name);
+      formData.append('sex', values.sex);
+      formData.append('description', values.description);
+      formData.append('bird_mother_id', values.bird_mother_id);
+      formData.append('bird_father_id', values.bird_father_id);
+      formData.append('Discount', values.discount);
+      formData.append('TypeProduct', 1); // Example value, adjust accordingly
+      formData.append('statusProduct', 1); // Example value, adjust accordingly
+      formData.append('day_of_birth', values.dayOfBirth);
+      formData.append('userId', 'user123'); // Example value, replace with actual user ID
+
+      try {
+        const response = await fetch(baseUrl, {
+          method: 'POST',
+          body: formData,
         });
+
+        if (response.ok) {
+          toast.success('Thêm sản phẩm thành công!');
+          navigate('/manager/products');
+        } else {
+          toast.error('Lỗi khi thêm sản phẩm');
+        }
+      } catch (error) {
+        toast.error('Lỗi khi thêm sản phẩm');
+        console.error(error);
+      }
     },
   });
 
@@ -99,7 +97,7 @@ function AddProduct() {
           <form className="add-container" onSubmit={formik.handleSubmit}>
             <div className="add-form">
               <div className="form-title">
-              <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '25px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Thêm Sản Phẩm Mới</h2>
+                <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '25px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Thêm Sản Phẩm Mới</h2>
               </div>
               <div className="form-body">
                 <div className="form-group">
@@ -113,17 +111,6 @@ function AddProduct() {
                     name="name"
                     error={formik.touched.name && Boolean(formik.errors.name)}
                     helperText={formik.touched.name && formik.errors.name}
-                  />
-                </div>
-                <div className="form-group">
-                  <TextField
-                    fullWidth
-                    id="filled-basic"
-                    label="Avatar"
-                    variant="filled"
-                    value={formik.values.image}
-                    onChange={formik.handleChange}
-                    name="image"
                   />
                 </div>
                 <div className="form-group">
@@ -177,6 +164,19 @@ function AddProduct() {
                 <div className="form-group">
                   <TextField
                     fullWidth
+                    id="discount"
+                    label="Giảm Giá"
+                    variant="filled"
+                    value={formik.values.discount}
+                    onChange={formik.handleChange}
+                    name="discount"
+                    error={formik.touched.discount && Boolean(formik.errors.discount)}
+                    helperText={formik.touched.discount && formik.errors.discount}
+                  />
+                </div>
+                <div className="form-group">
+                  <TextField
+                    fullWidth
                     id="dayOfBirth"
                     label="Ngày sinh"
                     variant="filled"
@@ -212,6 +212,39 @@ function AddProduct() {
                     <div className="error-text">{formik.errors.category_id}</div>
                   )}
                 </div>
+                <div className="form-group">
+                  <input
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    onChange={(event) => {
+                      formik.setFieldValue("image", event.currentTarget.files[0]);
+                      setSelectedFile(URL.createObjectURL(event.currentTarget.files[0]));
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Button
+                      variant="contained"
+                      component="span"
+                      color="primary"
+                    >
+                      Upload Image
+                    </Button>
+                  </label>
+                  {selectedFile && (
+                    <img
+                      src={selectedFile}
+                      alt="Selected"
+                      style={{ width: '100px', height: '100px', marginTop: '10px' }}
+                    />
+                  )}
+                  {formik.touched.image && formik.errors.image && (
+                    <div className="error-text">{formik.errors.image}</div>
+                  )}
+                </div>
+                {/* ... other form groups */}
                 <div className="form-group">
                   <Button
                     variant="contained"

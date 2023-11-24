@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -22,6 +22,7 @@ import Chart from './Chart.js';
 import Orders from './Orders.js';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
+import OrderRevenue from './OrderRevenue .js';
 
 
 const drawerWidth = 240;
@@ -72,6 +73,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
+    const [orders, setOrders] = useState([]);
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -79,9 +81,9 @@ export default function Dashboard() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-        <SidebarManager />
-        <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
-            <AppBarManager />
+            <SidebarManager />
+            <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
+                <AppBarManager />
                 <Box
                     component="main"
                     sx={{
@@ -106,6 +108,11 @@ export default function Dashboard() {
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
+                            <Grid item xs={12} md={8} lg={6}>
+                            <OrderRevenue orders={orders} timeRange="day" />
+                            <OrderRevenue orders={orders} timeRange="week" />
+                            <OrderRevenue orders={orders} timeRange="month" />
+                        </Grid>
                             {/* Recent Orders */}
                             <Grid item xs={12}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -116,6 +123,6 @@ export default function Dashboard() {
                     </Container>
                 </Box>
             </Box>
-            </Box>
+        </Box>
     );
 }

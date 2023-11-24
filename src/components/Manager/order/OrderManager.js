@@ -7,19 +7,65 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Select, MenuItem } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
-import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import OrderDetailsDialog from './OrderDetails';
+import TablePagination from '@mui/material/TablePagination';
+
 
 function OrderManager() {
     const [orders, setOrders] = useState([]);
-    const [selectedStatusFilter, setSelectedStatusFilter] = useState('all'); // Default: show all orders
-    const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetAll';
-    console.log(orders);
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState('all');
+    const [baseUrl] = useState('http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetAll');
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    const handleChangeStatus = async (orderId, newStatus) => {
+        try {
+            const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Order/Update-Status-Product?orderId=${orderId}&orderStatus=${newStatus}`, {
+                method: 'PUT',
+            });
+
+            if (response.ok) {
+                toast.success('Updated order status successfully!');
+
+                // Update the local state (orders array) with the new status
+                setOrders(prevOrders => {
+                    return prevOrders.map(order => {
+                        if (order.id === orderId) {
+                            return { ...order, orderStatus: newStatus };
+                        }
+                        return order;
+                    });
+                });
+            } else {
+                console.error('Failed to update order status');
+                toast.error('Failed to update order status');
+            }
+        } catch (error) {
+            console.error('Error updating order status:', error);
+            toast.error('Error updating order status');
+        }
+    };
 
     useEffect(() => {
         fetch(baseUrl)
@@ -30,31 +76,6 @@ function OrderManager() {
 
     const navigate = useNavigate();
 
-    const ViewFunction = (id) => {
-        navigate('/manager/order/' + id);
-    };
-
-
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 1:
-                return '##C0C0C0';
-            case 2:
-                return '#FFFF00';
-            case 3:
-                return '#FFCC33';
-            case 4:
-                return '#33CC33';
-            case 5:
-                return '#EE0000';
-            case 6:
-                return '#FFFFCC';
-            case 7:
-                return '#EE0000';
-            default:
-                return '#FF0000';
-        }
-    };
     const getStatusName = (status) => {
         switch (status) {
             case 1:
@@ -76,6 +97,18 @@ function OrderManager() {
         }
     };
 
+    const handleViewDetails = (id) => {
+        // Fetch data for the selected order by ID
+        const orderDetailsUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=${id}`;
+
+        fetch(orderDetailsUrl)
+            .then((response) => response.json())
+            .then((data) => {
+                setSelectedOrder(data);
+                setIsDetailsDialogOpen(true);
+            })
+            .catch((error) => console.log(error.message));
+    };
     const handleStatusFilterChange = (event) => {
         setSelectedStatusFilter(event.target.value);
     };
@@ -86,6 +119,7 @@ function OrderManager() {
 
     const sortedOrders = filteredOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
 
+    const slicedOrders = sortedOrders.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
     return (
         <Box sx={{ display: 'flex' }}>
             <SidebarManager />
@@ -120,19 +154,33 @@ function OrderManager() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {sortedOrders.map((order) => (
+                                    {slicedOrders.map((order) => (
                                         <TableRow key={order.id_order}>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{order.user.userName}</TableCell>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{new Date(order.order_date).toLocaleDateString()}</TableCell>
                                             <TableCell style={{ fontSize: '15px' }} align="center">{order.orderTotal}</TableCell>
-                                            <TableCell style={{ fontSize: '15px', background: getStatusColor(order.orderStatus) }} align="center">{getStatusName(order.orderStatus)}</TableCell>
+                                            <TableCell align="center">
+                                                <Select
+                                                    value={order.orderStatus}
+                                                    onChange={(e) => handleChangeStatus(order.id, e.target.value)}
+                                                >
+                                                    <MenuItem value={1}>Chờ Xác Nhận</MenuItem>
+                                                    <MenuItem value={2}>Đã Xác Nhận</MenuItem>
+                                                    <MenuItem value={3}>Đang Vận Chuyển</MenuItem>
+                                                    <MenuItem value={4}>Đã Nhận Hàng</MenuItem>
+                                                    <MenuItem value={5}>Hủy Đơn</MenuItem>
+                                                    <MenuItem value={6}>Hoàn Trả Hàng</MenuItem>
+                                                    <MenuItem value={7}>Hết Hàng</MenuItem>
+                                                </Select>
+                                            </TableCell>
                                             <TableCell align="center">
                                                 <Button
                                                     variant="outlined"
                                                     color="success"
                                                     className="edit-btn"
                                                     onClick={() => {
-                                                        ViewFunction(order.id);
+                                                        handleViewDetails(order.id);
+                                                        setIsDialogOpen(true);
                                                     }}
                                                 >
                                                     <VisibilityIcon sx={{ fontSize: 20 }} />
@@ -142,10 +190,50 @@ function OrderManager() {
                                     ))}
                                 </TableBody>
                             </Table>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={sortedOrders.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
                         </TableContainer>
                     )}
                 </div>
             </Box>
+            <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+                <DialogTitle>Order Details</DialogTitle>
+                <DialogContent>
+                    {selectedOrder && (
+                        <div>
+
+                            <div>
+                                <p>User Name: {selectedOrder.data.user_id}</p>
+                                {/* Other user-related information */}
+                            </div>
+                            <p>Order Date: {new Date(selectedOrder.data.order_date).toLocaleDateString()}</p>
+                            <p>Total Amount: {selectedOrder.data.orderTotal}</p>
+                            <p>Status: {getStatusName(selectedOrder.data.orderStatus)}</p>
+
+                            {/* Add other order details as needed */}
+                        </div>
+                    )}
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={() => setIsDialogOpen(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <OrderDetailsDialog
+                isOpen={isDetailsDialogOpen}
+                onClose={() => setIsDetailsDialogOpen(false)}
+                orderDetails={selectedOrder}
+                handleChangeStatus={handleChangeStatus}
+            />
         </Box>
     );
 }

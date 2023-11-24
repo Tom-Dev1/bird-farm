@@ -51,6 +51,7 @@ export default function Orders() {
         fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 const sortedOrders = data.data.sort((a, b) => {
                     return new Date(b.order_date) - new Date(a.order_date);
                 });
@@ -68,17 +69,17 @@ export default function Orders() {
             <Table size="small">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Ngày</TableCell>
-                        <TableCell>ID Người dùng</TableCell>
-                        <TableCell>Trạng Thái</TableCell>
-                        <TableCell align="right">Tổng</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>User</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell align="right">Total Order</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {orderData.map((order) => (
                         <TableRow key={order.id}>
                             <TableCell>{formatDate(order.order_date)}</TableCell>
-                            <TableCell>{order.user_id}</TableCell>
+                            <TableCell>{order.user.userName}</TableCell>
                             <TableCell>{getStatusName(order.orderStatus)}</TableCell>
                             <TableCell align="right">{`$${order.orderTotal}`}</TableCell>
                         </TableRow>

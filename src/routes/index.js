@@ -23,6 +23,11 @@ import RegisterForm from '../pages/Login/RegisterForm';
 import Unauthorized from '../pages/404/unauthorized';
 import AboutPage from '../pages/About/AboutPage';
 import Checkout from '../pages/checkout/CheckOut';
+import Step4 from '../pages/MixBird/Step4';
+import MyBird from '../components/Navbar/YourBird';
+import DetailMixBird from '../components/Navbar/DetailMixBird';
+import OrderUser from '../components/User/Order/OrderUser';
+import OrderDetailsUser from '../components/User/Order/OrderDetailsUser';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -41,7 +46,6 @@ export const privateRoutes = {
         { path: '/admin/about', Component: AboutAdmin },
         { path: '/admin/setting', Component: Setting },
         { path: '/admin/userAdmin', Component: UserAdmin },
-        // Thêm các route khác cho admin
     ],
     user: [
         { path: '/', Component: Home },
@@ -51,8 +55,12 @@ export const privateRoutes = {
         { path: '/user/products/:id', Component: SingleProduct },
         { path: '/user/cart', Component: Cart },
         { path: '/user/checkout', Component: Checkout },
-
-        // Thêm các route khác cho user
+        { path: '/mixbird', Component: Step4 },
+        { path: '/user/order', Component: OrderUser },
+        { path: '/user/order/:id', Component: OrderDetailsUser },
+        { path: '/user/mixbird', Component: Step4 },
+        { path: '/user/mybird', Component: MyBird },
+        { path: '/user/mybird/detail/:birdID', Component: DetailMixBird },
     ],
     manager: [
         { path: '/manager', Component: DashboardManager },
@@ -67,7 +75,5 @@ export const privateRoutes = {
         { path: '/manager/order', Component: OrderManager },
         { path: '/manager/order/:id', Component: OrderDetails },
         { path: '/manager/edit-user/:id', Component: EditAccount },
-
-        // Thêm các route khác cho manager
     ],
 };

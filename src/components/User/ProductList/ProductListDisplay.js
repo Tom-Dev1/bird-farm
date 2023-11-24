@@ -61,8 +61,8 @@ const ProductListDisplay = ({
                                                         product.statusProduct === 1
                                                             ? 'green'
                                                             : product.statusProduct === 2
-                                                            ? 'red'
-                                                            : 'inherit',
+                                                                ? 'red'
+                                                                : 'inherit',
                                                     fontWeight: 'bold',
                                                     fontSize: 'large',
                                                 }}

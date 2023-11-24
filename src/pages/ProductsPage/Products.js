@@ -47,9 +47,7 @@ const Products = () => {
                                                 <CardMedia
                                                     component="img"
                                                     height="350px"
-                                                    image={
-                                                        'http://birdsellingapi-001-site1.ctempurl.com/' + product.image
-                                                    }
+                                                    image={'http://birdsellingapi-001-site1.ctempurl.com/' + product.image}
                                                     alt={product.name}
                                                     style={{ objectFit: 'contain' }}
                                                 />
@@ -73,8 +71,8 @@ const Products = () => {
                                                                     product.statusProduct === 1
                                                                         ? 'green'
                                                                         : product.statusProduct === 2
-                                                                        ? 'red'
-                                                                        : 'inherit',
+                                                                            ? 'red'
+                                                                            : 'inherit',
                                                                 fontWeight: 'bold',
                                                                 fontSize: 'large',
                                                             }}
