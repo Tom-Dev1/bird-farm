@@ -23,7 +23,7 @@ const Home = () => {
     return (
         <div>
             <Banner />
-            <Category categories={categories} />
+            {/* <Category categories={categories} />
 
             <div className="layout">
                 <div className="products-container">
@@ -31,7 +31,7 @@ const Home = () => {
                     <Search />
                     <ProductList />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

@@ -156,12 +156,9 @@ const SingleProduct = () => {
         dispatch(fetchProductSingle(id));
     }, [dispatch, id]);
     const productSingle = useSelector(getProductSingle);
-
     const item = useSelector((state) => state.cart.cartData);
     // console.log('item ne', item);
-
     const userID = localStorage.getItem('id');
-
     const handleAddToCart = () => {
         if (authContext.isAuthenticated === false) {
             Swal.fire({
@@ -179,7 +176,6 @@ const SingleProduct = () => {
         } else {
             if (productSingle) {
                 const isItemInCart = item.some((item) => item.product_id === id);
-
                 if (productSingle.statusProduct === 2) {
                     Swal.fire({
                         icon: 'info',
@@ -204,7 +200,6 @@ const SingleProduct = () => {
             }
         }
     };
-
     return (
         <div className="single-product-main-contain">
             <div className="layout">
@@ -234,8 +229,8 @@ const SingleProduct = () => {
                                         productSingle.statusProduct === 1
                                             ? 'green'
                                             : productSingle.statusProduct === 2
-                                                ? 'red'
-                                                : 'inherit',
+                                            ? 'red'
+                                            : 'inherit',
                                     fontWeight: 'bold',
                                     fontSize: 'large',
                                 }}

@@ -210,15 +210,14 @@ const Navbar = () => {
     };
     const menuId = 'primary-search-account-menu';
 
-
     const handleMixBird = () => {
         navigate('/user/mybird');
         handleMenuClose();
-    }
+    };
     const handleOrder = () => {
         navigate('/user/order');
         handleMenuClose();
-    }
+    };
     const handleMyAccount = () => {
         navigate('/user/myaccount');
         handleMenuClose();
@@ -257,10 +256,9 @@ const Navbar = () => {
                     <Link to="/">Home</Link>
                     <Link to="/about">About</Link>
                     <Link>Contact</Link>
-                    <Link to="/products/category/all">Products</Link>
-                    <Link to='/user/mixbird'>Mix Birds</Link>
+                    <Link to="/products">Products</Link>
+                    <Link to="/user/mixbird">Mix Birds</Link>
                     <Link to="/cart" className="cart-icon-link">
-
                         <IconButton color="inherit">
                             <Badge badgeContent={itemsCount} color="secondary">
                                 <ShoppingCartIcon />

@@ -2,35 +2,43 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const filterSlice = createSlice({
-    name: 'filters',
+    name: 'filter',
     initialState: {
-        category_id: null,
+        category: 'all',
         name: '',
-        sex: null,
-        typeProduct: null,
-        priceFrom: null,
-        priceTo: null,
-        statusProduct: null,
+        sex: '',
+        typeProduct: '',
+        priceFrom: '',
+        priceTo: '',
+        statusProduct: '',
+        // Thêm các trường tương ứng với các điều kiện lọc khác
     },
     reducers: {
-        setFilter: (state, action) => {
+        updateFilters: (state, action) => {
+            // Hàm reducer này cập nhật trạng thái của slice với các giá trị từ payload
+            // console.log(action.payload); // Kiểm tra xem action.payload có chứa giá trị lọc không
             return { ...state, ...action.payload };
         },
-        clearFilters: (state) => {
+        resetFilters: (state) => {
+            // Hàm reducer này đặt lại tất cả các giá trị lọc về giá trị mặc định
             return {
-                category_id: null,
+                ...state,
+                category: 'all',
                 name: '',
-                sex: null,
-                typeProduct: null,
-                priceFrom: null,
-                priceTo: null,
-                statusProduct: null,
+                sex: '',
+                typeProduct: '',
+                priceFrom: '',
+                priceTo: '',
+                statusProduct: '',
+                // Reset các trường tương ứng với các điều kiện lọc khác
             };
+        },
+        updateCategoryFilter: (state, action) => {
+            state.category = action.payload;
         },
     },
 });
 
-export const { setFilter, clearFilters } = filterSlice.actions;
-export const getFilters = (state) => state.filters;
-
+export const { updateFilters, resetFilters, updateCategoryFilter } = filterSlice.actions;
+export const selectFilters = (state) => state.filter;
 export default filterSlice.reducer;

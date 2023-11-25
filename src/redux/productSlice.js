@@ -78,30 +78,11 @@ const productSlice = createSlice({
             price: 0,
             description: '',
             image: '',
-            rating: 0,
-            reviews: [],
         },
 
         isLoading: false,
     },
-    reducers: {
-        setAddReviewToProduct: (state, action) => {
-            const { rating, comment } = action.payload;
-
-            if (!state.productSingle) {
-                state.productSingle = {};
-            }
-
-            if (!state.productSingle.reviews) {
-                state.productSingle.reviews = [];
-            }
-
-            state.productSingle.reviews.push({ rating, comment });
-
-            const totalRating = state.productSingle.reviews.reduce((total, review) => total + review.rating, 0);
-            state.productSingle.rating = totalRating / state.productSingle.reviews.length;
-        },
-    },
+    reducers: {},
 
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.pending, (state, action) => {
@@ -127,13 +108,12 @@ const productSlice = createSlice({
     },
 });
 
-export const { setAddReviewToProduct } = productSlice.actions;
-export const fetchProducts = createAsyncThunk('products/fetch', async () => {
+export const fetchProducts = createAsyncThunk('products/fetch', async (filterConditions) => {
     try {
-        const response = await axios.get(`${BASE_URL}Product/GetProduct`);
-        const data = await response.data.data;
-        // console.log(data);
-        return data;
+        const response = await axios.get('http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct', {
+            params: filterConditions,
+        });
+        return response.data.data;
     } catch (error) {
         return error;
     }
