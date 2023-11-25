@@ -17,17 +17,22 @@ import Step3 from './Step3';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
 function Copyright() {
     return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Bird Farm Shop
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
+        <div style={{ marginTop: 70, marginBottom: 25 }}>
+            <Typography variant="body2" color="text.secondary" align="center" >
+                {'Copyright © '}
+                <Link color="inherit" href="/">
+                    Bird Farm Shop
+                </Link>{' '}
+                {new Date().getFullYear()}
+                {'.'}
+
+            </Typography>
+
+        </div>
     );
 }
 const steps = ['Your bird information', 'Birds of the Shop', 'Review your mix'];
@@ -134,7 +139,7 @@ export default function Step4() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+            <Container component="main" maxWidth="sm" sx={{ mb: 4, marginBottom: '300px' }} >
                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
                     <Typography component="h1" variant="h4" align="center">
                         Bird Mix Table
@@ -180,7 +185,10 @@ export default function Step4() {
                         </React.Fragment>
                     )}
                 </Paper>
+
+
                 <Copyright />
+                <Divider />
             </Container>
         </React.Fragment>
     );

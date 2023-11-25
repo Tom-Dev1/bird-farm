@@ -219,7 +219,10 @@ const Navbar = () => {
         navigate('/user/order');
         handleMenuClose();
     }
-
+    const handleMyAccount = () => {
+        navigate('/user/myaccount');
+        handleMenuClose();
+    }
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -236,8 +239,7 @@ const Navbar = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
+            <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
             <MenuItem onClick={handleMixBird}>My Bird List</MenuItem>
             <MenuItem onClick={handleOrder}>My Order</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
