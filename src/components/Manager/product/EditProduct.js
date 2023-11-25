@@ -52,18 +52,27 @@ const EditProductForm = ({ productId }) => {
       const formData = new FormData();
 
       formData.append('category_id', values.category_id);
-      formData.append('imageFiles', values.image); // Use 'imageFiles' as the field name for the image
+
+      // Kiểm tra xem người dùng có chọn ảnh mới hay không
+      if (values.image) {
+        formData.append('imageFiles', values.image);
+      } else {
+        // Nếu không, thêm đường dẫn ảnh từ API vào FormData
+        formData.append('image', selectedFile);
+      }
+
+      // Thêm các trường khác vào FormData
       formData.append('price', values.price);
       formData.append('name', values.name);
       formData.append('sex', values.sex);
       formData.append('description', values.description);
       formData.append('bird_mother_id', values.bird_mother_id);
       formData.append('bird_father_id', values.bird_father_id);
-      formData.append('Discount', values.discount); // Note: 'Discount' should match the API field name
-      formData.append('TypeProduct', values.typeProduct); // Note: 'TypeProduct' should match the API field name
+      formData.append('Discount', values.discount);
+      formData.append('TypeProduct', values.typeProduct);
       formData.append('statusProduct', values.statusProduct);
       formData.append('day_of_birth', values.day_of_birth);
-      formData.append('userId', values.userId); // Note: 'userId' should match the API field name
+      formData.append('userId', values.userId);
 
       try {
         const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/Product/UpdateProduct/${productId}`, {
@@ -93,6 +102,12 @@ const EditProductForm = ({ productId }) => {
         productData.price = parseFloat(productData.price);
         productData.discount = parseFloat(productData.discount);
         productData.sex = productData.sex ? 'true' : 'false';
+
+        // Kiểm tra và đặt đường dẫn ảnh với URL đầy đủ
+        if (productData.image) {
+          productData.image = `http://birdsellingapi-001-site1.ctempurl.com/${productData.image}`;
+        }
+        console.log(productData);
         formik.setValues(productData);
         setSelectedFile(productData.image);
       })
@@ -131,7 +146,6 @@ const EditProductForm = ({ productId }) => {
           </MenuItem>
         ))}
       </Select>
-      {/* ... (other form components) */}
       <div className="form-group">
         <TextField
           fullWidth
@@ -248,23 +262,21 @@ const EditProductForm = ({ productId }) => {
         )}
       </div>
       <div className="form-group">
-        <TextField
-          fullWidth
+        <label htmlFor="image">Image</label>
+        <input
+          type="file"
           id="image"
-          label="Image"
-          variant="filled"
+          name="image"
+          accept="image/*"
           onChange={(event) => {
             formik.setFieldValue("image", event.currentTarget.files[0]);
-            setSelectedFile(event.currentTarget.files[0]); // Update selectedFile directly
+            const file = event.currentTarget.files[0];
+            setSelectedFile(file ? URL.createObjectURL(file) : formik.values.image);
           }}
-          name="image"
-          error={formik.touched.image && Boolean(formik.errors.image)}
-          helperText={formik.touched.image && formik.errors.image}
-          type="file"
         />
-        {selectedFile && typeof selectedFile === 'object' && (
+        {selectedFile && (
           <img
-            src={URL.createObjectURL(selectedFile)}
+            src={selectedFile}
             alt="Selected"
             style={{ width: '200px', height: '200px', marginTop: '10px' }}
           />
