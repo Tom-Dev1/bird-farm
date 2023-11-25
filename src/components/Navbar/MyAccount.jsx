@@ -13,12 +13,15 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert2';
+import EditIcon from '@mui/icons-material/Edit';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import LogoutIcon from '@mui/icons-material/Logout';
 import useAuth from '../../hooks/useAuth';
 
 export default function MyAccount() {
     const { logout } = useAuth();
     const userID = localStorage.getItem('id');
-    console.log('userID', userID);
 
     const [userData, setUserData] = useState(null);
     const [editMode, setEditMode] = useState(false);
@@ -27,27 +30,39 @@ export default function MyAccount() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=${userID}`);
+                const response = await fetch(
+                    `http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=${userID}`
+                );
                 const data = await response.json();
                 setUserData(data.data);
                 // Set editData initially with the current user data
-                setEditData({
-                    ...data.data,
-                    // You might want to exclude other fields from edit, depending on your requirements
-                });
+                setEditData({ ...data.data });
             } catch (error) {
                 console.error('Error:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [userID]);
 
     const handleEditClick = () => {
         setEditMode(true);
     };
 
     const handleSaveClick = () => {
+        // Additional validation checks for all fields
+        if (
+            !validatePassword(editData?.userPassword) ||
+            !validateEmail(editData?.userEmail) ||
+            !validatePhone(editData?.userPhone)
+        ) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please correct all fields before saving.',
+            });
+            return; // Prevent the save action if any field is not valid
+        }
 
         const payload = {
             role_id: 'e78ca8b85592426aa4d981581445eeb4',
@@ -59,6 +74,7 @@ export default function MyAccount() {
             userPhone: editData.userPhone,
             addressLine: editData.addressLine,
         };
+
         fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/UpdateUser?id=${userID}`, {
             method: 'PUT',
             headers: {
@@ -91,6 +107,7 @@ export default function MyAccount() {
         setEditData(userData);
         setEditMode(false);
     };
+
     const handleLogout = async () => {
         try {
             const result = await swal.fire({
@@ -115,26 +132,32 @@ export default function MyAccount() {
         }
     };
 
-    //Validation
+
+    // Validation
     const validateUserName = (userName) => {
         const regex = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{6,}$/;
         return regex.test(userName);
     };
+
     const validatePassword = (password) => {
         const regex = /^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return regex.test(password);
     };
+
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
+
     const validatePhone = (phone) => {
         const regex = /^(\+\d{1,3}(\s?|[-.])?)?(\(\d{1,3}\)(\s?|[-.])?)?\d{1,14}$/;
         return regex.test(phone);
     };
+
     const validateAddress = (address) => {
         return address && address.trim() !== '';
     };
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -146,7 +169,7 @@ export default function MyAccount() {
                 <Divider />
                 <Box height={70} />
 
-                <Box sx={{ height: '123vh' }} >
+                <Box sx={{ height: '123vh' }}>
                     <Grid container spacing={5}>
                         <Grid item xs={6} md={9}>
                             <Box>
@@ -156,66 +179,101 @@ export default function MyAccount() {
                                             {editMode ? (
                                                 <>
                                                     <TextField
-                                                        label="UserName"
-                                                        value={userData?.userName || ''}
-                                                        onChange={(e) => setUserData({ ...editData, userName: e.target.value })}
-                                                        error={!validateUserName(editData?.userName)}
-                                                        helperText={!validateUserName(editData?.userName) && 'User Name must have at least 6 characters, 1 number, and 1 special character.'}
-                                                    />
-                                                    <TextField
+                                                        id='name'
                                                         label="Name"
-                                                        value={userData?.name || ''}
-                                                        onChange={(e) => setUserData({ ...editData, name: e.target.value })}
+                                                        value={editData?.name || ''}
+                                                        onChange={(e) => setEditData({ ...editData, name: e.target.value })}
                                                     />
+
                                                     <TextField
+                                                        id='userPassword'
                                                         label="Password"
-                                                        value={userData?.userPassword || ''}
-                                                        onChange={(e) => setUserData({ ...editData, userPassword: e.target.value })}
+                                                        type="password"
+                                                        value=""
+                                                        onChange={(e) => setEditData({ ...editData, userPassword: e.target.value })}
                                                         error={!validatePassword(editData?.userPassword)}
-                                                        helperText={!validatePassword(editData?.userPassword) && 'Password must have at least 8 characters, 1 uppercase letter, and 1 special character.'}
+                                                        helperText={
+                                                            !validatePassword(editData?.userPassword) &&
+                                                            'Password must have at least 8 characters, 1 uppercase letter, and 1 special character.'
+                                                        }
                                                     />
                                                     <TextField
+                                                        id='userPhone'
                                                         label="Phone"
-                                                        value={userData?.phone || ''}
-                                                        onChange={(e) => setUserData({ ...editData, phone: e.target.value })}
-                                                        error={!validatePhone(editData?.phone)}
-                                                        helperText={!validatePhone(editData?.phone) && 'Enter a valid phone number.'}
+                                                        value={editData?.userPhone || ''}
+                                                        onChange={(e) => setEditData({ ...editData, userPhone: e.target.value })}
+                                                        error={!validatePhone(editData?.userPhone)}
+                                                        helperText={
+                                                            !validatePhone(editData?.userPhone) &&
+                                                            'Enter a valid phone number.'
+                                                        }
                                                     />
+
                                                     <TextField
+                                                        id='userEmail'
                                                         label="Email"
-                                                        value={userData?.email || ''}
-                                                        onChange={(e) => setUserData({ ...editData, email: e.target.value })}
-                                                        error={!validateEmail(editData?.email)}
-                                                        helperText={!validateEmail(editData?.email) && 'Enter a valid email address.'}
+                                                        value={editData?.userEmail || ''}
+                                                        onChange={(e) => setEditData({ ...editData, userEmail: e.target.value })}
+                                                        error={!validateEmail(editData?.userEmail)}
+                                                        helperText={
+                                                            !validateEmail(editData?.userEmail) &&
+                                                            'Enter a valid email address.'
+                                                        }
                                                     />
+
                                                     <TextField
+                                                        id='addressLine'
                                                         label="Address"
-                                                        value={userData?.address || ''}
-                                                        onChange={(e) => setUserData({ ...editData, address: e.target.value })}
-                                                        error={!validateAddress(editData?.address)}
-                                                        helperText={!validateAddress(editData?.address) && 'Address cannot be empty.'} />
+                                                        value={editData?.addressLine || ''}
+                                                        onChange={(e) => setEditData({ ...editData, addressLine: e.target.value })}
+                                                        error={!validateAddress(editData?.addressLine)}
+                                                        helperText={
+                                                            !validateAddress(editData?.addressLine) &&
+                                                            'Address cannot be empty.'
+                                                        }
+                                                    />
                                                     <div style={{ justifyContent: 'right', display: 'flex' }}>
                                                         <Stack spacing={2} direction="row">
-                                                            <Button variant="contained" onClick={handleCancelClick} style={{ width: 100 }}>
+                                                            <Button
+                                                                variant="contained"
+                                                                onClick={handleCancelClick}
+                                                                style={{ width: 100 }}
+                                                            >
                                                                 Cancel
                                                             </Button>
-                                                            <Button variant="contained" onClick={handleSaveClick} style={{ width: 100, }} >
+                                                            <Button
+                                                                variant="contained"
+                                                                onClick={handleSaveClick}
+                                                                style={{ width: 100 }}
+
+                                                            >
                                                                 Save
                                                             </Button>
                                                         </Stack>
                                                     </div>
-
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Typography variant="h6" gutterBottom>Your Information</Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        Your Information
+                                                    </Typography>
                                                     <Divider />
                                                     <br />
-                                                    <Typography variant="h6" gutterBottom>UserName: {userData?.userName}</Typography>
-                                                    <Typography variant="h6" gutterBottom>Name: {userData?.name}</Typography>
-                                                    <Typography variant="h6" gutterBottom>Phone: {userData?.phone}</Typography>
-                                                    <Typography variant="h6" gutterBottom>Email: {userData?.email}</Typography>
-                                                    <Typography variant="h6" gutterBottom>Address: {userData?.address}</Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        UserName: {userData?.userName}
+                                                    </Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        Name: {userData?.name}
+                                                    </Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        Phone: {userData?.userPhone}
+                                                    </Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        Email: {userData?.userEmail}
+                                                    </Typography>
+                                                    <Typography variant="h6" gutterBottom>
+                                                        Address: {userData?.addressLine}
+                                                    </Typography>
                                                 </>
                                             )}
                                         </Stack>
@@ -227,19 +285,47 @@ export default function MyAccount() {
                             <Card sx={{ height: '75vh', bgcolor: '#42e46b2c' }}>
                                 <CardContent>
                                     <Stack spacing={2}>
-                                        <Typography variant='h6' gutterBottom>Action</Typography>
+                                        <Typography variant="h6" gutterBottom>
+                                            Action
+                                        </Typography>
                                         <Divider />
                                         <br />
-                                        <Button variant="contained" ><Link to='/cart'>My cart</Link></Button>
-                                        <Button variant="contained" ><Link to='/user/mybird'>My bird list</Link></Button>
-                                        <Button variant="contained" ><Link to='/user/order'>My order</Link></Button>
-                                        <Button variant="contained" onClick={handleEditClick}>Edit Profile</Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<ShoppingCartIcon />}
+                                        >
+                                            <Link to="/cart">My cart</Link>
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<AssignmentIcon />}
+                                        >
+                                            <Link to="/user/mybird">My bird list</Link>
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<AssignmentIcon />}
+                                        >
+                                            <Link to="/user/order">My order</Link>
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<EditIcon />}
+                                            onClick={handleEditClick}
+                                        >
+                                            Edit Profile
+                                        </Button>
                                         <br />
                                         <Divider />
-                                        <Button variant="contained" onClick={handleLogout}>Log out</Button>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<LogoutIcon />}
+                                            onClick={handleLogout}
+                                        >
+                                            Log out
+                                        </Button>
                                     </Stack>
                                     <br />
-
                                 </CardContent>
                             </Card>
                         </Grid>
