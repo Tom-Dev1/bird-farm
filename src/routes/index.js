@@ -28,6 +28,7 @@ import MyBird from '../components/Navbar/YourBird';
 import DetailMixBird from '../components/Navbar/DetailMixBird';
 import OrderUser from '../components/User/Order/OrderUser';
 import OrderDetailsUser from '../components/User/Order/OrderDetailsUser';
+import MixManager from '../components/Manager/mix/MixManager';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -75,5 +76,7 @@ export const privateRoutes = {
         { path: '/manager/order', Component: OrderManager },
         { path: '/manager/order/:id', Component: OrderDetails },
         { path: '/manager/edit-user/:id', Component: EditAccount },
+        { path: '/manager/mix', Component: MixManager },
+
     ],
 };

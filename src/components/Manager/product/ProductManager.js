@@ -19,7 +19,6 @@ import TablePagination from '@mui/material/TablePagination';
 
 function ProductManager() {
     const [staff, setStaff] = useState([]);
-    const [selectedProductFilter, setSelectedProductFilter] = useState('all');
     const [selectedStatusFilter, setSelectedStatusFilter] = useState('all');
     const [baseUrl] = useState('http://birdsellingapi-001-site1.ctempurl.com/api/Product/GetProduct');
     const [selectedFile, setSelectedFile] = useState(null);

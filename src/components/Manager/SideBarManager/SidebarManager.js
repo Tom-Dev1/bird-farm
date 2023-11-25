@@ -18,6 +18,8 @@ import { useAppStore } from '../../Admin/AppStore/appStore';
 import CategoryIcon from '@mui/icons-material/Category';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDove } from '@fortawesome/free-solid-svg-icons';
 
 const drawerWidth = 220;
 
@@ -88,9 +90,9 @@ export default function SideNav() {
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
 
-  const handleDrawerOpen = () => {};
+  const handleDrawerOpen = () => { };
 
-  const handleDrawerClose = () => {};
+  const handleDrawerClose = () => { };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -223,7 +225,24 @@ export default function SideNav() {
               <ListItemText primary="Order" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
-          
+          <ListItem
+            disablePadding
+            sx={{ display: 'block' }}
+            onClick={() => {
+              navigate('/manager/mix');
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <FontAwesomeIcon icon={faDove} size="xl" />
+              <ListItemText primary="Order" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
           {/* Add other ListItems as needed */}
         </List>
       </Drawer>
