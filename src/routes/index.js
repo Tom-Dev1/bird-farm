@@ -28,6 +28,8 @@ import MyBird from '../components/Navbar/YourBird';
 import DetailMixBird from '../components/Navbar/DetailMixBird';
 import OrderUser from '../components/User/Order/OrderUser';
 import OrderDetailsUser from '../components/User/Order/OrderDetailsUser';
+import LoadingPage from '../components/Navbar/LoadingPage';
+import MyAcount from '../components/Navbar/MyAccount';
 export const publicRoutes = [
     { path: '/', Component: Home },
     { path: '/login', Component: LoginForm },
@@ -38,6 +40,7 @@ export const publicRoutes = [
     { path: '/products/:id', Component: SingleProduct },
     { path: '/cart', Component: Cart },
     { path: '/unauthorized', Component: Unauthorized },
+    { path: '/loading', Component: LoadingPage }
 ];
 
 export const privateRoutes = {
@@ -61,6 +64,7 @@ export const privateRoutes = {
         { path: '/user/mixbird', Component: Step4 },
         { path: '/user/mybird', Component: MyBird },
         { path: '/user/mybird/detail/:birdID', Component: DetailMixBird },
+        { path: '/user/myaccount', Component: MyAcount }
     ],
     manager: [
         { path: '/manager', Component: DashboardManager },
