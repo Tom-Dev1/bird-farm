@@ -9,25 +9,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Swal from 'sweetalert2';
 
 const OrderDetailsUser = () => {
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
-    const [selectedStatus, setSelectedStatus] = useState('');
     const [tableRows, setTableRows] = useState([]);
 
     useEffect(() => {
-        const baseUrl =
-            'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
+        const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
         fetch(baseUrl + id)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 setOrderDetails(data.data);
-                setSelectedStatus(data.data.orderStatus.toString());
-                renderTableAsync(data.data); // Pass the order details to the rendering function
+                renderTableAsync(data.data);
             })
             .catch((error) => console.log(error.message));
     }, [id]);
@@ -37,7 +32,7 @@ const OrderDetailsUser = () => {
             renderTable(orderDetails).then((rows) => setTableRows(rows));
         } catch (error) {
             console.error('Error rendering table:', error.message);
-            setTableRows([]); // Set empty array if there's an error
+            setTableRows([]);
         }
     };
 
@@ -74,7 +69,7 @@ const OrderDetailsUser = () => {
         }
     };
 
-    const renderTable = (orderDetails) => {
+    const renderTable = async (orderDetails) => {
         if (!orderDetails || !orderDetails.carts || orderDetails.carts.length === 0) {
             return [
                 <TableRow key="no-items">
@@ -85,18 +80,17 @@ const OrderDetailsUser = () => {
             ];
         }
 
-        // Ensure orderDetails.carts is not null
         if (!orderDetails.carts) {
             return null;
         }
 
-        // Fetch product details for all carts in parallel
         const productDetailsPromises = orderDetails.carts.map((cart) =>
             fetchProductDetails(cart.product_id)
         );
 
-        // Use Promise.all without await
-        return Promise.all(productDetailsPromises).then((productDetails) => {
+        try {
+            const productDetails = await Promise.all(productDetailsPromises);
+
             // Render table rows
             return orderDetails.carts.map((cart, index) => (
                 <TableRow key={cart.product_id}>
@@ -122,7 +116,47 @@ const OrderDetailsUser = () => {
                     </TableCell>
                 </TableRow>
             ));
-        });
+        } catch (error) {
+            console.error('Error fetching product details:', error.message);
+            return [];
+        }
+    };
+
+    const handleStatusChange = async (newStatus) => {
+        try {
+            const confirmationResult = await Swal.fire({
+                icon: 'question',
+                title: 'Confirm Status Change',
+                text: 'Are you sure you want to update the order status?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+            });
+
+            if (confirmationResult.isConfirmed) {
+                const updateStatusUrl = `http://birdsellingapi-001-site1.ctempurl.com/api/Order/Update-Status-Product?orderId=${id}&orderStatus=${newStatus}`;
+                await fetch(updateStatusUrl, { method: 'PUT' });
+                console.log(updateStatusUrl);
+
+                // Fetch and update the order details again after status change
+                const updatedOrderDetails = await fetchOrderDetails(id);
+                setOrderDetails(updatedOrderDetails);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Order status updated successfully.',
+                });
+            }
+        } catch (error) {
+            console.error('Error updating order status:', error.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Fail to update status.',
+            });
+        }
     };
 
     if (!orderDetails) {
@@ -140,26 +174,13 @@ const OrderDetailsUser = () => {
                         fontFamily: 'Arial, sans-serif',
                     }}
                 >
-                    Chi tiết đơn hàng
+                    View Order Details
                 </h2>
                 <p>Order Date: {new Date(orderDetails.order_date).toLocaleDateString()}</p>
                 <p>Mã đơn hàng: {orderDetails.id}</p>
                 <p>Tổng tiền: {orderDetails.orderTotal}</p>
                 <p>Trạng thái: {getStatusName(orderDetails.orderStatus)}</p>
                 <p>Địa chỉ: {orderDetails.address}</p>
-                <Select
-                    value={selectedStatus}
-                    onChange={(event) => setSelectedStatus(event.target.value)}
-                    style={{ marginRight: '10px' }}
-                >
-                    <MenuItem value="1">Chờ Xác Nhận</MenuItem>
-                    <MenuItem value="2">Đã Xác Nhận</MenuItem>
-                    <MenuItem value="3">Đang Vận Chuyển</MenuItem>
-                    <MenuItem value="4">Đã Nhận Hàng</MenuItem>
-                    <MenuItem value="5">Hủy Đơn</MenuItem>
-                    <MenuItem value="6">Hoàn Trả Hàng</MenuItem>
-                    <MenuItem value="7">Hết Hàng</MenuItem>
-                </Select>
                 <div className="main">
                     <TableContainer component={Paper} className="dashboard-container">
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="order-table">
@@ -180,17 +201,53 @@ const OrderDetailsUser = () => {
                         </Table>
                     </TableContainer>
                 </div>
-                <Link to="/user/order" className="add-btn">
-                    <Button
-                        sx={{ fontSize: 20 }}
-                        variant="contained"
-                    >
-                        Back
-                    </Button>
-                </Link>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px' }}>
+                    <Link to="/user/order" className="add-btn">
+                        <Button sx={{ fontSize: 20 }} variant="contained">
+                            Back
+                        </Button>
+                    </Link>
+                    {orderDetails.orderStatus === 1 || orderDetails.orderStatus === 2 ? (
+                        <Button
+                            sx={{ fontSize: 20, backgroundColor: '#FF0000', color: '#FFFFFF' }}
+                            variant="contained"
+                            onClick={() => handleStatusChange('5')}
+                        >
+                            Hủy Đơn
+                        </Button>
+                    ) : orderDetails.orderStatus === 3 ? (
+                        <Button
+                            sx={{ fontSize: 20, backgroundColor: '#008000', color: '#FFFFFF' }}
+                            variant="contained"
+                            onClick={() => handleStatusChange('4')}
+                        >
+                            Đã Nhận Hàng
+                        </Button>
+                    ) : orderDetails.orderStatus === 4 ? (
+                        <Button
+                            sx={{ fontSize: 20, backgroundColor: '#FF0000', color: '#FFFFFF' }}
+                            variant="contained"
+                            onClick={() => handleStatusChange('6')}
+                        >
+                            Hoàn Trả Hàng
+                        </Button>
+                    ) : null}
+                </Box>
             </Box>
         </Box>
     );
+};
+
+const fetchOrderDetails = async (orderId) => {
+    const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
+    try {
+        const response = await fetch(baseUrl + orderId);
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Error fetching updated order details:', error.message);
+        return null;
+    }
 };
 
 export default OrderDetailsUser;
