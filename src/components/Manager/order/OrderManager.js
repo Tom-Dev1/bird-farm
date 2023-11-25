@@ -129,7 +129,7 @@ function OrderManager() {
                     <Select
                         value={selectedStatusFilter}
                         onChange={handleStatusFilterChange}
-                        style={{ marginBottom: '10px' }}
+                        style={{ marginTop: '30px' }}
                     >
                         <MenuItem value="all">All Status</MenuItem>
                         <MenuItem value="1">Chờ Xác Nhận</MenuItem>
