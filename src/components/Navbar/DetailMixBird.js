@@ -13,11 +13,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
-
+import LoadingPage from './LoadingPage';
 export default function DetailMixBird() {
     const { birdID } = useParams();
     const navigate = useNavigate();
     const [getAll, setGetAll] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         try {
@@ -30,6 +31,7 @@ export default function DetailMixBird() {
                 })
                 .then(data => {
                     setGetAll(data.data);
+                    setTimeout(() => setLoading(false), 500);
                     const selectedBird = data.data.find(bird => bird.bird_KH_id === birdID);
                     if (selectedBird) {
 
@@ -37,14 +39,19 @@ export default function DetailMixBird() {
                 })
                 .catch(error => {
                     console.error("Error fetching data: ", error);
+                    setLoading(false);
                 });
         } catch (error) {
             console.error("Error outside fetch: ", error);
         }
     }, [birdID]);
 
-    if (!getAll || getAll.length === 0) {
-        return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <>
+                <LoadingPage />
+            </>
+        );
     }
 
     const categoryMapping = {
@@ -60,7 +67,7 @@ export default function DetailMixBird() {
     return (
         <React.Fragment>
 
-            <TableContainer>
+            <TableContainer style={{ marginBottom: 90 }}>
                 <CssBaseline />
                 <Container fixed>
                     <Box height={100} />
@@ -72,7 +79,7 @@ export default function DetailMixBird() {
                         </Container>
                         <Divider />
                         <Box height={10} />
-                        <TableContainer sx={{ maxHeight: '100%' }}>
+                        <TableContainer sx={{ maxHeight: '100%' }} style={{ marginBottom: 50 }} >
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
                                     <TableRow>
@@ -99,7 +106,6 @@ export default function DetailMixBird() {
                                             <Typography>Gender: {sexMapping[selectedBird.bird_Shop.sex]}</Typography>
                                             <Typography>Category: {categoryMapping[selectedBird.bird_Shop.category_id]}</Typography>
                                         </TableCell>
-
                                         <TableCell align="center">{selectedBird.ngayChoPhoi}</TableCell>
                                         <TableCell align="center">{selectedBird.ngayCoTrung}</TableCell>
                                         <TableCell align="center">{selectedBird.soTrung}</TableCell>
@@ -108,14 +114,25 @@ export default function DetailMixBird() {
                                     </TableRow>
                                 </TableBody>
                             </Table>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => navigate(`/user/mybird`)}
-                            >
-                                Back
-                            </Button>
                         </TableContainer>
+                    </Box>
+
+                    <Divider />
+                    <br />
+
+                    <Box display="flex" justifyContent="flex-end">
+                        <Button
+                            style={{ marginTop: '30px', marginRight: '10px' }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate(`/user/mybird`)}
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            style={{ marginTop: '30px' }}
+                            onClick={() => navigate('/')}
+                        >Go to Home</Button>
                     </Box>
                 </Container>
             </TableContainer>
