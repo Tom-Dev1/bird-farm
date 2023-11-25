@@ -80,9 +80,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
             userEmail: editedUser.userEmail,
             userPhone: editedUser.userPhone,
             addressLine: editedUser.addressLine,
-            // createdAt: editedUser.createdAt,
-            // role_id: editedUser.role_id,
-            // address_id: editedUser.address_id,
+
         };
 
         fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/User/UpdateUser?id=${id}`, {
@@ -144,7 +142,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                         onChange={handleInputChange}
                         helperText={
                             !validateUsername(editedUser.userName) &&
-                            'User Name phải có ít nhất 6 ký tự, ít nhất 1 số và ít nhất 1 ký tự đặc biệt.'
+                            'User Name must have at least 6 characters, 1 number, and 1 special character.'
                         }
                         sx={{ minWidth: '100%' }}
                         size="small"
@@ -162,7 +160,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                         onChange={handleInputChange}
                         helperText={
                             !validatePassword(editedUser.userPassword) &&
-                            'Password phải có ít nhất 8 ký tự , 1 ký tự viết hoa và 1 ký tự đặc biệt'
+                            'Password must have at least 8 characters, 1 uppercase letter, and 1 special character.'
                         }
                         sx={{ minWidth: '100%' }}
                         size="small"
@@ -200,7 +198,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                         name="userPhone"
                         value={editedUser.userPhone}
                         onChange={handleInputChange}
-                        helperText={!validatePhone(editedUser.userPhone) && 'Số điện thoại không hợp lệ'}
+                        helperText={!validatePhone(editedUser.userPhone) && 'Enter a valid phone number.'}
                         sx={{ minWidth: '100%' }}
                         size="small"
                     />
@@ -213,7 +211,7 @@ const EditUser = ({ userData, closeEvent, refreshUserList }) => {
                         name="addressLine"
                         value={editedUser.addressLine}
                         onChange={handleInputChange}
-                        helperText={!validateAddress(editedUser.addressLine) && 'Address không được trống !'}
+                        helperText={!validateAddress(editedUser.addressLine) && 'Enter a valid address.'}
                         sx={{ minWidth: '100%' }}
                         size="small"
                     />

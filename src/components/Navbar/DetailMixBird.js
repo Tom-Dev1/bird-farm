@@ -33,8 +33,8 @@ export default function DetailMixBird() {
                     setGetAll(data.data);
                     setTimeout(() => setLoading(false), 500);
                     const selectedBird = data.data.find(bird => bird.bird_KH_id === birdID);
-                    if (selectedBird) {
-
+                    if (!selectedBird) {
+                        return <div>No bird found with id {birdID}</div>;
                     }
                 })
                 .catch(error => {
@@ -64,9 +64,13 @@ export default function DetailMixBird() {
         false: "Female",
     };
     const selectedBird = getAll.find(bird => bird.bird_KH_id === birdID);
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('vi-VN', options);
+    };
     return (
         <React.Fragment>
-
             <TableContainer style={{ marginBottom: 90 }}>
                 <CssBaseline />
                 <Container fixed>
@@ -93,26 +97,29 @@ export default function DetailMixBird() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow key={selectedBird.id}>
-                                        <TableCell align="center" key={selectedBird.bird_KH.id}>
-                                            <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + selectedBird.bird_KH.image} alt={selectedBird.bird_KH.name} style={{ width: '270px', height: '250px' }} />
-                                            <Typography>Name: {selectedBird.bird_KH.name}</Typography>
-                                            <Typography>Gender: {sexMapping[selectedBird.bird_KH.sex]}</Typography>
-                                            <Typography>Category: {categoryMapping[selectedBird.bird_KH.category_id]}</Typography>
-                                        </TableCell>
-                                        <TableCell align="center" key={selectedBird.bird_Shop.id}>
-                                            <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + selectedBird.bird_Shop.image} alt={selectedBird.bird_Shop.name} style={{ width: '270px', height: '250px' }} />
-                                            <Typography>Name: {selectedBird.bird_Shop.name}</Typography>
-                                            <Typography>Gender: {sexMapping[selectedBird.bird_Shop.sex]}</Typography>
-                                            <Typography>Category: {categoryMapping[selectedBird.bird_Shop.category_id]}</Typography>
-                                        </TableCell>
-                                        <TableCell align="center">{selectedBird.ngayChoPhoi}</TableCell>
-                                        <TableCell align="center">{selectedBird.ngayCoTrung}</TableCell>
-                                        <TableCell align="center">{selectedBird.soTrung}</TableCell>
-                                        <TableCell align="center">{selectedBird.phoiGiongStatus}</TableCell>
-                                        <TableCell align="center">{selectedBird.giaTien}</TableCell>
-                                    </TableRow>
+                                    {selectedBird && (
+                                        <TableRow key={selectedBird.id}>
+                                            <TableCell align="center" key={selectedBird.bird_KH.id}>
+                                                <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + selectedBird.bird_KH.image} alt={selectedBird.bird_KH.name} style={{ width: '270px', height: '250px' }} />
+                                                <Typography>Name: {selectedBird.bird_KH.name}</Typography>
+                                                <Typography>Gender: {sexMapping[selectedBird.bird_KH.sex]}</Typography>
+                                                <Typography>Category: {categoryMapping[selectedBird.bird_KH.category_id]}</Typography>
+                                            </TableCell>
+                                            <TableCell align="center" key={selectedBird.bird_Shop.id}>
+                                                <img src={'http://birdsellingapi-001-site1.ctempurl.com/' + selectedBird.bird_Shop.image} alt={selectedBird.bird_Shop.name} style={{ width: '270px', height: '250px' }} />
+                                                <Typography>Name: {selectedBird.bird_Shop.name}</Typography>
+                                                <Typography>Gender: {sexMapping[selectedBird.bird_Shop.sex]}</Typography>
+                                                <Typography>Category: {categoryMapping[selectedBird.bird_Shop.category_id]}</Typography>
+                                            </TableCell>
+                                            <TableCell align="center">{formatDate(selectedBird.ngayChoPhoi)}</TableCell>
+                                            <TableCell align="center">{formatDate(selectedBird.ngayCoTrung)}</TableCell>
+                                            <TableCell align="center">{selectedBird.soTrung}</TableCell>
+                                            <TableCell align="center">{selectedBird.phoiGiongStatus}</TableCell>
+                                            <TableCell align="center">{selectedBird.giaTien}</TableCell>
+                                        </TableRow>
+                                    )}
                                 </TableBody>
+
                             </Table>
                         </TableContainer>
                     </Box>
