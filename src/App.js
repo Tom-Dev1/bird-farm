@@ -28,13 +28,7 @@ function App() {
                 <Route
                     key={index}
                     path={route.path}
-                    element={
-                        <PrivateRoute
-                            element={<route.Component />}
-                            layout={UserLayout}
-                            allowedRoles={['User']}
-                        />
-                    }
+                    element={<PrivateRoute element={<route.Component />} layout={UserLayout} allowedRoles={['User']} />}
                 />
             ))}
 
@@ -43,11 +37,7 @@ function App() {
                     key={index}
                     path={route.path}
                     element={
-                        <PrivateRoute
-                            element={<route.Component />}
-                            layout={AdminLayout}
-                            allowedRoles={['Admin']}
-                        />
+                        <PrivateRoute element={<route.Component />} layout={AdminLayout} allowedRoles={['Admin']} />
                     }
                 />
             ))}
@@ -57,11 +47,7 @@ function App() {
                     key={index}
                     path={route.path}
                     element={
-                        <PrivateRoute
-                            element={<route.Component />}
-                            layout={ManagerLayout}
-                            allowedRoles={['Manager']}
-                        />
+                        <PrivateRoute element={<route.Component />} layout={ManagerLayout} allowedRoles={['Manager']} />
                     }
                 />
             ))}

@@ -9,7 +9,7 @@ const ProductList = () => {
     const dispatch = useDispatch();
     const searchResults = useSelector(getSearchResults);
     const allProducts = useSelector(getAllProducts);
-    console.log(allProducts);
+    // console.log(allProducts);
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(9);
 
