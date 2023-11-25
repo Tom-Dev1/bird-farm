@@ -269,6 +269,7 @@ const EditProductForm = ({ productId }) => {
           name="image"
           accept="image/*"
           onChange={(event) => {
+            event.preventDefault(); // Add this line
             formik.setFieldValue("image", event.currentTarget.files[0]);
             const file = event.currentTarget.files[0];
             setSelectedFile(file ? URL.createObjectURL(file) : formik.values.image);

@@ -19,6 +19,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import OrderDetailsDialog from './OrderDetails';
 import TablePagination from '@mui/material/TablePagination';
+import ProductTable from './ProductTable';
 
 
 function OrderManager() {
@@ -47,7 +48,6 @@ function OrderManager() {
 
             if (response.ok) {
                 toast.success('Updated order status successfully!');
-
                 // Update the local state (orders array) with the new status
                 setOrders(prevOrders => {
                     return prevOrders.map(order => {
@@ -74,7 +74,6 @@ function OrderManager() {
             .catch((error) => console.log(error.message));
     }, []);
 
-    const navigate = useNavigate();
 
     const getStatusName = (status) => {
         switch (status) {
@@ -106,6 +105,7 @@ function OrderManager() {
             .then((data) => {
                 setSelectedOrder(data);
                 setIsDetailsDialogOpen(true);
+                console.log(data);
             })
             .catch((error) => console.log(error.message));
     };
@@ -208,16 +208,12 @@ function OrderManager() {
                 <DialogContent>
                     {selectedOrder && (
                         <div>
-
-                            <div>
-                                <p>User Name: {selectedOrder.data.user_id}</p>
-                                {/* Other user-related information */}
-                            </div>
+                            <p>User Name: {selectedOrder.data.userName}</p>
                             <p>Order Date: {new Date(selectedOrder.data.order_date).toLocaleDateString()}</p>
-                            <p>Total Amount: {selectedOrder.data.orderTotal}</p>
+                            <p>ID Order: {selectedOrder.data.id}</p>
                             <p>Status: {getStatusName(selectedOrder.data.orderStatus)}</p>
-
-                            {/* Add other order details as needed */}
+                            <ProductTable carts={selectedOrder.data.carts} />
+                            <p>Total Amount: {selectedOrder.data.orderTotal}</p>
                         </div>
                     )}
                 </DialogContent>

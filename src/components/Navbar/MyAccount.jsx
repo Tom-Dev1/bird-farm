@@ -189,7 +189,7 @@ export default function MyAccount() {
                                                         id='userPassword'
                                                         label="Password"
                                                         type="password"
-                                                        value=""
+                                                        value={editData?.userPassword}
                                                         onChange={(e) => setEditData({ ...editData, userPassword: e.target.value })}
                                                         error={!validatePassword(editData?.userPassword)}
                                                         helperText={
