@@ -107,12 +107,11 @@ const Cart = () => {
     const totalAmount = calculateTotalAmount(cartItems, selectedProducts, discountedProducts);
 
     return (
-
         <React.Fragment>
             <CssBaseline />
             <Container fixed>
                 <Box height={100} />
-                <Box display="flex" flexDirection="column" sx={{ marginBottom: 25 }} >
+                <Box display="flex" flexDirection="column" sx={{ marginBottom: 25 }}>
                     <Box flexGrow={1}>
                         <Typography sx={{ textAlign: 'left' }} variant="h4" gutterBottom>
                             Shopping Cart
@@ -121,11 +120,16 @@ const Cart = () => {
                         <Box height={70} />
                         {cartItems.length === 0 ? (
                             <Container maxWidth="xs">
-                                <Stack style={{ display: 'flex', justifyContent: 'center' }} >
+                                <Stack style={{ display: 'flex', alignItems: 'center' }}>
                                     <Typography align="center">Your cart is empty.</Typography>
                                     <Box height={70} />
-                                    <Link to='/products'><Button variant="outlined" color="success"><Typography align='center'>Continue buying <FontAwesomeIcon icon={faCartArrowDown} bounce /></Typography></Button></Link>
-
+                                    <Link to="/products" s>
+                                        <Button variant="outlined" color="success">
+                                            <Typography align="center">
+                                                Continue buying <FontAwesomeIcon icon={faCartArrowDown} bounce />
+                                            </Typography>
+                                        </Button>
+                                    </Link>
                                 </Stack>
                             </Container>
                         ) : (
@@ -152,7 +156,8 @@ const Cart = () => {
                                                         style={{ width: 100, height: 100 }}
                                                         alt={item.product.name}
                                                         src={
-                                                            'http://birdsellingapi-001-site1.ctempurl.com/' + item.product.image
+                                                            'http://birdsellingapi-001-site1.ctempurl.com/' +
+                                                            item.product.image
                                                         }
                                                     />
                                                 </TableCell>
@@ -163,10 +168,15 @@ const Cart = () => {
                                                     {item.product.discount}%
                                                 </TableCell>
                                                 <TableCell>
-                                                    {discountedProducts.includes(item.id) ? item.price : item.product.price}
+                                                    {discountedProducts.includes(item.id)
+                                                        ? item.price
+                                                        : item.product.price}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <IconButton color="secondary" onClick={() => handleRemoveCart([item.id])}>
+                                                    <IconButton
+                                                        color="secondary"
+                                                        onClick={() => handleRemoveCart([item.id])}
+                                                    >
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </TableCell>
@@ -185,7 +195,13 @@ const Cart = () => {
                     </Box>
                     <Box height={70} />
                     <Divider />
-                    <Box display="flex" justifyContent="flex-end" alignItems="center" padding="16px" borderTop="1px solid #ccc">
+                    <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        padding="16px"
+                        borderTop="1px solid #ccc"
+                    >
                         <Box marginRight="auto">
                             <Typography variant="h6">Total Items: {cartItems.length}</Typography>
                         </Box>
@@ -202,7 +218,6 @@ const Cart = () => {
                         </Button>
                     </Box>
                 </Box>
-
             </Container>
         </React.Fragment>
     );

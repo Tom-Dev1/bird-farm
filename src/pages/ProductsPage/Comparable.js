@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './Products.scss';
-import Sidebar from '../../components/User/Sidebar/Sidebar';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts, getAllProducts } from '../../redux/productSlice';
-import { fetchCategories, getAllCategories } from '../../redux/categorySlice';
+
 import {
     Button,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardMedia,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    Typography,
 } from '@mui/material';
 
 const CompareTable = ({ products, onClose }) => {
@@ -35,6 +26,7 @@ const CompareTable = ({ products, onClose }) => {
                             <TableRow>
                                 <TableCell>Product Name</TableCell>
                                 <TableCell>Price</TableCell>
+                                <TableCell>Discount</TableCell>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Gender</TableCell>
                             </TableRow>
@@ -44,6 +36,7 @@ const CompareTable = ({ products, onClose }) => {
                                 <TableRow key={product.id}>
                                     <TableCell>{product.name}</TableCell>
                                     <TableCell>{product.price}</TableCell>
+                                    <TableCell>{product.discount}%</TableCell>
                                     <TableCell>{product.day_of_birth}</TableCell>
                                     <TableCell>{product.sex === true ? 'Male' : 'Female'}</TableCell>
                                 </TableRow>
