@@ -11,17 +11,39 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { useNavigate } from 'react-router-dom';
-import { useAppStore } from '../../Admin/AppStore/appStore';
 import CategoryIcon from '@mui/icons-material/Category';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDove } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../../Admin/AppStore/appStore';
 
 const drawerWidth = 220;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -55,34 +77,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
   ...(open && {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
   ...(!open && {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
-    },
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
 
-const menuItems = [
-  { path: '/manager/dashboard', icon: <DashboardIcon />, text: 'Dashboard' },
-  { path: '/manager/categories', icon: <CategoryIcon />, text: 'Category' },
-  { path: '/manager/products', icon: <InventoryIcon />, text: 'Product' },
-  { path: '/manager/order', icon: <ShoppingBasketIcon />, text: 'Order' },
-  { path: '/manager/mix', icon: <FontAwesomeIcon icon={faDove} size="xl" />, text: 'Mix Order' },
-  // Add other menu items as needed
-];
-
-const SideNav = () => {
+export default function SideNav() {
   const theme = useTheme();
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
@@ -91,9 +95,17 @@ const SideNav = () => {
 
   const handleDrawerClose = () => { };
 
+  const menuItems = [
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/manager/dashboard' },
+    { text: 'Category', icon: <CategoryIcon />, path: '/manager/categories' },
+    { text: 'Product', icon: <InventoryIcon />, path: '/manager/products' },
+    { text: 'Order', icon: <ShoppingBasketIcon />, path: '/manager/order' },
+    { text: 'Order Mix', icon: <FontAwesomeIcon icon={faDove} size="xl" />, path: '/manager/mix' },
+    // Add other menu items as needed
+  ];
+
   return (
     <Box sx={{ display: 'flex' }}>
-      {/* CssBaseline */}
       <CssBaseline />
 
       {/* AppBar */}
@@ -119,14 +131,12 @@ const SideNav = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <ListItem
-              key={item.text}
+              key={index}
               disablePadding
               sx={{ display: 'block' }}
-              onClick={() => {
-                navigate(item.path);
-              }}
+              onClick={() => navigate(item.path)}
             >
               <ListItemButton
                 sx={{
@@ -135,18 +145,9 @@ const SideNav = () => {
                   px: 2.5,
                 }}
               >
-                {item.icon && (
-                  <Box
-                    component="span"
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {item.icon}
-                  </Box>
-                )}
+                <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
+                  {item.icon}
+                </ListItemIcon>
                 <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
@@ -155,6 +156,4 @@ const SideNav = () => {
       </Drawer>
     </Box>
   );
-};
-
-export default SideNav;
+}
