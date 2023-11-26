@@ -240,7 +240,7 @@ export default function SideNav() {
               }}
             >
               <FontAwesomeIcon icon={faDove} size="xl" />
-              <ListItemText primary="Order" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Mix Order" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
           </ListItem>
           {/* Add other ListItems as needed */}
