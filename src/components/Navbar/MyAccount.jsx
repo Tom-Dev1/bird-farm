@@ -61,7 +61,7 @@ export default function MyAccount() {
                 title: 'Error',
                 text: 'Please correct all fields before saving.',
             });
-            return; // Prevent the save action if any field is not valid
+            return;
         }
 
         const payload = {
@@ -101,7 +101,7 @@ export default function MyAccount() {
                 });
             });
     };
-
+    console.log('Password: ', editData.userPassword);
     const handleCancelClick = () => {
         // Reset the editData to discard changes
         setEditData(userData);
