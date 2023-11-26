@@ -76,11 +76,11 @@ export default function DetailMixBird() {
                 <Container fixed>
                     <Box height={100} />
                     <Box sx={{ flexGrow: 1, height: '400hv' }}>
-                        <Container maxWidth="xs">
-                            <Typography sx={{ textAlign: 'center' }} variant="h4" gutterBottom>
-                                View Mix Bird Detail
-                            </Typography>
-                        </Container>
+
+                        <Typography sx={{ textAlign: 'left' }} variant="h4" gutterBottom>
+                            View Mix Bird Detail
+                        </Typography>
+
                         <Divider />
                         <Box height={10} />
                         <TableContainer sx={{ maxHeight: '100%' }} style={{ marginBottom: 50 }} >

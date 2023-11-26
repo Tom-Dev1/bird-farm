@@ -11,12 +11,14 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import LoadingPage from '../../Navbar/LoadingPage';
 
 const OrderDetailsUser = () => {
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState('');
     const [tableRows, setTableRows] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const baseUrl =
@@ -26,6 +28,7 @@ const OrderDetailsUser = () => {
             .then((data) => {
                 console.log(data);
                 setOrderDetails(data.data);
+                setTimeout(() => setLoading(false), 600);
                 setSelectedStatus(data.data.orderStatus.toString());
                 renderTableAsync(data.data); // Pass the order details to the rendering function
             })
@@ -125,10 +128,9 @@ const OrderDetailsUser = () => {
         });
     };
 
-    if (!orderDetails) {
-        return <div>Loading...</div>;
+    if (loading) {
+        return <LoadingPage />;
     }
-
     return (
         <Box sx={{ display: 'flex' }}>
             <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
