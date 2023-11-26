@@ -25,7 +25,7 @@ export default function MyAccount() {
 
     const [userData, setUserData] = useState(null);
     const [editMode, setEditMode] = useState(false);
-    const [editData, setEditData] = useState(null);
+    const [editData, setEditData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,6 +37,8 @@ export default function MyAccount() {
                 setUserData(data.data);
                 // Set editData initially with the current user data
                 setEditData({ ...data.data });
+
+
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -168,7 +170,6 @@ export default function MyAccount() {
                 </Typography>
                 <Divider />
                 <Box height={70} />
-
                 <Box sx={{ height: '123vh' }}>
                     <Grid container spacing={5}>
                         <Grid item xs={6} md={9}>
@@ -189,7 +190,7 @@ export default function MyAccount() {
                                                         id='userPassword'
                                                         label="Password"
                                                         type="password"
-                                                        value={editData?.userPassword}
+                                                        value={editData?.userPassword || ''}
                                                         onChange={(e) => setEditData({ ...editData, userPassword: e.target.value })}
                                                         error={!validatePassword(editData?.userPassword)}
                                                         helperText={

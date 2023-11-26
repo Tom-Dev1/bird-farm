@@ -7,15 +7,48 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import LoadingPage from '../../Navbar/LoadingPage';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Unstable_Grid2';
+import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import FeedbackComponent from '../FeedBack/FeedbackComponent';
 
 const OrderDetailsUser = () => {
+
     const { id } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
     const [tableRows, setTableRows] = useState([]);
+    const [userData, setUserData] = useState({});
+    const userID = localStorage.getItem('id');
+    const [showFeedback, setShowFeedback] = useState(false);
+    const handleFeedbackClick = () => {
+        setShowFeedback(true);
+    };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `http://birdsellingapi-001-site1.ctempurl.com/api/User/GetSingleID?id=${userID}`
+                );
+                const data = await response.json();
+                setUserData(data.data);
 
+
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [userID]);
     useEffect(() => {
         const baseUrl = 'http://birdsellingapi-001-site1.ctempurl.com/api/Order/GetSingleID?id=';
         fetch(baseUrl + id)
@@ -23,10 +56,13 @@ const OrderDetailsUser = () => {
             .then((data) => {
                 setOrderDetails(data.data);
                 renderTableAsync(data.data);
+
             })
+
             .catch((error) => console.log(error.message));
     }, [id]);
 
+    console.log(orderDetails);
     const renderTableAsync = (orderDetails) => {
         try {
             renderTable(orderDetails).then((rows) => setTableRows(rows));
@@ -69,7 +105,14 @@ const OrderDetailsUser = () => {
         }
     };
 
+    const [cartsData, setCartsData] = useState([]);
+    useEffect(() => {
+        if (orderDetails && orderDetails.carts) {
+            setCartsData(orderDetails.carts);
+        }
+    }, [orderDetails]);
     const renderTable = async (orderDetails) => {
+
         if (!orderDetails || !orderDetails.carts || orderDetails.carts.length === 0) {
             return [
                 <TableRow key="no-items">
@@ -91,28 +134,32 @@ const OrderDetailsUser = () => {
         try {
             const productDetails = await Promise.all(productDetailsPromises);
 
+
+            console.log('Carts', orderDetails.carts);
             // Render table rows
             return orderDetails.carts.map((cart, index) => (
                 <TableRow key={cart.product_id}>
+
                     <TableCell style={{ fontSize: '15px' }} align="center">
                         {productDetails[index] ? (
                             <>
-                                <div>{productDetails[index].name}</div>
+
                                 <img
                                     src={`http://birdsellingapi-001-site1.ctempurl.com/${productDetails[index].image}`}
                                     alt="Product"
-                                    style={{ width: '100px', height: '100px' }}
+                                    style={{ width: '180px', height: '150px' }}
                                 />
+                                <Typography>{productDetails[index].name}</Typography>
                             </>
                         ) : (
                             'Unknown'
                         )}
                     </TableCell>
                     <TableCell style={{ fontSize: '15px' }} align="center">
-                        {cart.price}
+                        {cart.quantity}
                     </TableCell>
                     <TableCell style={{ fontSize: '15px' }} align="center">
-                        {cart.quantity}
+                        {cart.price} $
                     </TableCell>
                 </TableRow>
             ));
@@ -121,6 +168,7 @@ const OrderDetailsUser = () => {
             return [];
         }
     };
+
 
     const handleStatusChange = async (newStatus) => {
         try {
@@ -159,81 +207,133 @@ const OrderDetailsUser = () => {
     };
 
     if (!orderDetails) {
-        return <div>Loading...</div>;
+        return <LoadingPage />;
     }
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
-                <h2
-                    style={{
-                        color: '#205295',
-                        fontSize: '40px',
-                        marginTop: '20px',
-                        fontFamily: 'Arial, sans-serif',
-                    }}
-                >
-                    View Order Details
-                </h2>
-                <p>Order Date: {new Date(orderDetails.order_date).toLocaleDateString()}</p>
-                <p>Mã đơn hàng: {orderDetails.id}</p>
-                <p>Tổng tiền: {orderDetails.orderTotal}</p>
-                <p>Trạng thái: {getStatusName(orderDetails.orderStatus)}</p>
-                <p>Địa chỉ: {orderDetails.address}</p>
-                <div className="main">
-                    <TableContainer component={Paper} className="dashboard-container">
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" className="order-table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">
-                                        Sản Phẩm
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">
-                                        Giá Tiền
-                                    </TableCell>
-                                    <TableCell style={{ fontSize: '20px' }} align="center">
-                                        Số Lượng
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>{tableRows}</TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px' }}>
-                    <Link to="/user/order" className="add-btn">
-                        <Button sx={{ fontSize: 20 }} variant="contained">
-                            Back
-                        </Button>
-                    </Link>
-                    {orderDetails.orderStatus === 1 || orderDetails.orderStatus === 2 ? (
-                        <Button
-                            sx={{ fontSize: 20, backgroundColor: '#FF0000', color: '#FFFFFF' }}
-                            variant="contained"
-                            onClick={() => handleStatusChange('5')}
-                        >
-                            Hủy Đơn
-                        </Button>
-                    ) : orderDetails.orderStatus === 3 ? (
-                        <Button
-                            sx={{ fontSize: 20, backgroundColor: '#008000', color: '#FFFFFF' }}
-                            variant="contained"
-                            onClick={() => handleStatusChange('4')}
-                        >
-                            Đã Nhận Hàng
-                        </Button>
-                    ) : orderDetails.orderStatus === 4 ? (
-                        <Button
-                            sx={{ fontSize: 20, backgroundColor: '#FF0000', color: '#FFFFFF' }}
-                            variant="contained"
-                            onClick={() => handleStatusChange('6')}
-                        >
-                            Hoàn Trả Hàng
-                        </Button>
-                    ) : null}
-                </Box>
-            </Box>
-        </Box>
+        <React.Fragment>
+            <TableContainer style={{ marginBottom: '30px' }}>
+                <CssBaseline />
+                <Container fixed>
+                    <Box height={100} />
+                    <Typography sx={{ textAlign: 'left' }} variant="h4" gutterBottom>
+                        Xem chi tiết đặt hàng
+                    </Typography>
+                    <Divider />
+                    <Box height={70} />
+
+                    <Box sx={{ height: '123vh' }}>
+                        <Grid container spacing={2}>
+                            <Grid xs={3} md={4}>
+                                <Card sx={{ height: '75vh' }}>
+                                    <CardContent>
+                                        <Stack spacing={2}>
+                                            <Typography variant="h6" gutterBottom>Thông tin người nhận</Typography>
+                                            <Divider />
+                                            <br />
+                                            <Typography variant="h6" gutterBottom>Mã đơn hàng: {orderDetails.id}</Typography>
+                                            <Typography variant="h6" gutterBottom>Ngày đặt hàng: {new Date(orderDetails.order_date).toLocaleDateString()}</Typography>
+                                            <Typography variant="h6" gutterBottom>Trạng thái: {getStatusName(orderDetails.orderStatus)}</Typography>
+                                            <>
+                                                <Typography variant="h6" gutterBottom>Name : {userData.name}</Typography>
+                                                <Typography variant="h6" gutterBottom>Phone : {userData.userPhone}</Typography>
+                                                <Typography variant="h6" gutterBottom>Address : {userData.addressLine}</Typography>
+                                                <Typography variant="h6" gutterBottom>Ship: COD </Typography>
+                                            </>
+                                            <Stack spacing={2}>
+                                                <Link to="/user/order" className="add-btn" style={{ marginTop: '155px' }}>
+                                                    <Button sx={{ fontSize: 20 }} variant="contained">
+                                                        Back
+                                                    </Button>
+                                                </Link>
+                                            </Stack>
+                                        </Stack>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid xs={9} md={8}>
+                                <Card sx={{ height: 'auto' }}>
+                                    <CardContent>
+                                        <Stack spacing={2}>
+                                            <Typography variant="h6" gutterBottom>
+                                                Chi tiết đơn hàng
+                                            </Typography>
+                                            <Divider />
+                                            <br />
+                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" className="order-table">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell style={{ fontSize: '20px' }} align="center">
+                                                            Sản Phẩm
+                                                        </TableCell>
+                                                        <TableCell style={{ fontSize: '20px' }} align="center">
+                                                            Số Lượng
+                                                        </TableCell>
+                                                        <TableCell style={{ fontSize: '20px' }} align="center">
+                                                            Giá Tiền
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>{tableRows}</TableBody>
+                                            </Table>
+                                        </Stack>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <Divider />
+                                        <br />
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <Stack>
+                                                <Typography variant="h6" gutterBottom> Tổng tiền: {orderDetails.orderTotal}$</Typography>
+                                            </Stack>
+                                            {orderDetails.orderStatus === 1 || orderDetails.orderStatus === 2 ? (
+                                                <Button
+                                                    sx={{ fontSize: 16, backgroundColor: '#FF0000', color: '#FFFFFF' }}
+                                                    variant="contained"
+                                                    onClick={() => handleStatusChange('5')}
+                                                >
+                                                    Hủy Đơn
+                                                </Button>
+                                            ) : orderDetails.orderStatus === 3 ? (
+                                                <Button
+                                                    sx={{ fontSize: 16, backgroundColor: '#008000', color: '#FFFFFF' }}
+                                                    variant="contained"
+                                                    onClick={() => handleStatusChange('4')}
+                                                >
+                                                    Đã Nhận Hàng
+                                                </Button>
+                                            ) : orderDetails.orderStatus === 4 ? (
+                                                <div>
+                                                    <Button
+                                                        sx={{ fontSize: 16, backgroundColor: '#FF0000', color: '#FFFFFF' }}
+                                                        variant="contained"
+                                                        onClick={() => handleStatusChange('6')}
+                                                    >
+                                                        Hoàn Trả Hàng
+                                                    </Button>
+                                                    <br />
+                                                    <br />
+                                                    <Button
+                                                        sx={{ fontSize: 16, width: '173px' }}
+                                                        variant="contained" color="success"
+                                                        onClick={handleFeedbackClick}>
+                                                        Feedback
+                                                    </Button>
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                        {showFeedback && (
+
+                                            <FeedbackComponent cartsData={cartsData} onClose={() => setShowFeedback(false)} />
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Container>
+            </TableContainer>
+        </React.Fragment>
     );
 };
 
@@ -250,3 +350,6 @@ const fetchOrderDetails = async (orderId) => {
 };
 
 export default OrderDetailsUser;
+
+
+

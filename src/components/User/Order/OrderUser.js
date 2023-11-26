@@ -95,7 +95,7 @@ function OrderUser() {
                 <Box height={100} />
                 <Box sx={{ flexGrow: 1, height: '400hv' }}>
                     <Typography sx={{ textAlign: 'left' }} variant="h4" gutterBottom>
-                        Order List
+                        My Order List
                     </Typography>
                     <Divider />
                     <Box height={20} />
