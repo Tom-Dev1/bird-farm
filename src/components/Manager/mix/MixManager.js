@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, Box, MenuItem, Select, TextField } from '@mui/material';
+import { Button, Box, MenuItem, Select, TextField, FormControl, InputLabel } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -19,6 +19,7 @@ import SidebarManager from '../SideBarManager/SidebarManager';
 import AppBarManager from '../AppBarManager/AppBarManager';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { margin } from '@mui/system';
 
 function MixManager() {
     const validationSchema = Yup.object().shape({
@@ -41,10 +42,12 @@ function MixManager() {
     const [page, setPage] = useState(0);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedMix, setSelectedMix] = useState(null);
+    const [selectedDialogStatus, setSelectedDialogStatus] = useState(selectedMix ? selectedMix.phoiGiongStatus.toString() : '1');
 
     const handleOpenEditDialog = (mix) => {
         setSelectedMix(mix);
         setOpenEditDialog(true);
+        setSelectedDialogStatus(mix ? mix.phoiGiongStatus.toString() : '1');
     };
 
     const handleCloseEditDialog = () => {
@@ -60,6 +63,7 @@ function MixManager() {
         setPage(0);
     };
 
+
     useEffect(() => {
         fetch(baseUrl)
             .then((response) => response.json())
@@ -67,20 +71,39 @@ function MixManager() {
             .catch((error) => console.log(error.message));
     }, []);
 
-    const getStatusName = (status) => {
-        return status;
+    const getStatusName = (phoiGiongStatus) => {
+        switch (phoiGiongStatus) {
+            case 1:
+                return "Chờ Xác Nhận";
+            case 2:
+                return "Đã Xác Nhận";
+            case 3:
+                return "Đã Hủy";
+            case 4:
+                return "Thành Công";
+            case 5:
+                return "Phối Thành Công";
+            case 6:
+                return "Phối Thất Bại";
+            case 7:
+                return "Đang Ấp Trứng";
+            case 8:
+                return "Đã Nở Trứng";
+            default:
+                return "Lỗi";
+        }
     };
 
     const filteredMixes = selectedStatusFilter === 'all'
         ? mixes
-        : mixes.filter((mix) => mix.phoiGiongStatus === selectedStatusFilter);
+        : mixes.filter((mix) => mix.phoiGiongStatus === parseInt(selectedStatusFilter, 10));
 
-    let sortedMixes = [...filteredMixes];
+    const sortedMixes = [...filteredMixes].sort((a, b) => {
+        const timeA = new Date(a.createdTime).getTime();
+        const timeB = new Date(b.createdTime).getTime();
 
-    sortedMixes.sort((a, b) => {
-        const statusA = a.phoiGiongStatus;
-        const statusB = b.phoiGiongStatus;
-        return Number(statusA) - Number(statusB);
+        // Sắp xếp giảm dần (nếu bạn muốn sắp xếp tăng dần, đảo ngược dấu "timeA - timeB")
+        return timeB - timeA;
     });
 
     const slicedMixes = sortedMixes.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
@@ -98,12 +121,12 @@ function MixManager() {
             "soTrungNo": formik.values.soTrungNo || null,
             "soTrungHong": formik.values.soTrungHong || null,
             "soChimGiao": formik.values.soChimGiao || null,
-            "phoiGiongStatus": 2,
+            "phoiGiongStatus": parseInt(selectedDialogStatus, 10) || null,
             "giaTien": formik.values.giaTien || null,
             "daThanhToan": formik.values.daThanhToan || null,
             "conLai": formik.values.conLai || null
         };
-
+        console.log('Data to be sent:', updateStatusBody);
         fetch(updateStatusUrl, {
             method: 'PUT',
             headers: {
@@ -143,7 +166,7 @@ function MixManager() {
         },
         validationSchema,
         onSubmit: (values) => {
-            console.log(values);
+
         },
     });
 
@@ -165,7 +188,6 @@ function MixManager() {
             .then(response => response.json())
             .then(data => {
                 const responseData = data.data; // Điều chỉnh theo cấu trúc thực tế của API
-
                 setFormData({
                     ngayChoPhoi: responseData.ngayChoPhoi || '',
                     ngayCoTrung: responseData.ngayCoTrung || '',
@@ -185,7 +207,7 @@ function MixManager() {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             });
-    }, []); // useEffect chạy một lần khi component được render
+    }, []);
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -200,21 +222,26 @@ function MixManager() {
                         onChange={(e) => setSelectedStatusFilter(e.target.value)}
                         style={{ marginTop: '30px' }}
                     >
-                        <MenuItem value="all">All</MenuItem>
-                        <MenuItem value="1">Place</MenuItem>
-                        <MenuItem value="2">Confirm</MenuItem>
-                        <MenuItem value="3">Done</MenuItem>
+                        <MenuItem value="all">Tất Cả</MenuItem>
+                        <MenuItem value="1">Chờ Xác Nhận</MenuItem>
+                        <MenuItem value="2">Đã Xác Nhận</MenuItem>
+                        <MenuItem value="3">Đã Hủy</MenuItem>
+                        <MenuItem value="4">Thành Công</MenuItem>
+                        <MenuItem value="5">Phối Thành Công</MenuItem>
+                        <MenuItem value="6">Phối Thất Bại</MenuItem>
+                        <MenuItem value="7">Đang Ấp Trứng</MenuItem>
+                        <MenuItem value="8">Đã Nở Trứng</MenuItem>
                     </Select>
                     <TableContainer component={Paper} className="dashboard-container">
                         <h2 style={{ textAlign: 'center', color: '#205295', fontSize: '40px', marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>Phối Giống</h2>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" className="mix-table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">ID Order Mix</TableCell>
-                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Bird Customer</TableCell>
-                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Bird Shop ID</TableCell>
-                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Status</TableCell>
-                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Action</TableCell>
+                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">ID</TableCell>
+                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Chim khách hàng mang tới</TableCell>
+                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Chim của trang trại</TableCell>
+                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center">Trạng Thái</TableCell>
+                                    <TableCell style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }} align="center"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -223,9 +250,7 @@ function MixManager() {
                                         <TableCell style={{ fontSize: '13px' }} align="center">{mix.id}</TableCell>
                                         <TableCell style={{ fontSize: '13px' }} align="center">{mix.bird_KH?.name}</TableCell>
                                         <TableCell style={{ fontSize: '13px' }} align="center">{mix.bird_Shop?.name}</TableCell>
-                                        <TableCell style={{ fontSize: '14px', fontWeight: 'bold' }} align="center">
-                                            {getStatusName(mix.phoiGiongStatus)}
-                                        </TableCell>
+                                        <TableCell style={{ fontSize: '14px', fontWeight: 'bold' }} align="center">{getStatusName(mix.phoiGiongStatus)}</TableCell>
                                         <TableCell align="center">
                                             <Button
                                                 variant="outlined"
@@ -257,7 +282,7 @@ function MixManager() {
             <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
                 <DialogTitle>Edit Mix</DialogTitle>
                 <DialogContent>
-                    <p>ID: {selectedMix?.id}</p>
+                    <p style={{ marginTop: '10px' }}>ID: {selectedMix?.id}</p>
                     <TextField
                         label="Ngày Cho Phối"
                         id="ngayChoPhoi"
@@ -305,14 +330,6 @@ function MixManager() {
                         fullWidth
                     />
                     <TextField
-                        label="Số Chim Giao"
-                        id="soChimGiao"
-                        type="number"
-                        value={formik.values.soChimGiao}
-                        onChange={formik.handleChange}
-                        fullWidth
-                    />
-                    <TextField
                         label="Giá Tiền"
                         id="giaTien"
                         type="number"
@@ -321,24 +338,25 @@ function MixManager() {
                         helperText={formik.touched.giaTien && formik.errors.giaTien}
                         fullWidth
                     />
-                    <TextField
-                        label="Đã Thanh Toán"
-                        id="daThanhToan"
-                        type="number"
-                        value={formik.values.daThanhToan}
-                        onChange={formik.handleChange}
-                        fullWidth
-                    />
-                    <TextField
-                        label="Còn Lại"
-                        id="conLai"
-                        type="number"
-                        value={formik.values.conLai}
-                        onChange={formik.handleChange}
-                        helperText={formik.touched.conLai && formik.errors.conLai}
-
-                        fullWidth
-                    />
+                    <FormControl fullWidth>
+                        <InputLabel id="status-select-label">Status</InputLabel>
+                        <Select
+                            labelId="status-select-label"
+                            id="status-select"
+                            value={selectedDialogStatus}
+                            label="Status"
+                            onChange={(e) => setSelectedDialogStatus(e.target.value)}
+                        >
+                            <MenuItem value="1">Chờ Xác Nhận</MenuItem>
+                            <MenuItem value="2">Đã Xác Nhận</MenuItem>
+                            <MenuItem value="3">Đã Hủy</MenuItem>
+                            <MenuItem value="4">Thành Công</MenuItem>
+                            <MenuItem value="5">Phối Thành Công</MenuItem>
+                            <MenuItem value="6">Phối Thất Bại</MenuItem>
+                            <MenuItem value="7">Đang Ấp Trứng</MenuItem>
+                            <MenuItem value="8">Đã Nở Trứng</MenuItem>
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseEditDialog} color="primary">

@@ -22,6 +22,7 @@ import LoadingPage from './LoadingPage';
 export default function MyBird() {
     const [loading, setLoading] = useState(true);
 
+
     const categoryMapping = {
         "51d334ad9f0a48a59fa4c7a20f70dcfd": "Đại bàng",
         "6a2aab32b3574510a434136b31cec3df": "Vẹt",
@@ -39,7 +40,9 @@ export default function MyBird() {
         fetch(`http://birdsellingapi-001-site1.ctempurl.com/api/PhoiGiong/GetProductOfUser?userID=${userID}`) // replace with your API URL
             .then(response => response.json())
             .then(data => {
-                setData(data.data);
+                const sortedData = data.data.sort((a, b) => new Date(b.phoiGiongStatus) - new Date(a.phoiGiongStatus));
+                setData(sortedData);
+                console.log(sortedData);
                 setTimeout(() => setLoading(false), 1000);
             })
             .catch(error => {
