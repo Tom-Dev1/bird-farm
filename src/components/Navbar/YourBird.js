@@ -64,13 +64,13 @@ export default function MyBird() {
                 <Container fixed>
                     <Box height={100} />
                     <Box sx={{ flexGrow: 1, height: '400hv' }}>
-                        <Container maxWidth="xs">
-                            <Typography sx={{ textAlign: 'center' }} variant="h4" gutterBottom>
-                                My Bird List
-                            </Typography>
-                        </Container>
+
+                        <Typography sx={{ textAlign: 'left' }} variant="h4" gutterBottom>
+                            My Bird List
+                        </Typography>
                         <Divider />
                         <Box height={10} />
+
                         <TableContainer sx={{ maxHeight: '100%' }} style={{ marginBottom: '100px' }}>
                             <Table stickyHeader aria-label="sticky table">
                                 <TableHead>
