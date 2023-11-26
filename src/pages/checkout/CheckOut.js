@@ -65,14 +65,32 @@ export default function Checkout() {
         }
     };
 
+    // const handleNext = () => {
+    //     if (activeStep === steps.length - 1) {
+    //         handlePlaceOrder();
+    //     } else {
+    //         setActiveStep(activeStep + 1);
+    //     }
+    // };
+    const isShippingInfoComplete = () => {
+        const { firstName, lastName, address, phone, city, country } = shippingInfo;
+        return firstName && lastName && address && phone && city && country;
+    };
+
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
             handlePlaceOrder();
         } else {
-            setActiveStep(activeStep + 1);
+            if (isShippingInfoComplete()) {
+                setActiveStep(activeStep + 1);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Please fill in all shipping information',
+                });
+            }
         }
     };
-
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
