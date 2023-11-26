@@ -23,27 +23,6 @@ import { faDove } from '@fortawesome/free-solid-svg-icons';
 
 const drawerWidth = 220;
 
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -76,16 +55,34 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
   ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   }),
   ...(!open && {
-    ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(${theme.spacing(8)} + 1px)`,
+    },
   }),
 }));
 
-export default function SideNav() {
+const menuItems = [
+  { path: '/manager/dashboard', icon: <DashboardIcon />, text: 'Dashboard' },
+  { path: '/manager/categories', icon: <CategoryIcon />, text: 'Category' },
+  { path: '/manager/products', icon: <InventoryIcon />, text: 'Product' },
+  { path: '/manager/order', icon: <ShoppingBasketIcon />, text: 'Order' },
+  { path: '/manager/mix', icon: <FontAwesomeIcon icon={faDove} size="xl" />, text: 'Mix Order' },
+  // Add other menu items as needed
+];
+
+const SideNav = () => {
   const theme = useTheme();
   const open = useAppStore((state) => state.dopen);
   const navigate = useNavigate();
@@ -96,6 +93,7 @@ export default function SideNav() {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      {/* CssBaseline */}
       <CssBaseline />
 
       {/* AppBar */}
@@ -121,131 +119,42 @@ export default function SideNav() {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem
-            disablePadding
-            sx={{ display: 'block' }}
-            onClick={() => {
-              navigate('/manager/dashboard');
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.text}
+              disablePadding
+              sx={{ display: 'block' }}
+              onClick={() => {
+                navigate(item.path);
               }}
             >
-              <DashboardIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                <DashboardIcon />
-              </DashboardIcon>
-              <ListItemText primary="DashBoard" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: 'block' }}
-            onClick={() => {
-              navigate('/manager/categories');
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <CategoryIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <CategoryIcon />
-              </CategoryIcon>
-              <ListItemText primary="Category" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: 'block' }}
-            onClick={() => {
-              navigate('/manager/products');
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <InventoryIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <InventoryIcon />
-              </InventoryIcon>
-              <ListItemText primary="Product" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: 'block' }}
-            onClick={() => {
-              navigate('/manager/order');
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ShoppingBasketIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <ShoppingBasketIcon />
-              </ShoppingBasketIcon>
-              <ListItemText primary="Order" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            disablePadding
-            sx={{ display: 'block' }}
-            onClick={() => {
-              navigate('/manager/mix');
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <FontAwesomeIcon icon={faDove} size="xl" />
-              <ListItemText primary="Mix Order" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-          {/* Add other ListItems as needed */}
+                {item.icon && (
+                  <Box
+                    component="span"
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </Box>
+                )}
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </Drawer>
     </Box>
   );
-}
+};
+
+export default SideNav;
