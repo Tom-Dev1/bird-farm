@@ -226,21 +226,21 @@ const Products = () => {
                 Swal.fire({
                     icon: 'info',
                     title: 'Notification',
-                    text: `The product ${name} is out of stock`,
+                    text: `The product is out of stock`,
                 });
             } else if (isItemInCart) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Notification',
-                    text: `This product ${name} is already in the cart`,
+                    text: `This product is already in the cart`,
                 });
             } else {
                 dispatch(fetchAddToCart({ product_id: productId, user_id: userID })).then(() => {
                     dispatch(fetchAllCart(userID));
                     Swal.fire({
                         icon: 'success',
-                        title: 'Notification',
-                        text: `Added the product ${name} in cart successfully`,
+                        title: 'Success',
+                        text: `Added the product in cart successfully`,
                     });
                 });
             }

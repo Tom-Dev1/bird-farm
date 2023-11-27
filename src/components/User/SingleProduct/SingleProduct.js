@@ -32,9 +32,9 @@ const SingleProduct = () => {
         if (authContext.isAuthenticated === false) {
             Swal.fire({
                 icon: 'info',
-                title: 'Thông báo',
-                text: 'Bạn cần đăng nhập để truy cập trang này.',
-                confirmButtonText: 'Đăng nhập',
+                title: 'Notfication',
+                text: 'You need to log in to add products to your cart',
+                confirmButtonText: 'Login',
                 showCancelButton: true,
                 cancelButtonText: 'Hủy',
             }).then((result) => {
@@ -49,19 +49,19 @@ const SingleProduct = () => {
                     Swal.fire({
                         icon: 'info',
                         title: 'Error',
-                        text: `The product ${productSingle.name} is out of stock`,
+                        text: `The product is out of stock`,
                     });
                 } else if (isItemInCart) {
                     Swal.fire({
                         icon: 'info',
                         title: 'Error',
-                        text: `This product ${productSingle.name} is already in the cart`,
+                        text: `This product is already in the cart`,
                     });
                 } else {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Notification',
-                        text: `Added the product ${productSingle.name} in cart successfully`,
+                        title: 'Success',
+                        text: `Added the product in cart successfully`,
                     });
                     dispatch(fetchAddToCart({ product_id: id, user_id: userID })).then(() => {
                         dispatch(fetchAllCart(userID));
